@@ -70,6 +70,10 @@ h1:focus, h2:focus { outline: none; }
 .display { font-family: var(--f-display); font-weight: 700; letter-spacing: var(--ls-title); }
 h1.display { font-size: var(--fs-28); line-height: 1.3; }
 .hero h1.display, .result-hero h1.display { font-family: var(--f-brand); font-weight: 400; letter-spacing: -0.02em; }
+.ani img.dot { width: 78%; height: 78%; image-rendering: pixelated; image-rendering: crisp-edges; }
+.kin { display: flex; align-items: center; gap: 10px; min-height: 72px; padding: 8px 10px; border: 1px solid var(--line-strong); border-radius: 14px; background: var(--surface); color: var(--ink); text-align: left; cursor: pointer; }
+.kin > span:last-child { display: grid; }
+.kin b { font-size: var(--fs-16); }
 .sub-name { display: block; font-size: var(--fs-16); font-weight: 600; color: var(--muted); letter-spacing: var(--ls-body); }
 h2.display { font-size: var(--fs-22); line-height: 1.3; }
 h3 { font-size: var(--fs-18); font-weight: 600; line-height: 1.35; letter-spacing: var(--ls-sub); }
@@ -668,7 +672,8 @@ table.data th { background: var(--sunk); font-weight: 600; }
     };
   function ani(k, size) {
     k = ART[k] ? k : pk(k);
-    return '<span class="ani t' + k.charAt(0) + '"' + (size ? ' style="width:' + size + 'px;height:' + size + 'px"' : "") + ' aria-hidden="true"><svg viewBox="0 0 512 512">' + ART[k] + "</svg></span>";
+    var d = dotOf(k), st = size ? ' style="width:' + size + 'px;height:' + size + 'px"' : "";
+    return '<span class="ani t' + k.charAt(0) + '"' + st + ' aria-hidden="true">' + (d ? '<img class="dot" src="' + d + '" alt="" style="transform:scale(' + dotScale(k) + ')">' : '<svg viewBox="0 0 512 512">' + ART[k] + "</svg>") + "</span>";
   }
   var EXT = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>';
 
@@ -687,36 +692,21 @@ table.data th { background: var(--sunk); font-weight: 600; }
   function jobKey(j) { return pk(first(j), second(j)); }
   function pairNames(k) { return TYPES[k[0]].name + "·" + TYPES[k[1]].name; }
   var PAIRS = {
-    RI: { animal: "비버", title: "뚝딱 연구하는 비버", tag: "왜 되는지 알아내고, 직접 만들어서 확인해요.", desc: "머리로만 아는 것보다 손으로 해 봐야 직성이 풀리는 타입이에요. 원리를 파고들고, 그걸 실제로 돌아가게 만들 때 가장 신나요.",
-      good: ["문제를 끝까지 파고드는 끈기", "설명서 없이도 구조를 금방 파악하는 눈", "말보다 결과물로 보여 주는 실력"], tired: ["결과가 보이지 않는 회의가 길게 이어질 때", "이유 설명 없이 '그냥 하라'는 지시를 받을 때"], tip: "한 일을 사진이나 기록으로 남겨 두면, 말로 설명해야 하는 자리에서도 실력이 그대로 보여요." },
-    RA: { animal: "수달", title: "손끝이 야무진 수달", tag: "손으로 만들면서 나를 표현해요.", desc: "보기 좋은 걸 직접 손으로 만들어 낼 때 행복한 타입이에요. 재료를 만지고 다듬다 보면 시간 가는 줄 몰라요.",
-      good: ["눈썰미와 손재주를 함께 갖춘 감각", "아이디어를 실물로 바꾸는 실행력", "작은 부분까지 다듬는 정성"], tired: ["하루 종일 서류와 숫자만 다룰 때", "내 방식 없이 똑같은 걸 반복하기만 할 때"], tip: "만든 걸 꾸준히 사진으로 남겨 두세요. 그게 그대로 포트폴리오가 돼요." },
-    RS: { animal: "판다", title: "든든하게 챙기는 판다", tag: "몸으로 직접 도우며 사람을 지켜요.", desc: "말보다 행동으로 사람을 챙기는 타입이에요. 누군가 도움이 필요할 때 먼저 움직이고, 현장에서 직접 도울 때 보람을 느껴요.",
-      good: ["급할 때 침착하게 먼저 움직이는 순발력", "믿고 기댈 수 있는 듬직함", "꾸준히 버티는 체력과 성실함"], tired: ["사람과 떨어져 혼자 화면만 볼 때", "내 도움이 실제로 닿는지 알 수 없는 일을 할 때"], tip: "도운 경험을 '언제, 누구를, 어떻게'로 적어 두면 자소서 소재가 넘쳐요." },
-    RE: { animal: "호랑이", title: "현장을 이끄는 호랑이", tag: "직접 뛰면서 팀을 앞으로 끌고 가요.", desc: "생각보다 실행이 빠른 타입이에요. 현장에서 상황을 보고 바로 판단하고, 사람들을 움직여 결과를 만들어 내요.",
-      good: ["빠른 판단과 추진력", "몸을 아끼지 않는 행동력", "힘든 현장에서도 분위기를 잡는 존재감"], tired: ["결정 없이 검토만 반복될 때", "하루 종일 한자리에 앉아 문서만 볼 때"], tip: "결정이 빠른 만큼 한 번 더 확인하는 습관을 붙이면 실수까지 줄어 더 믿음직해져요." },
-    RC: { animal: "거북이", title: "차근차근 해내는 거북이", tag: "정해진 방법대로 정확하게 끝까지 해내요.", desc: "서두르지 않아도 결국 해내는 타입이에요. 순서와 기준이 분명한 일을 손으로 정확하게 처리할 때 마음이 편해요.",
-      good: ["실수 없이 꼼꼼한 정확성", "맡은 일을 끝까지 책임지는 성실함", "규칙과 안전을 잘 지키는 신중함"], tired: ["기준 없이 매번 즉흥적으로 바뀌는 일", "결과보다 말솜씨로 평가받는 자리"], tip: "자격증처럼 기준이 분명한 목표를 하나씩 따 가면 실력이 눈에 보여요." },
-    IA: { animal: "문어", title: "아이디어 많은 문어", tag: "생각을 넓게 펼쳐 새로운 걸 만들어요.", desc: "궁금한 것도 많고 상상력도 풍부한 타입이에요. 깊이 파고든 지식을 새로운 방식으로 엮어 남들이 못 본 답을 찾아내요.",
-      good: ["낯선 것끼리 연결하는 창의력", "한 주제에 깊이 빠져드는 몰입력", "남과 다른 시선으로 보는 독창성"], tired: ["정답이 정해진 일을 똑같이 반복할 때", "생각할 틈 없이 빠르게 처리만 해야 할 때"], tip: "아이디어가 많을수록, 하나를 끝까지 완성해 본 경험이 큰 무기가 돼요." },
-    IS: { animal: "돌고래", title: "똑똑하고 다정한 돌고래", tag: "아는 것으로 사람을 도와요.", desc: "배우는 것도 좋아하고 사람도 좋아하는 타입이에요. 어려운 내용을 쉽게 풀어 설명하거나, 아는 것으로 누군가의 문제를 해결할 때 뿌듯해요.",
-      good: ["어려운 걸 쉽게 풀어내는 설명력", "상대의 상황을 이해하는 공감력", "근거를 갖고 판단하는 신중함"], tired: ["사람을 숫자로만 보는 분위기", "왜 하는지 모른 채 지시만 따를 때"], tip: "배운 걸 스터디나 글로 나눠 보세요. 가르치면서 실력이 가장 빨리 늘어요." },
-    IE: { animal: "여우", title: "판을 읽는 여우", tag: "분석하고 전략을 세워 이기는 길을 찾아요.", desc: "상황을 빠르게 읽고 수를 두는 타입이에요. 정보를 모아 분석한 다음, 사람을 설득해 실제 성과로 만드는 데 강해요.",
-      good: ["흐름을 읽는 분석력", "근거로 설득하는 논리력", "목표를 향한 승부욕"], tired: ["성과가 보이지 않는 일을 오래 할 때", "의견을 낼 수 없이 정해진 대로만 움직일 때"], tip: "'무엇을 분석해서 얼마나 바꿨는지'를 숫자로 정리해 두면 가장 강한 자기소개가 돼요." },
-    IC: { animal: "부엉이", title: "꼼꼼히 분석하는 부엉이", tag: "자료를 정리하고 정확한 답을 찾아요.", desc: "차분하게 들여다보고 빈틈을 찾아내는 타입이에요. 자료를 체계적으로 정리하고 정확한 결론을 낼 때 가장 만족해요.",
-      good: ["숫자와 자료를 다루는 정확함", "놓치기 쉬운 오류를 찾아내는 눈", "혼자서도 꾸준히 깊게 파는 집중력"], tired: ["근거 없이 감으로 결정할 때", "쉴 틈 없이 계속 사람을 상대해야 할 때"], tip: "엑셀이나 데이터 분석처럼 결과물이 남는 도구 하나를 제대로 익혀 두면 쓸 곳이 많아요." },
-    AS: { animal: "토끼", title: "마음을 표현하는 토끼", tag: "감성으로 사람의 마음을 움직여요.", desc: "느낀 걸 표현하는 것도, 다른 사람 마음을 알아채는 것도 잘하는 타입이에요. 글, 그림, 말로 누군가에게 힘이 되어 줄 때 보람을 느껴요.",
-      good: ["분위기와 감정을 섬세하게 읽는 감수성", "따뜻하게 전하는 표현력", "사람들이 편하게 다가오는 친근함"], tired: ["감정 없이 숫자만 맞추는 일이 이어질 때", "날 선 경쟁이 계속되는 분위기"], tip: "내 표현이 누군가에게 닿았던 순간을 적어 두세요. 그 이야기가 면접에서 가장 오래 기억돼요." },
-    AE: { animal: "앵무새", title: "말로 사로잡는 앵무새", tag: "아이디어를 멋지게 알리고 사람을 모아요.", desc: "튀는 아이디어를 내고 그걸 사람들 앞에 보여 주는 걸 좋아하는 타입이에요. 기획하고 알리고 반응을 볼 때 에너지가 차올라요.",
-      good: ["눈길을 끄는 기획력", "사람들 앞에서 빛나는 전달력", "새로운 걸 먼저 해 보는 도전 정신"], tired: ["보여 줄 기회 없이 뒤에서만 일할 때", "새로움 없이 매일 똑같은 일정"], tip: "SNS나 공모전처럼 반응이 바로 오는 곳에서 작은 프로젝트를 해 보세요. 결과가 숫자로 쌓여요." },
-    AC: { animal: "고양이", title: "섬세하게 다듬는 고양이", tag: "보기 좋은 걸 정확하게 완성해요.", desc: "감각도 있고 꼼꼼하기도 한 타입이에요. 보기 좋은 걸 만들되, 한 글자 한 줄까지 맞아야 마음이 놓여요.",
-      good: ["디테일을 놓치지 않는 완성도", "정돈된 감각과 확실한 기준", "혼자서도 끝까지 다듬는 집중력"], tired: ["대충 빨리 끝내라는 요구가 계속될 때", "기준 없이 계속 바뀌는 피드백"], tip: "완성도 높은 작업 몇 개를 골라 만든 과정까지 정리하면 포트폴리오가 확 달라져요." },
-    SE: { animal: "사자", title: "따뜻한 리더 사자", tag: "사람을 모아 함께 앞으로 나아가요.", desc: "사람들 사이에서 자연스럽게 중심이 되는 타입이에요. 팀의 마음을 챙기면서도 목표를 향해 이끌 때 가장 빛나요.",
-      good: ["사람을 모으고 움직이는 리더십", "분위기를 살리는 친화력", "갈등을 풀어내는 중재 능력"], tired: ["혼자 떨어져서 일할 때", "사람과 상관없이 기계적으로 반복되는 일"], tip: "팀을 이끈 경험을 '처음 상황, 내가 한 일, 바뀐 결과' 순서로 정리해 두세요." },
-    SC: { animal: "펭귄", title: "함께 살림하는 펭귄", tag: "모두가 편하도록 질서 있게 챙겨요.", desc: "사람을 챙기면서 일도 차곡차곡 정리하는 타입이에요. 모두가 헤매지 않도록 규칙을 만들고 빈자리를 채울 때 보람을 느껴요.",
-      good: ["믿고 맡길 수 있는 책임감", "사람과 일을 함께 챙기는 세심함", "규칙을 지키며 팀을 안정시키는 힘"], tired: ["계획 없이 갑자기 바뀌는 일정", "서로 돕지 않고 경쟁만 하는 분위기"], tip: "사무 자격증 하나와 사람을 도운 경험 하나를 짝지어 두면 강한 조합이 돼요." },
-    EC: { animal: "코끼리", title: "계획대로 이끄는 코끼리", tag: "목표를 세우고 체계적으로 밀고 나가요.", desc: "큰 그림을 그리면서도 숫자와 일정을 놓치지 않는 타입이에요. 계획을 세워 사람과 일을 관리하고 목표를 이룰 때 뿌듯해요.",
-      good: ["목표와 숫자를 함께 보는 관리 능력", "흔들리지 않는 추진력", "약속과 마감을 지키는 믿음직함"], tired: ["목표 없이 흘러가는 일", "규칙이 무시되는 어수선한 환경"], tip: "예산이나 일정을 엑셀로 관리해 본 경험을 하나 만들어 두면 어느 직무에서든 쓸모가 커요." }
+    RI: {"animal":"비버","title":"뚝딱 연구하는 비버","tag":"궁금한 건 직접 뜯어보고 내 손으로 다시 만들어요.","desc":"머리로만 아는 것보다 손으로 해 봐야 직성이 풀리는 타입이에요. 원리를 파고들고, 그걸 실제로 돌아가게 만들 때 가장 신나요.","good":["복잡한 것도 뜯어보면 구조가 금방 보여요.","말로 설명하기보다 결과물로 바로 보여줘요."],"tired":["결과가 보이지 않는 회의가 길게 이어질 때","이유 설명 없이 '그냥 하라'는 지시를 받을 때"],"tip":"직접 만든 결과물을 사진으로 찍어 모아 보세요. 나중에 보여주기 좋아요."},
+    RA: {"animal":"수달","title":"손끝이 야무진 수달","tag":"손으로 무언가 뚝딱 만들 때 가장 즐거워요.","desc":"보기 좋은 걸 직접 손으로 만들어 낼 때 행복한 타입이에요. 재료를 만지고 다듬다 보면 시간 가는 줄 몰라요.","good":["머릿속 생각을 금방 실물로 만들어요.","작은 부분까지 꼼꼼히 다듬어 완성해요."],"tired":["하루 종일 서류와 숫자만 다룰 때","내 방식 없이 똑같은 걸 반복하기만 할 때"],"tip":"일단 하나를 끝까지 완성해서 사진으로 남겨 보세요."},
+    RS: {"animal":"판다","title":"든든하게 챙기는 판다","tag":"묵묵히 곁에서 필요한 일을 챙겨요.","desc":"말보다 행동으로 사람을 챙기는 타입이에요. 누군가 도움이 필요할 때 먼저 움직이고, 현장에서 직접 도울 때 보람을 느껴요.","good":["바쁜 상황에서도 차분하게 할 일을 찾아요.","누가 부탁하지 않아도 필요한 걸 미리 챙겨요."],"tired":["사람과 떨어져 혼자 화면만 볼 때","내 도움이 실제로 닿는지 알 수 없는 일을 할 때"],"tip":"오늘 내가 도운 일을 한 줄로 짧게 적어 보세요."},
+    RE: {"animal":"호랑이","title":"현장을 이끄는 호랑이","tag":"앞장서서 일을 시작하고 끝까지 밀어붙여요.","desc":"생각보다 실행이 빠른 타입이에요. 현장에서 상황을 보고 바로 판단하고, 사람들을 움직여 결과를 만들어 내요.","good":["고민하기보다 일단 몸부터 움직여요.","힘든 상황에서도 다 같이 하자며 끌고 가요."],"tired":["결정 없이 검토만 반복될 때","하루 종일 한자리에 앉아 문서만 볼 때"],"tip":"새 일을 시작하기 전에 1분만 멈춰서 한 번 더 살펴보세요."},
+    RC: {"animal":"거북이","title":"차근차근 해내는 거북이","tag":"규칙대로 차근차근, 실수 없이 마무리해요.","desc":"서두르지 않아도 결국 해내는 타입이에요. 순서와 기준이 분명한 일을 손으로 정확하게 처리할 때 마음이 편해요.","good":["정해진 규칙을 꼼꼼하게 따져요.","오늘 할 일을 정해두면 끝까지 마쳐요."],"tired":["기준 없이 매번 즉흥적으로 바뀌는 일","결과보다 말솜씨로 평가받는 자리"],"tip":"하루에 하나씩 정해진 계획을 지키는 연습을 해보세요."},
+    IA: {"animal":"문어","title":"아이디어 많은 문어","tag":"낯선 것들을 섞어서 새로운 재미를 찾아요.","desc":"궁금한 것도 많고 상상력도 풍부한 타입이에요. 깊이 파고든 지식을 새로운 방식으로 엮어 남들이 못 본 답을 찾아내요.","good":["어울리지 않을 법한 것들을 연결해요.","한 번 빠지면 시간 가는 줄 모르고 파고들어요."],"tired":["정답이 정해진 일을 똑같이 반복할 때","생각할 틈 없이 빠르게 처리만 해야 할 때"],"tip":"머릿속 생각을 딱 하나의 결과물로 만들어 보세요."},
+    IS: {"animal":"돌고래","title":"똑똑하고 다정한 돌고래","tag":"아는 정보를 알기 쉽게 풀어서 알려줘요.","desc":"배우는 것도 좋아하고 사람도 좋아하는 타입이에요. 어려운 내용을 쉽게 풀어 설명하거나, 아는 것으로 누군가의 문제를 해결할 때 뿌듯해요.","good":["복잡한 내용도 상대방 눈높이에서 말해줘요.","상대가 뭘 힘들어하는지 금방 알아채요."],"tired":["사람을 숫자로만 보는 분위기","왜 하는지 모른 채 지시만 따를 때"],"tip":"아는 내용을 친구에게 5분만 설명해 보세요."},
+    IE: {"animal":"여우","title":"판을 읽는 여우","tag":"상황을 살피고 가장 효율적인 길을 찾아요.","desc":"상황을 빠르게 읽고 수를 두는 타입이에요. 정보를 모아 분석한 다음, 사람을 설득해 실제 성과로 만드는 데 강해요.","good":["숫자를 보면 무엇이 문제인지 금방 알아요.","논리적으로 따져서 사람들을 설득해요."],"tired":["성과가 보이지 않는 일을 오래 할 때","의견을 낼 수 없이 정해진 대로만 움직일 때"],"tip":"데이터나 결과물을 숫자로 짧게 정리해 보세요."},
+    IC: {"animal":"부엉이","title":"꼼꼼히 분석하는 부엉이","tag":"흩어진 자료를 모아 꼼꼼하게 정리해요.","desc":"차분하게 들여다보고 빈틈을 찾아내는 타입이에요. 자료를 체계적으로 정리하고 정확한 결론을 낼 때 가장 만족해요.","good":["남들이 놓친 작은 부분도 꼼꼼히 짚어내요.","복잡한 숫자들을 보기 좋게 분류해요."],"tired":["근거 없이 감으로 결정할 때","쉴 틈 없이 계속 사람을 상대해야 할 때"],"tip":"엑셀 함수를 하나씩 익혀서 데이터를 정리해 보세요."},
+    AS: {"animal":"토끼","title":"마음을 표현하는 토끼","tag":"사람들 기분을 살피고 따뜻하게 대화해요.","desc":"느낀 걸 표현하는 것도, 다른 사람 마음을 알아채는 것도 잘하는 타입이에요. 글, 그림, 말로 누군가에게 힘이 되어 줄 때 보람을 느껴요.","good":["대화할 때 상대방 표정을 먼저 살피고 말해요.","사람들을 편안하게 해주는 분위기가 있어요."],"tired":["감정 없이 숫자만 맞추는 일이 이어질 때","날 선 경쟁이 계속되는 분위기"],"tip":"누군가에게 고마움을 전하는 짧은 편지를 써 보세요."},
+    AE: {"animal":"앵무새","title":"말로 사로잡는 앵무새","tag":"내 생각을 사람들 앞에서 신나게 말해요.","desc":"튀는 아이디어를 내고 그걸 사람들 앞에 보여 주는 걸 좋아하는 타입이에요. 기획하고 알리고 반응을 볼 때 에너지가 차올라요.","good":["사람들 앞에서 의견을 말할 때 자신감이 넘쳐요.","다들 재미있어할 만한 아이디어를 잘 떠올려요."],"tired":["보여 줄 기회 없이 뒤에서만 일할 때","새로움 없이 매일 똑같은 일정"],"tip":"SNS에 내가 만든 것을 짧게 공유해 보세요."},
+    AC: {"animal":"고양이","title":"섬세하게 다듬는 고양이","tag":"눈에 보이는 모든 것을 깔끔하게 다듬어요.","desc":"감각도 있고 꼼꼼하기도 한 타입이에요. 보기 좋은 걸 만들되, 한 글자 한 줄까지 맞아야 마음이 놓여요.","good":["작은 부분 하나까지 신경 써서 보기 좋게 만들어요.","나만의 기준을 세우고 그만큼은 꼭 지켜요."],"tired":["대충 빨리 끝내라는 요구가 계속될 때","기준 없이 계속 바뀌는 피드백"],"tip":"결과물을 만들기 전과 후를 사진으로 비교해 보세요."},
+    SE: {"animal":"사자","title":"따뜻한 리더 사자","tag":"사람들 의견을 듣고 다 같이 움직이게 해요.","desc":"사람들 사이에서 자연스럽게 중심이 되는 타입이에요. 팀의 마음을 챙기면서도 목표를 향해 이끌 때 가장 빛나요.","good":["다 같이 무언가를 할 때 앞장서서 분위기를 띄워요.","의견이 다를 때 서로 이해하도록 도와줘요."],"tired":["혼자 떨어져서 일할 때","사람과 상관없이 기계적으로 반복되는 일"],"tip":"함께 무언가 했을 때 내가 어떤 역할을 했는지 적어 보세요."},
+    SC: {"animal":"펭귄","title":"함께 살림하는 펭귄","tag":"다 같이 일하기 좋게 환경을 정돈해요.","desc":"사람을 챙기면서 일도 차곡차곡 정리하는 타입이에요. 모두가 헤매지 않도록 규칙을 만들고 빈자리를 채울 때 보람을 느껴요.","good":["정해진 약속은 무슨 일이 있어도 지켜요.","함께 일하는 사람들의 상황을 늘 살펴요."],"tired":["계획 없이 갑자기 바뀌는 일정","서로 돕지 않고 경쟁만 하는 분위기"],"tip":"같이 쓰는 자료나 공간 하나를 보기 좋게 정리해 보세요."},
+    EC: {"animal":"코끼리","title":"계획대로 이끄는 코끼리","tag":"계획대로 딱딱 맞춰서 일을 마무리해요.","desc":"큰 그림을 그리면서도 숫자와 일정을 놓치지 않는 타입이에요. 계획을 세워 사람과 일을 관리하고 목표를 이룰 때 뿌듯해요.","good":["큰 목표를 작은 단위로 쪼개서 실행해요.","정해진 날짜까지 일을 무조건 끝내요."],"tired":["목표 없이 흘러가는 일","규칙이 무시되는 어수선한 환경"],"tip":"다이어리에 오늘 할 일을 목록으로 적고 지워 보세요."}
   };
   var PARADE = ["IC", "AS", "SE", "RE", "IA", "EC"];
 
@@ -742,25 +732,48 @@ table.data th { background: var(--sunk); font-weight: 600; }
     return h + "<p><b>" + c[0] + "</b> " + c[1] + '</p><p class="small muted">친구는 \'' + esc(kw(S.friend)) + "', 나는 '" + esc(kw(me)) + "'에서 힘이 나요.</p></section>";
   }
   function fitText(cx, s, max, px, weight) { do { cx.font = weight + " " + px + "px " + (weight === "400" ? "Jua, " : "") + "'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', sans-serif"; px -= 2; } while (cx.measureText(s).width > max && px > 20); }
-  function shareCard(k, recs) {   // 1080x1350 PNG (4:5, fits feeds and chats)
-    var t = PAIRS[k], col = TCOL[k[0]], W = 1080;
+  // pixel-art animals (art/dot/*.png, embedded by the build); the old drawings stay as a fallback
+  var DOT = {"beaver": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABjUlEQVR4nOVXO07DQBCdXW3HIeiRUiGhHIA6uMkFUsENaFJxiHSIniakzgEQElUk9xyCOmht1hkP+/bjtZWC18TZ+b3sfDwhOjOUPLi6nB3dc/11UEgmgXTluYSRRtX1BTuZHa0D56wvk+iTO+m2PpIIOCyqW9pt94CUHz4d64doHyShkcPt53fjNCU4si+qgWpgYB+JUAq073CM4Kl+NP+Smu9cEqHu0XRm6Cl/fRaBKRFKgw4ZPm5emkpObalc/Y4Auv75zTLZUUwf3YKhAWgn3Aluag6BCQnlrbjAq/Vbd/b8dAf1U6CR4GFxD43eP157n5wcsrV14ZuIKqcN5dXnpCBKIGcWcCIlwS28L6MxB1IouJfAGCRiQaNdUDfGaMOJBx+lDevfVWzq94NCgpLgLgVo/vP0mCHOLWLkbHA+pDhWa+p2RJMbODQVOSn7jFq01WsXVYXY4y33L2Qgt9DGYPWy9oGSl85kC8mukJRCApeGlKLjV85rJWYDa4CToATIlnMVnvNfkv4tfgCCCttrQk0PCAAAAABJRU5ErkJggg==", "cat": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACAElEQVR4nM1XMUtDMRDOC3FwcnNQiiJ0qOAqXcRJhO4OdqmFIv0HXfwDrs4PrIsO7u7FRRwV2qEgSkGKm1MHh8qF3vOaJpfktaIfhL4kd/m+HMnlKsQfIzEHtjd2xrTffXuesfEhZg1lG7y8Os++67XWOEYEkJ80Glm/naasvTSdgXzt9UM3FGPuKIT8uLCiG/Q5fxWyMIiASPjs6M4RIKLN+CjXxPvm6owIE537vnPhm8GnJvdBhpC7sL9XZOdBBLRoATHwifBBzuUdKII7iNK8AfOIyBONZBHkoajXWjNJSYo/hvIZlEpborx7pL99UYqxDY5AebJgCGJsgwX8NpLYQwhhprt9eLwVvd5LrgMI0BGACTAwgQ+SDSAYyG1AP9uaVgGcCBO4W4wEB4yqa/cA9ha43gRfyF1+mA2pmMRltIjEhBEFQlorQJGCIpTphBP4/ucRQol9tso1YQoJERNDHJwHupPFDs4uxHV/WTcKHMNxFzmM2+pD5RPwkyNG2Vhh6S77rhYrmnx9+KSf3XaaWotYs1gNFmDD4Ksy1a8WR6IzFLkguUmXahuwFvBVwfQGsAIoORSfIUkKRdBSHn65jUiREy5BzdPDKRFAbLv/QWegOVkMnc30S/vwOOHbAOOQLSkxwHY4lZgDlJSLEJcXEo7A95cMU6xrjvP9N/gGFHEOXlZ/ahMAAAAASUVORK5CYII=", "dolphin": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABLUlEQVR4nO2WMQ6CMBSG+5o6Ozuxk7AaLuDg4uY1mBzd4ARewyN4AeNKws5JMA8Fy7NIW1o0hm+RlNr/f32vrzA282XA5k9hEFXNc1HmVms0CBvhzfH0GsySihoxMQimBjriEpcsaZ/lOfK4ygyYGBgyMQSaoSY4mxA0LqfHygBGIG/rWPiUKVDtAvcpnu5WnSJUwX2JI/F6PziH+xLXTYNwtmqP0OgdCB1Gj/VAa0IwDxwWZf273Mad8XR3fqsNsI0eKxwXom33enuIUGRRuRuKwXCIqO0J6LuUQDd6Kq46Yhh9M657TQudSSpRFKB9Hd+bfh+A6q7HXNLcq24yFwAVV+FLHKn7wKfFfYojbQ3UIs/PK5dt16gTFmUOru97IwM/RRhEFT1mMzN/yR1MT5GoJWaeBgAAAABJRU5ErkJggg==", "elephant": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABb0lEQVR4nO1VO04DQQydseg5AaKiWYkW0SDKPQEFHUWE6HOAKCVFbhAJqDhDzhGJHnECThBkCaMXx/bsZBO22SdlFfn33syu7ZRGDIy8T1Jzfrmx7B+f6+p6uUSCRcX2MJmYOa/L5Y4Qq04ooFEkUjQi9oRYdbSQrMkl4f7sNL1/ff8ldyVHEV4tFJE1OQcj2tmimhxFrObTLRsLQRF0LHIG53INBHOwXV41oeO/gFzkBfU9fXQLCEoDg7oGPj22W+3VN65awPXV3UHjigJW82l4EvSV4nQrIk74wT3ZzhabKJB9MkwiYDt78fxRyhzI6ODetAaHBT0dvWlpzRachITO35vYIYpwe3Ph+nSuJmeYGwpvAgXpE0ZLR4B1rI2Ya9exvnZPmORVr2MPmjyC3ngRKA0MOvTpjyKgFrhuewto9jx9VxFUIn95ew4/Nt12NYuoKEAPGy7O/+WHfm0TIaVbyCXyqIDu9ShmxIjk4AfVSeMKLLSD+AAAAABJRU5ErkJggg==", "fox": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACAElEQVR4nNVXLUwDMRRum7qFYHF4kmFIlik8U5h5LAKHQCGmEHMTWDxmCvzUQoIZyTwOS8j0yHfwXd51/b0tIXzJpb32vfd9fdd7vVPqj6HlzdFhd83+8v2tMZeL0hjWHbg9Paja0UytS0WQvCSGkc50ZBC5mlLyXBiXfDCeFItwyREDV46/kTckLxHhIy+BUTtAadqzBAzGE7VYfdUEXClaeZEctrQvgU0ZIOhxZ68SgV0tVzuafTRsb+4figWYlAHIQ6neJvUbAhZO+u4uLxrkKcAWPq0FAE/XV63ICfgwBtqcPaHZwYY6P+lUQfjc24L+2COpSmjZ+THsrqdqtfWz5SJyYN0BSS6LClPrImQzfV3Vq48dUFrehEpySETKhq/p/OWxHuv3hg0RJrUqOsUg5+kLchBLch9MCblvxT5xsfMAguQjsexgMKUWZLRBf6C2hw4J+HyeV+3+WX9DBFfiAj60h11oQ8u9oOVgThZy4QqgCG5S1gjtOvL5tBXCDLGohUAB1p3gK9LvDeuNkhKDVclXLvXWZJ2Gy18hJVUR5DhH4JNbyo3aEUCaexrKM8KEjGRVRIpDpdg3XvJlZFLkMbjkSDtTHxLhnpC2hFwWohy4IuQBRWifI78NXCCAhM8mZu/7NrAxZxCwTRHRRpLm/Nrp2KTvh0QGTc3/C3wDSJs8a11xbpUAAAAASUVORK5CYII=", "lion": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABwElEQVR4nMVXq05DQRDd2axE8AUgqGqCJThMPaqmsppfqOIX0EgMqh6DI7VNGgQVxeEIwV8yN5lmdtiZfXBDT9Lcdu/unLNnZh917sCA1oHj0/OOvm926+Y4oZX4/vZ63zZfuK5VCJQSEjgxx3yx7AXUOgM5co1QExE7s8wKgaHIc8I0ESFHTrOodYKQGwcW+cnZ5759MnsuEkHkTw9X/fN9e2y6ELRAnNxq4wIJRE5jSEQKfqi8IyknlsC4ckVFAixynJ0VXAqhMSUivBaI21ZKLoEipP1SRLAC4GAr7xZQtJX7rANyObWgRLy3XrZab0EuR291lDga3SSLy3ovXZA14N2BEWo6X15Mo9lyfL/dRe9LAdY+oBURkRPhy+qxF6CBrwa1Bja7NdRWPRLjx4JFHglIidDWsTVbDdWHUW4zKhFRshFBqlE7F7g72h6RIrUuJFBz+dTE5Po0XclSQigVmrV09nNiefpJMeAKgYGk7SRE3pyIRKYylYrQSo57wXj0uyCx32TmOk5kpQJayEmAtSL4mWDVgM8JILLU1psilQfSX/62RS58fbx2+KTv2m96ukJAaceaoIhBZv4f+AG3fTaM9D+ZFwAAAABJRU5ErkJggg==", "octopus": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABU0lEQVR4nOVWMY7CMBBc7+UFFIiOHuk6hKi4np6aB9y9gYI/3FfooaKgi4RESXfiDyhokSw5ext7ncQJEtM4snd2Jivba4CeYWIJk/Fn4Vs/X/OonFms8O77yxu3/IUixohpS7hsYg9aEyYkHiMsGQmZwFTiBOKH9gymEteawJTiGhMIHUIygV2JV1UVU5efm+BVQOgZ2NXfV1UBoWfg2xvIQhUYrH9gPls9vzV7JDYeQwE2mRaheNsp/xk4X3PDFzWJYjiulv02fNE9jh/D6XO8306VJqrKLHGl9owaxzYZRxv3hmnjBdTkcYJNH5VNxEUDqUCVldqx4UE0puoJqk24E8TrHDVfIxKb0aRGN6xjjGuglnjML1EmaJ44nMfjs/JNCMVmMSoFbA9/ogmaJ460sbiI5VmO6h6wsASad825ySQTkjnpKBo+4YObkCfzrb00HnVcwjgx9J/nAAAAAElFTkSuQmCC", "otter": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABwElEQVR4nM1XLU8DQRDd3VyCrEKfv6SWVOEIQaEQJKj+AH4BVfAL0M0FgUOhCCEYVIMlqa9G8QuOTMPA3OzMfl2b8kzb3Tf73tzOzl6N2TFsbkBTjztpfLn6yF4LUOWKttenImc6M12JGZsirIlqmM4ek03YkHiucIkJtw1xAMRr9aLWQJMQkGsiVhtOynpo9pIR7Ym4jSop4lAPGuym914DmuDb4GKBzfFFMIMcbrAGNEwOztS5VG7oSFZaJoDl8704R4UW7w8iF9cAtD+dUjJhe0H1uMMFAV9Pi/Xn6GTiGQETlIsmQFiKA37RFozYIggqjuM0a8m0BJcjzjOmZqg5Lq5lD/AGsVloYrkIiYsGqJEhJvCJxC4ku+vruIoRUBwbzNHVrcc533s1pXA5ZDAzRGyQgZZsw8vN5e93yVDqu0CSAd7b8Tc1EYspqoGG3Ix0Qf9k9FtzyhWcZIACjdBOR6HdBxx0W/CUOLMl8DrAJ8qPtNOcSmc/lKE0hyZCLzoukoh5W+3HKFF+qJFZbQJd44KH9effHKsFzJ6K383nojjvklUkIS94DaHC9b9sfS5v0TYkyJtJqL/ncP8VvgE8+fOYwRySHwAAAABJRU5ErkJggg==", "owl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABz0lEQVR4nM1XvUoEMRBOQkpBfAItrA7Eq+Q6GxtB0MbGytLCJ9Ban8DC0srGRkGwsbE7rE4EKwt9AhHsTyYwx2ycn2R34fzgyN7lm5kvk9lkzrk5w9Mvg+W1KT6/fb425rpA8xtz8uHeaRqvbs+mnAjqLIfEJz7tDCytrLvd4Y5ogM44SPy7yX16/vp4+SPScwIQIAScakE1MTR4kYBcBGaiC7TVA4Jk2Edw9CMFFwX0FRwBWyEVb5AqFnF0MmyMFoBXygV4SYDm5PJ8wga2+FCY+VYEzsBaQT5fy2cFDJj0lzitSTdXC8HNGaGENNrYT58c0uo5vsSNllMuMODn/WL2vLB6bPIlBNcSGJQGb4PIvTI0C+PnG1MEhcTnXl3ALAPwfua32ffDOH00SI45W+4ciJJTyMLi9qg6MILaalyf/1ByGkoOOb52CrICUASMbfqAHLit0m3oNePa05ELbvWWsbShKL2iccW0s9LgpQmuPau59dBWa0YAwQoODkqC03m6beBH66SDFpxzbqHmdmQFQLpg1V1RWjPBImA6rYMHgTzajrcuQpfh8XozjVsHT40zH25AOpdDK8IoTaCRVEAl126f/y8dipEEaXP/Gr8a0QBfsXab4wAAAABJRU5ErkJggg==", "panda": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABgUlEQVR4nMVXwU1DMQxNrCzABHCuhLhVXYEByjQcmaYM0BUQN4TEGSboCB+5wsjftR0nStR3+P1pXvycOPF3UroyMm9sbu8X3v76+Vz1tyJir3Dyzd3D2kBKCx8oDWrg3Jo9hEkmnL4//t/f3l9r+mm33Z9/PXthB05/4hFhzZGIE8UygKQeYQKN9RxBwAxxzRErBIAP/IPHejQ825k3aJePmr22OeVRBEmcIe7lAeCznymOtrU8AunKKDXC49PLqn08PIe4Gg9XYbfdLxenICrewo2OhehsIsdU8iJOQMsRGsULOXB0Ys2F6N3je8i1Y0jLKAVIWI7xNiKOkbkg88bsXKA5ALyBnT1x7BVHqCXXyJWwvgGuA6M+TNasOXLNCM/fLSVZtKgtVYusvqvtD+QRN1pfZK9TqxW1OtEqu2T105SINkYJjkIyFF5oaqV8sQZ5hWQUZAPvA9ZKQKvR3pRrAaJEjKe3sXodK2kQ+AlpCV+2OqyLpbWpeIxHX3Kn4hcVKuqrD/BDSgAAAABJRU5ErkJggg==", "parrot": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABjElEQVR4nGNgGGDASK5GLXnd/9jErz28TJKZLORanDrRCav87HyG/6Q4hpFUy3FZjN0x+wg6golWloMASD2uqCLJAVpkWE4sYKK15YRCgYWBCiBc9C8Kf+VrZpR0AAIgR2BLDyzUtJxHJYfBwiwUzN6zzJ7BJeogw/yFnXD5xPhyDEcwURL86D6HWU4KYCJZBw7LiQGg0EBPDyz4NICCC1SwEJsIQcFOtxBYCU1ov44iMDmAiZACSChAUjI2wGaNwNhAYnw55UWxFlq8IUcJrrQAygHInoCZgZ4LGImx3LVmEorY7pY8nA4BRQ0xdQDR2dAVzXIQwCYGsphUy/E6AJfl1AZM5GqkVuXERI7vFUQ3UMVynA5ATmikAFLjHwRwloTYQgBb6qfEchDAqYFQSwbmCORCimoO0JLX/b8tG1Gue01FFCqw6hVWwqHzkQFZjVItNMthDggw5mYgFWw4+5WgI1hIMYxUQHIIaOHwPTlxS3I21BoAy1EcgGwpPQHTQFqOE4Cig1A5MGwAANe7xQRCb/uEAAAAAElFTkSuQmCC", "penguin": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABtUlEQVR4nMVXMUsDMRhNQkZBOzrZwelAuoh0c9Ghi1sdxM3VXyDdFH+AuLqJg/0BXVzciriI0MlBf4EK7iffYY6Y5kte0jt9UHqXy/fey5d8yZ0Q/wyZE1SsbZS+9tnbczKfzhHtdHv+PkKUqWYkKs6Jcnh/fYJMqDbECRTDTRVsoMgUTzGh2hJHTag2xRETGiGY3I5+3Q/2z6B+ob5sBgpn9D5SanPbff2QLMiQgRgpCjsLbnkqLqgp8RiXanPxIVCo4/7WsPoh8PXlsqBQQlQINZl8GLkgobub7fp6+jAWOZCxCvicTOvny4P+nAmCT9zE2TFUDW4VaDuIHtCRai9EIiAyV5wTthETJyikdn3iMbji8BqY/WRBNAAjTCM33G4fGSIwW+cie0PsxUQjJJuHR8nCj9dX9cgXeh/odHsVWQ5MfOh9QIbEbSCjIeyOLupr2zg3FRoRJyAbTWgXrDIhRAmXYQ7I5OneanWNTptEVv/4fKX6X1o/hkh9dc9NgeQMuOIGOwf3wen4ermcaxuefLAGlGgQqScha4CckmNu5acIUcZCm5GMESBfNyHkfLD+Kb4BoRvcjM/FUwYAAAAASUVORK5CYII=", "rabbit": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABWklEQVR4nMVXsW4CMQw9W+z9BPaTWNH9Qj+gH9WvAObuZe1IuyJBJyTUqSP8AJVRjXJpen5OAjwp4gIv9osvdkzT3BlkEdrx5BTON/s11eBCaMeT0/H7szdiJ0P8Ia6CESGH5eo8LLGrj5cLXyBzSwRbBmPHKaMp55ZgU0AKllHUKSRgs19TN31qHh67P7/NFs9maFPrXAJqQDZgZQJbRrbbXW83cZg1Ejnhh6Cp9TWfn4fM9bsw7eRZOWgKwgLe3157zoZGyEfsEypC0wx992glpNrOqx7CtsA5Cr6m86JSfCvwtUNvRYGbO4M9J1rTqwbPJaD7x2Bcfj2OXQJS0Jsyx2kIQhuS1PUqzlOHNVxjFSMaEiCfpdmQLaA0JdH7gBBjnmh4LiIBdAi9/b2HzwjJ8xqQ+u8W4IVHBOfsPq523uoXYpS16rc1l4ZVkZuuhJByGsziP6a3wg/1Qie3C5ZSrwAAAABJRU5ErkJggg==", "tiger": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9ElEQVR4nM1XPUsEQQzdGRcbO0sbK5sFK0H8CWKhNvZWgv9AtFb8B4KVvY1aiD9BBCtBBCsbweYKwUaQk7dcllxIMjPnnfrg2M1skvfmKzNXVX+MoDU284t9bj++PKh+KfA8Vo5aC7o+WBhqWzus+jyBFChJ6DvPgxyakGCRz24ctc/e5f4gwXPnB5/Tm9fO3lmda+2L+4/W3lyaadusPFxELckpgEBEJIwTSxAxfPDbOznrviEviXCnQIJ6UgKKOd7dHhKhIXofNcU5xNyGiCIBvQGpRW6NiNfuiQjcoHWA+csZ+lw/8sUidXeBtQ3HAbn61SloJkQOIK9WP+JE2ApExN/ovYc65YACsrK81b7nCCz1j9zQqhwly4Xnr+WPOU7WqkZv6ZmClTfwNcAPEWBqer36+rwaCuBk6O3t3Xlny+KlxcvtGOkFjSgUpBTB/KmBk0to8VotCDLQ2w05Q22V8axCBMCJn/2l5BoscsC8amkjUToC1BHvShe8RLxqyZtSzlaU1zhNSEhmYwlo0WlzTMJAnro/8u+hRACfEj4SUhDNOW1tgO6LUkD8KblmWycfiOU0xFLyUa5qHkIpec4U5NyEkiPQjOl49sgBtw5Ydd7aiuQjz4tR/9pVEPH+9tT+8K7ZKZ+RiCshgieSdq7Pv8U3EFJjYSCtdVwAAAAASUVORK5CYII=", "turtle": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABWUlEQVR4nGNgGAWjYBQMMGAkRpGWvO5/bOLXHl4mSj8+wEKM5akTnbDKzc5n+E+pQxjxWQyiYZYfO/USQ42VmTjUIfswHIEt1LA5lJEYX2OzHJ8jQPrnNftjqE2q3YjhCCYGKgGQg0EW47IcBEDi6CHDREqcEwNwWY7LEUzEGAoLZkLihCwnORccQ4p7bI5AlwfFMTZHaLnHMFiYhWKVY8IV/OgJj1Q+MgBZTlIIHMNjGD55sOM/YYrjixomBioDUDTgE0eXZ0IO/hOnVjMkW2ZiNQA5DeBKlOhA+p8KGMNCAVsaYYRZDqJBDkAGc49PZyAWIDv82s4lONXBQgBWIDHCJJDzJrJD8CUgbI5G1wPzMbrFOItiLbSSCpsF6ADmY2yWwMzDVWExYhNEL05xJSxiy3t8gJFUy7H5Dt0xpDiCEZsgssEggwgFI3q0UaOhMgpGwShgoBcAANmru5lBkwbOAAAAAElFTkSuQmCC"}, DOTF = {"beaver": 0.98, "cat": 1.0, "dolphin": 1.3, "elephant": 1.08, "fox": 0.99, "lion": 1.01, "octopus": 0.96, "otter": 1.03, "owl": 0.99, "panda": 0.96, "parrot": 1.2, "penguin": 1.0, "rabbit": 1.15, "tiger": 0.98, "turtle": 1.29}, DOTNAME = { "비버": "beaver", "수달": "otter", "판다": "panda", "호랑이": "tiger", "거북이": "turtle", "문어": "octopus", "돌고래": "dolphin", "여우": "fox", "부엉이": "owl", "토끼": "rabbit", "앵무새": "parrot", "고양이": "cat", "사자": "lion", "펭귄": "penguin", "코끼리": "elephant" };
+  function dotOf(k) { var p = PAIRS[ART[k] ? k : pk(k)]; return p && DOT[DOTNAME[p.animal]]; }
+  function dotScale(k) { var p = PAIRS[ART[k] ? k : pk(k)]; return (p && DOTF[DOTNAME[p.animal]]) || 1; }
+  function cardLink() { return TOSS ? "토스에서 '직업동물' 검색" : "직업동물"; }
+  // from my own answers: the animal that shares my top type, and the one made of my two lowest types
+  function kin() {
+    var r = ORDER.filter(function (x) { return x !== S.type && x !== S.sub; }).sort(function (a, b) { return (S.scores[b] || 0) - (S.scores[a] || 0); });
+    var nk = pk(S.type, r[0]), fk = pk(r[2], r[3]);
+    return { near: PAIRS[nk].animal, far: PAIRS[fk].animal, nk: nk, fk: fk };
+  }
+  // card line: a small teasing habit per type, the way a friend would say it
+  var JOKE = {"RI": "일단 분해하고 조립은 나중에 해요.", "RA": "손이 심심해서 서류 접어 비행기 날려요.", "RS": "남 챙기느라 내 할 일은 늘 뒷전이에요.", "RE": "일단 밀어붙이고 생각은 나중에 해요.", "RC": "매뉴얼이 바뀌면 일단 멈추고 봅니다.", "IA": "아이디어는 8개, 마무리는 내일부터.", "IS": "아는 건 다 알려줘야 직성이 풀려요.", "IE": "가장 빠른 길 찾다가 꾀부리는 건 비밀.", "IC": "근거 없으면 불안해서 밤새 분석해요.", "AS": "남들 기분 살피느라 내 기분은 잊어요.", "AE": "입이 근질거려서 말 안 하면 병이 나요.", "AC": "1mm 오차도 못 참아서 하루 다 가요.", "SE": "혼자 밥 먹는 날엔 괜히 단톡방을 열어요.", "SC": "정리하다 하루 다 가요. 각 잡는 게 제일.", "EC": "계획 틀어지면 세상이 무너진 줄 알아요."};
+  // card colors from the pixel-art palette (art/dot/PALETTE.md): muted, retro, one per interest type
+  var CARDCOL = { R: "#7a5238", I: "#3b3f5c", A: "#8a6fa8", S: "#6f9bbf", E: "#a85d45", C: "#557a58" };
+  // result card: "story" 1080x1920 (9:16, text kept out of the top/bottom 250px that Instagram covers) or "square" 1080x1080
+  // the animal is the hero: big, no frame; only name, one line, and the similar/opposite animals as text
+  function shareCard(k, recs, fmt) {
+    var t = PAIRS[k], col = CARDCOL[k[0]], W = 1080, sq = fmt !== "story", H = sq ? 1080 : 1920, dot = dotOf(k), kn = kin();
     var art = new Image(), ready = new Promise(function (ok, no) { art.onload = ok; art.onerror = no; });
-    art.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="400" height="400">' + ART[k] + "</svg>");
+    art.src = dot || "data:image/svg+xml;charset=utf-8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="400" height="400">' + ART[k] + "</svg>");
     return Promise.all([ready, document.fonts ? document.fonts.ready : 0]).then(function () {
-      var cv = document.createElement("canvas"); cv.width = W; cv.height = 1350;
-      var cx = cv.getContext("2d"); cx.textAlign = "center";
-      cx.fillStyle = "#F4F6FA"; cx.fillRect(0, 0, W, 1350);
-      cx.fillStyle = "#5B6478"; fitText(cx, "직업동물", 900, 34, "600"); cx.fillText("직업동물", W / 2, 96);
-      cx.globalAlpha = 0.16; cx.fillStyle = col; cx.beginPath(); cx.arc(W / 2, 370, 220, 0, 7); cx.fill(); cx.globalAlpha = 1;
-      cx.drawImage(art, W / 2 - 180, 190, 360, 360);
-      cx.fillStyle = "#5B6478"; fitText(cx, "나는", 900, 40, "500"); cx.fillText("나는", W / 2, 680);
-      var title = t.title + "형";
-      cx.fillStyle = "#1B2131"; fitText(cx, title, 960, 96, "400"); cx.fillText(title, W / 2, 780);
-      cx.fillStyle = col; fitText(cx, pairNames(k), 900, 44, "600"); cx.fillText(pairNames(k), W / 2, 846);
-      cx.fillStyle = "#5B6478"; fitText(cx, "어울리는 직업", 900, 36, "500"); cx.fillText("어울리는 직업", W / 2, 950);
-      cx.fillStyle = "#1B2131"; recs.forEach(function (r, i) { fitText(cx, r, 940, 48, "600"); cx.fillText(r, W / 2, 1022 + i * 66); });
-      cx.fillStyle = col; cx.fillRect(0, 1230, W, 120);
-      cx.fillStyle = "#fff"; fitText(cx, "너는 무슨 동물이야?", 960, 50, "400"); cx.fillText("너는 무슨 동물이야?", W / 2, 1307);
+      var cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+      var cx = cv.getContext("2d"), ink = "#2a1f2d", mute = "#7a5238"; cx.textAlign = "center";
+      var line = function (s, y, px, w, c) { cx.fillStyle = c; fitText(cx, s, 940, px, w); cx.fillText(s, W / 2, y); };
+      var L = sq ? { art: [80, 400], title: 600, tag: 670, sub: 738, kin: 796, band: 900, ask: 966, link: 1018, end: 1080 }
+        : { art: [330, 540], hi: 950, title: 1055, tag: 1140, sub: 1215, kin: 1285, band: 1400, ask: 1466, link: 1514, end: 1550 };
+      cx.fillStyle = "#f2e9d8"; cx.fillRect(0, 0, W, H);
+      var top = L.art[0], room = L.art[1], g = art.naturalWidth || 32;
+      var a = dot ? Math.floor((room - 40) / g) * g : room - 80;   // whole-pixel scale of the grid
+      if (dot) a = Math.round(a * dotScale(k) / g) * g;   // flat animals drawn a bit bigger so all look the same size
+      cx.globalAlpha = 0.18; cx.fillStyle = col; cx.beginPath(); cx.arc(W / 2, top + room / 2 + a * 0.08, a * 0.46, 0, 7); cx.fill(); cx.globalAlpha = 1;   // flat disc behind the animal
+      cx.imageSmoothingEnabled = false;
+      cx.drawImage(art, (W - a) / 2, top + (room - a) / 2, a, a);
+      if (L.hi) line("나는", L.hi, 44, "600", mute);
+      line(t.title + "형", L.title, sq ? 80 : 104, "400", ink);
+      line(pairNames(k), L.sub, sq ? 36 : 42, "600", col);
+      line(JOKE[k] || t.tag, L.tag, sq ? 42 : 50, "600", ink);
+      line("닮은 동물 " + kn.near + " · 반대 동물 " + kn.far, L.kin, sq ? 32 : 38, "600", mute);
+      cx.fillStyle = col; cx.fillRect(0, L.band, W, L.end - L.band);
+      line("나 " + t.animal + " 나왔어. 너는?", L.ask, sq ? 50 : 58, "400", "#FFFFFF");
+      line(cardLink(), L.link, sq ? 28 : 32, "600", "#f2e9d8");
       return cv;
     });
   }
@@ -1362,13 +1375,15 @@ table.data th { background: var(--sunk); font-weight: 600; }
     var key = myKey(), P = PAIRS[key], t = TYPES[S.type], u = TYPES[S.sub], recs = recommend(null, 3, 1);
     var li = function (x) { return "<li>" + esc(x) + "</li>"; };
     var h = '<section class="result-hero">' + ani(key, 116) + '<span class="typeline">' + esc(t.name + " 위주 · " + u.name) + '</span><h1 class="display" tabindex="-1">' + esc(P.title + "형") + "</h1><p>" + esc(P.tag) + "</p></section>";
-    h += '<div class="grid2"><button class="btn line small" data-act="share">결과 공유하기</button><button class="btn line small" data-act="start">테스트 다시</button></div><div id="sharebox"></div>';
+    h += '<div class="grid2"><button class="btn line small" data-act="share">친구에게 공유하기</button><button class="btn line small" data-act="saveAsk">이미지로 저장</button></div><div id="sharebox"></div>';
     h += '<section class="card"><span class="sec-title">이런 사람이에요</span><p>' + esc(P.desc) + '</p><span class="sec-title">이런 게 장점이에요</span><ul class="bul">' + P.good.map(li).join("") + "</ul>" +
       '<details class="fold"><summary>이럴 땐 힘이 빠질 수 있어요</summary><p class="small muted">못 한다는 뜻이 아니에요. 이런 환경에서는 에너지가 조금 더 들어요.</p><ul class="bul">' + P.tired.map(li).join("") + "</ul></details>" +
       '<div class="help"><b class="small">이렇게 해 보세요</b><p class="small">' + esc(P.tip) + "</p></div></section>";
-    h += friendSay("<p>취업 준비 중이에요? " + SETUP.length + "가지만 더 물어보면 지금 상황에 맞는 직업과 준비 루트를 무료로 짜드릴게요. 1분이면 돼요.</p>") +
-      '<button class="btn block" data-act="setup">네, 루트 짜주세요</button>' + friendCard();
+    h += friendCard();
+    var kn = kin(), peek = function (k, label) { return '<button class="kin" data-act="peekAnimal" data-arg="' + k + '">' + ani(k, 56) + '<span><span class="small muted">' + label + "</span><b>" + esc(PAIRS[k].animal) + "</b></span></button>"; };
+    h += '<section class="card"><span class="sec-title">내 답으로 본 다른 동물</span><div class="grid2">' + peek(kn.nk, "닮은 동물") + peek(kn.fk, "반대 동물") + '</div><p class="small muted">누르면 그 동물 이야기를 볼 수 있어요.</p></section>';
     h += '<section class="stack"><h3>' + esc(P.animal) + "형에게 어울리는 직업</h3>" + recs.map(function (j) { return jobCard(j, { reasons: reasons(j, null) }); }).join("") + "</section>";
+    h += friendSay("<p>이 직업들, 어떻게 준비하면 될까요?</p>") + '<button class="btn block" data-act="setup">내 준비 순서 보기</button>';
     var low = lowType();
     if (low) {
       var lows = JOBS.filter(function (j) { return first(j) === low && second(j) !== S.type && second(j) !== S.sub; }).sort(function (a, b) { return (b["신뢰도"] === "확인") - (a["신뢰도"] === "확인"); }).slice(0, 3);
@@ -1382,10 +1397,21 @@ table.data th { background: var(--sunk); font-weight: 600; }
       return '<div class="bar t' + k + '"><span>' + esc(TYPES[k].name) + '</span><span class="track"><i style="width:' + (v / 8 * 100) + '%"></i></span><span class="n">' + v + "</span></div>";
     }).join("") + '</div><p class="small muted" style="margin-top:8px">유형마다 8점 만점이에요. 높은 두 유형을 합쳐서 직업을 골라요.</p></details></section>';
     h += (APP && !capPlugin("App") ? '<a class="btn ghost block" href="' + PLAY + '" target="_blank" rel="noopener noreferrer">안드로이드 앱으로 받기</a>' : "") +
+      '<button class="linkbtn" data-act="start">테스트 다시 하기</button>' +
       '<section class="card"><p class="small muted">결과가 마음에 들지 않나요? 학력, 상황, 원하는 일 방식을 ' + REFINE.length + "가지 더 답하면 다시 골라 드려요.</p>" +
       '<button class="btn line block" data-act="refine">더 정확하게 테스트하기</button></section>' +
       (TOSS ? '<div id="ad-result"></div>' : "");
     return h;
+  };
+  V.animal = function () {
+    var k = S.peek, P = PAIRS[k]; if (!P) return V.result();
+    var jobs = JOBS.filter(function (j) { return jobKey(j) === k; }).sort(function (a, b) { return (b["신뢰도"] === "확인") - (a["신뢰도"] === "확인"); }).slice(0, 3);
+    var li = function (x) { return "<li>" + esc(x) + "</li>"; };
+    return '<button class="back" data-act="go" data-arg="result">‹ 내 결과로</button>' +
+      '<section class="result-hero">' + ani(k, 96) + '<span class="typeline">' + esc(pairNames(k)) + '</span><h1 class="display" tabindex="-1">' + esc(P.title + "형") + "</h1><p>" + esc(P.tag) + "</p></section>" +
+      '<section class="card"><span class="sec-title">이런 사람이에요</span><p>' + esc(P.desc) + '</p><span class="sec-title">이런 게 장점이에요</span><ul class="bul">' + P.good.map(li).join("") + "</ul></section>" +
+      (jobs.length ? '<section class="stack"><h3>' + esc(P.animal) + "형에게 어울리는 직업</h3>" + jobs.map(function (j) { return jobCard(j, {}); }).join("") + "</section>" : "") +
+      '<button class="btn line block" data-act="go" data-arg="result">내 결과로 돌아가기</button>';
   };
   V.setup = function () {
     var st = SETUP[S.setupStep], val = S.prefs[st.key];
@@ -1455,9 +1481,9 @@ table.data th { background: var(--sunk); font-weight: 600; }
     var tags = (pfNeed(j) === 2 ? '<span class="tag hi">포트폴리오 필요</span>' : "") + '<span class="tag">' + esc(ROUTE_PLAIN[j["루트유형"]] || j["루트유형"]) + '</span><span class="tag">준비 ' + esc(j["권장준비기간"]) + '</span><span class="tag">' + esc(j["학력"] || j["전공요건"]) + "</span>" + (j["계열"] !== "무관" ? '<span class="tag">' + esc(j["계열"]) + " 계열</span>" : "");
     var h = '<button class="back" data-act="jobBack">‹ 돌아가기</button>';
     h += '<section class="card"><div class="jhead">' + ani(jobKey(j), 0) + '<div style="min-width:0"><div class="small muted">' + esc(TYPES[k].name + " · " + j["직군"]) + '</div><h1 class="display" style="font-size:var(--fs-28)" tabindex="-1">' + titleSplit(j["직무명"]) + "</h1></div></div>" +
-      "<p>" + esc(j["한줄설명"]) + "</p>" + (j["이런사람"] ? friendSay("<p>" + esc(j["이런사람"]) + "</p>") : "") + '<div class="tags">' + tags + "</div>" + fitHtml(j) + "</section>";
+      "<p>" + esc(j["한줄설명"]) + "</p>" + '<div class="tags">' + tags + "</div>" + fitHtml(j) + "</section>";
     h += '<nav class="anchors" aria-label="바로가기"><div class="chiprow"><a class="chip" href="#s-work" data-act="jump" data-arg="s-work">하는 일</a><a class="chip" href="#s-money" data-act="jump" data-arg="s-money">연봉·전망</a><a class="chip" href="#s-ways" data-act="jump" data-arg="s-ways">되는 길</a>' + (RM(j.id) ? '<a class="chip" href="#s-rm" data-act="jump" data-arg="s-rm">로드맵</a>' : "") + '<a class="chip" href="#s-posts" data-act="jump" data-arg="s-posts">공고</a><a class="chip" href="#s-talk" data-act="jump" data-arg="s-talk">현직자</a></div></nav>';
-    h += '<section class="card" id="s-work"><span class="sec-title">이런 일을 해요</span>' + (j["하는일"] ? '<ul class="bul">' + j["하는일"].map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") +
+    h += '<section class="card" id="s-work">' + (j["이런사람"] ? '<span class="sec-title">이런 사람에게 맞아요</span><p>' + esc(j["이런사람"]) + "</p>" : "") + '<span class="sec-title">이런 일을 해요</span>' + (j["하는일"] ? '<ul class="bul">' + j["하는일"].map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") +
       (j["하루"] ? '<span class="sec-title t' + k + '">하루는 이렇게 흘러가요</span><div class="day t' + k + '">' + j["하루"].map(function (r) { return '<div class="day-row"><time>' + esc(r[0]) + '</time><span class="dot"></span><p>' + esc(r[1]) + "</p></div>"; }).join("") + "</div>" : "") +
       '<dl class="kv">' + kv("함께 일해요", esc(j["협업"])) + kv("근무 형태", esc(j["근무형태"])) + kv("근무 조건", condHtml(j)) + kv("쓰는 도구", (j["도구"] || []).length ? '<div class="chips">' + j["도구"].map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("") + "</div>" : "") + "</dl></section>";
     if (j["좋은점"]) h += '<section class="pc"><div class="pro"><b>좋은 점</b>' + j["좋은점"].map(function (x) { return "<p>" + esc(x) + "</p>"; }).join("") + '</div><div class="con"><b>힘든 점</b>' + (j["힘든점"] || []).map(function (x) { return "<p>" + esc(x) + "</p>"; }).join("") + "</div></section>";
@@ -2938,7 +2964,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
     ["essay", "서류·면접", '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/>'],
     ["apt", "인적성", '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'],
     ["me", "내 정보", '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>']];
-  function viewKey() { return S.view + "|" + (S.view === "job" ? S.jobView : S.view === "post" ? S.postView : "") + "|" + (S.view === "apt" && S.apt.run ? S.apt.run.i : "") + "|" + (S.view === "test" ? S.step : "") + "|" + (S.view === "refine" ? "r" + S.refStep : "") + (S.view === "setup" ? S.setupStep : ""); }
+  function viewKey() { return S.view + "|" + (S.view === "job" ? S.jobView : S.view === "post" ? S.postView : "") + "|" + (S.view === "apt" && S.apt.run ? S.apt.run.i : "") + "|" + (S.view === "test" ? S.step : "") + "|" + (S.view === "refine" ? "r" + S.refStep : "") + (S.view === "animal" ? "a" + S.peek : "") + (S.view === "setup" ? S.setupStep : ""); }
   function render() {
     clearInterval(qTimer);
     appEl.innerHTML = V[S.view]();
@@ -3075,6 +3101,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
     },
     prevq: function () { if (S.step > 0) S.step--; render(); },
     setup: function () { S.view = "setup"; S.setupStep = 0; render(); },
+    peekAnimal: function (k) { if (!PAIRS[k]) return; S.peek = k; S.view = "animal"; render(); },
     refine: function () { S.view = "refine"; S.refStep = 0; render(); },
     refAns: function (v) { S.prefs[REFINE[S.refStep].key] = v; S.refStep++; if (S.refStep >= REFINE.length) { S.refStep = 0; S.view = "refined"; tlog("refine_done"); } render(); },
     refPrev: function () { if (S.refStep > 0) { S.refStep--; render(); } else { S.view = "result"; render(); } },
@@ -3471,7 +3498,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
     dmore: function () { dict.limit += 30; var y = window.scrollY; document.getElementById("dlist").innerHTML = dictList(); window.scrollTo(0, y); },
     share: function () {
       var key = myKey(), t = PAIRS[key], recs = recommend(null, 3, 1).map(function (j) { return j["직무명"]; }), url = shareUrl();
-      var text = "나는 '" + t.title + "형'(" + pairNames(key) + ")! 어울리는 직업: " + recs.join(", ") + ". 너는 무슨 동물이야?" + (url ? " " + url : "");
+      var text = "나는 " + t.title + "형 나왔어. 너는 무슨 동물이야?" + (url ? " " + url : "");
       var box = document.getElementById("sharebox");
       if (TOSS) { if (TOSS.share) TOSS.share(text, "?f=" + key).catch(function () {}); return; }
       function showBox(msg, png) {
@@ -3482,7 +3509,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
         try { navigator.clipboard.writeText(text).then(function () { showBox("문구를 복사했어요. 친구에게 붙여넣어 보내세요.", png); }, function () { showBox("아래 문구를 길게 눌러 복사하세요.", png); }); }
         catch (e) { showBox("아래 문구를 길게 눌러 복사하세요.", png); }
       }
-      shareCard(key, recs).then(function (cv) {
+      shareCard(key, recs, "square").then(function (cv) {
         var Sh = capPlugin("Share"), Fs = capPlugin("Filesystem"), png = cv.toDataURL("image/png");
         if (Sh && Fs) return Fs.writeFile({ path: "jobanimal.png", data: png.split(",")[1], directory: "CACHE" }).then(function (r) { return Sh.share({ text: text, files: [r.uri], dialogTitle: "결과 공유" }); });
         return new Promise(function (ok) { cv.toBlob(ok, "image/png"); }).then(function (b) {
@@ -3491,6 +3518,18 @@ table.data th { background: var(--sunk); font-weight: 600; }
           copy(png);
         });
       }).catch(function (e) { if (!e || e.name !== "AbortError" && !/cancel/i.test(e.message || "")) copy(); });   // the person closing the share sheet is not an error
+    },
+    saveAsk: function () {
+      document.getElementById("sharebox").innerHTML = '<div class="help"><p class="small">어디에 올릴 건가요?</p><div class="grid2"><button class="btn small" data-act="saveCard" data-arg="story">스토리용 (9:16)</button><button class="btn small" data-act="saveCard" data-arg="square">카톡·피드용 (1:1)</button></div></div>';
+    },
+    saveCard: function (fmt) {
+      var key = myKey(), recs = recommend(null, 3, 1).map(function (j) { return j["직무명"]; }), name = "jobanimal-" + fmt + ".png";
+      shareCard(key, recs, fmt).then(function (cv) {
+        var png = cv.toDataURL("image/png");
+        if (TOSS && TOSS.save) return TOSS.save(png.split(",")[1], name).then(function () { toast("사진첩에 저장했어요. 스토리에 올려 보세요."); });
+        var a = document.createElement("a"); a.href = png; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+        document.getElementById("sharebox").innerHTML = '<div class="help"><img src="' + png + '" alt="내 결과 카드" style="width:100%;border-radius:12px"><p class="small muted">저장이 안 되면 이미지를 길게 눌러 저장해 주세요.</p></div>';
+      }).catch(function () { toast("이미지를 만들지 못했어요. 다시 눌러 주세요."); });
     },
     etab: function (t) { S.essay.tab = t; S.essay.confirmDel = null; render(); },
     selfcheck: function () {
