@@ -1381,7 +1381,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
       '<div class="help"><b class="small">이렇게 해 보세요</b><p class="small">' + esc(P.tip) + "</p></div></section>";
     h += friendCard();
     var kn = kin(), peek = function (k, label) { return '<button class="kin" data-act="peekAnimal" data-arg="' + k + '">' + ani(k, 56) + '<span><span class="small muted">' + label + "</span><b>" + esc(PAIRS[k].animal) + "</b></span></button>"; };
-    h += '<section class="card"><span class="sec-title">내 답으로 본 다른 동물</span><div class="grid2">' + peek(kn.nk, "닮은 동물") + peek(kn.fk, "반대 동물") + '</div><p class="small muted">누르면 그 동물 이야기를 볼 수 있어요.</p></section>';
+    h += '<section class="card"><span class="sec-title">내 답으로 본 다른 동물</span><div class="stack" style="gap:8px">' + peek(kn.nk, "닮은 동물") + peek(kn.fk, "반대 동물") + '</div><p class="small muted">누르면 그 동물 이야기를 볼 수 있어요.</p></section>';
     h += '<section class="stack"><h3>' + esc(P.animal) + "형에게 어울리는 직업</h3>" + recs.map(function (j) { return jobCard(j, { reasons: reasons(j, null) }); }).join("") + "</section>";
     h += friendSay("<p>이 직업들, 어떻게 준비하면 될까요?</p>") + '<button class="btn block" data-act="setup">내 준비 순서 보기</button>';
     var low = lowType();
