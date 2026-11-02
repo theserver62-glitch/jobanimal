@@ -20,7 +20,7 @@
   --warn-line: #E9C462;
   --warn-ink: #5E4100;
   --danger: #BD3B27;
-  --ok: #22804E;
+  --ok: #1E7345;
   --ok-soft: #E3F4EA;
   --bad-soft: #FBE7E3;
   --friend: #FFF0E0;
@@ -35,7 +35,8 @@
   --fs-12: 12px; --fs-14: 14px; --fs-16: 16px; --fs-18: 18px; --fs-22: 22px; --fs-28: 28px; --fs-num: 40px;
   --ls-body: -0.01em; --ls-sub: -0.015em; --ls-title: -0.025em;
 }
-.toss .back { display: none; }
+.toss .back, .toss [data-act="prevq"], .toss [data-act="prevSetup"], .toss [data-act="refPrev"] { display: none; }   /* Toss bar's back does these through history */
+.toss .lrow.done + details.fold > summary { font-weight: 400; color: var(--muted); }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #10131A; --surface: #191E28; --sunk: #141821; --ink: #E6E9F0; --muted: #9BA3B6; --line: #2A3140; --line-strong: #646E85;
@@ -79,6 +80,7 @@ h2.display { font-size: var(--fs-22); line-height: 1.3; }
 h3 { font-size: var(--fs-18); font-weight: 600; line-height: 1.35; letter-spacing: var(--ls-sub); }
 .muted { color: var(--muted); }
 .small { font-size: var(--fs-14); }
+.small:not(.muted) { font-size: var(--fs-16); }
 p { margin: 0; }
 .stack { display: grid; gap: 10px; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: grid; gap: 12px; min-width: 0; scroll-margin-top: 64px; }
@@ -86,7 +88,7 @@ p { margin: 0; }
 .btn.block { width: 100%; }
 .btn.ghost { background: var(--accent-soft); color: var(--accent); }
 .btn.line { background: transparent; border: 1px solid var(--line-strong); color: var(--ink); font-weight: 600; }
-.btn.small { min-height: 44px; padding: 8px 12px; font-size: var(--fs-14); border-radius: 10px; }
+.btn.small { min-height: 44px; padding: 8px 12px; font-size: var(--fs-16); border-radius: 10px; }
 .btn:disabled { opacity: .45; cursor: default; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .row-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -96,14 +98,14 @@ p { margin: 0; }
 .grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
 /* the Toss build removes non-official links; hide a card left with no links */
 section.card:has(> .ilinks:empty), section.card:has(> .links:empty) { display: none; }
-.back, .linkbtn { background: none; border: 0; color: var(--muted); cursor: pointer; padding: 8px 4px; font-size: var(--fs-14); min-height: 44px; justify-self: start; }
+.back, .linkbtn { background: none; border: 0; color: var(--muted); cursor: pointer; padding: 8px 4px; font-size: var(--fs-16); min-height: 44px; justify-self: start; }
 
 /* Notice */
-.notice { background: var(--warn-bg); border: 1px solid var(--warn-line); color: var(--warn-ink); border-radius: 14px; padding: 8px 14px; display: grid; gap: 10px; }
-.notice-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: var(--fs-14); }
+.notice { background: var(--warn-bg); color: var(--warn-ink); border-radius: 14px; padding: 8px 14px; display: grid; gap: 10px; }
+.notice-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: var(--fs-16); }
 .notice-title svg { flex: none; }
-.notice .toggle { background: none; border: 0; color: var(--warn-ink); font-size: var(--fs-14); text-decoration: underline; cursor: pointer; padding: 4px 0; white-space: nowrap; min-height: 44px; }
-.notice ol { margin: 0; padding-left: 1.25em; display: grid; gap: 10px; font-size: var(--fs-14); padding-bottom: 6px; }
+.notice .toggle { background: none; border: 0; color: var(--warn-ink); font-size: var(--fs-16); text-decoration: underline; cursor: pointer; padding: 4px 0; white-space: nowrap; min-height: 44px; min-width: 44px; text-align: right; }
+.notice ol { margin: 0; padding-left: 1.25em; display: grid; gap: 10px; font-size: var(--fs-16); padding-bottom: 6px; }
 .notice li b { display: block; }
 .notice a { color: var(--warn-ink); }
 
@@ -119,7 +121,7 @@ section.card:has(> .ilinks:empty), section.card:has(> .links:empty) { display: n
 .quick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .quick button { text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; cursor: pointer; display: grid; gap: 4px; }
 .quick button b { font-family: var(--f-display); font-weight: 700; font-size: var(--fs-18); }
-.quick button span { font-size: var(--fs-12); color: var(--muted); line-height: 1.5; }
+.quick button span { font-size: var(--fs-14); color: var(--muted); line-height: 1.5; }
 
 /* Friend */
 .friend { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; align-items: start; }
@@ -135,7 +137,7 @@ section.card:has(> .ilinks:empty), section.card:has(> .links:empty) { display: n
 .opts { display: grid; gap: 10px; }
 .opt { text-align: left; background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 14px; padding: 13px 15px; cursor: pointer; font-size: var(--fs-16); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; min-height: 52px; }
 .opt.plain { grid-template-columns: 1fr; }
-.opt:hover { border-color: var(--accent); }
+@media (hover: hover) { .opt:hover { border-color: var(--accent); } }   /* phones keep :hover after a tap, so the next question looked picked */
 .opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
 .opt.right { border-color: var(--ok); background: var(--ok-soft); }
 .opt.wrong { border-color: var(--danger); background: var(--bad-soft); }
@@ -150,22 +152,22 @@ section.card:has(> .ilinks:empty), section.card:has(> .links:empty) { display: n
 .bar .track { height: 10px; background: var(--sunk); border-radius: 99px; overflow: hidden; }
 .bar .track i { display: block; height: 100%; background: var(--tc); border-radius: 99px; }
 .bar .n { text-align: right; color: var(--muted); }
-details.fold > summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 44px; font-weight: 600; font-size: var(--fs-16); }
+details.fold > summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 44px; font-weight: 600; font-size: var(--fs-16); }
 details.fold > summary::-webkit-details-marker { display: none; }
-details.fold > summary::after { content: "⌄"; color: var(--muted); transition: transform .15s; }
-details.fold[open] > summary::after { transform: rotate(180deg); }
+details.fold > summary::after { content: ""; flex: none; width: 8px; height: 8px; border: solid var(--muted); border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-2px, -2px); transition: transform .15s; }   /* drawn: the glyph sat below the text line */
+details.fold[open] > summary::after { transform: rotate(225deg) translate(-2px, -2px); }
 
 /* Job cards */
 .job { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
 .job-top { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; padding: 14px; align-items: start; width: 100%; background: none; border: 0; text-align: left; cursor: pointer; }
 .job-top .ani { width: 44px; height: 44px; }
 .jn { display: block; font-weight: 600; font-size: var(--fs-16); line-height: 1.35; }
-.jd { display: block; color: var(--muted); font-size: var(--fs-14); line-height: 1.5; margin-top: 2px; }
-.jpay { display: block; font-size: var(--fs-12); color: var(--ink); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.jd { display: block; color: var(--muted); line-height: 1.5; margin-top: 2px; }
+.jpay { display: block; font-size: var(--fs-14); color: var(--ink); margin-top: 6px; font-variant-numeric: tabular-nums; }
 .jpay span { color: var(--muted); }
-.more { font-size: var(--fs-14); color: var(--accent); margin-top: 6px; display: inline-block; }
+.more { color: var(--accent); margin-top: 6px; display: inline-block; }
 .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
-.tag { font-size: var(--fs-12); padding: 2px 8px; border-radius: 6px; background: var(--sunk); color: var(--muted); white-space: nowrap; }
+.tag { font-size: var(--fs-14); padding: 2px 8px; border-radius: 6px; background: var(--sunk); color: var(--muted); white-space: nowrap; }
 .tag.hi { background: var(--accent-soft); color: var(--accent); }
 .tag.lo { background: var(--warn-bg); color: var(--warn-ink); }
 .fit { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: var(--fs-14); padding: 4px 10px; border-radius: 99px; background: var(--sunk); color: var(--ink); }
@@ -175,16 +177,16 @@ details.fold[open] > summary::after { transform: rotate(180deg); }
 .fitline { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
 .dbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .dbar label { display: flex; align-items: center; gap: 6px; font-size: var(--fs-14); color: var(--muted); white-space: nowrap; }
-.dbar select { width: auto; min-height: 40px; padding: 6px 10px; font-size: var(--fs-14); font-weight: 600; border-radius: 99px; }
+.dbar select { width: auto; min-height: 44px; padding: 6px 10px; font-size: var(--fs-16); font-weight: 600; border-radius: 99px; }
 .sortnote { background: var(--sunk); border-radius: 10px; padding: 8px 12px; font-size: var(--fs-14); color: var(--muted); }
-.sortnote .linkbtn { padding: 0; min-height: 0; font-size: var(--fs-14); color: var(--accent); text-decoration: underline; display: inline; }
+.sortnote .linkbtn { padding: 12px 0; min-height: 0; font-size: var(--fs-14); color: var(--accent); text-decoration: underline; display: inline; }
 .job-act { padding: 0 14px 14px; }
 
 /* Job detail */
 .jhead { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; }
 .jhead .ani { width: 64px; height: 64px; }
 .anchors { position: sticky; top: var(--sat); z-index: 5; background: var(--bg); padding-block: 6px; margin-inline: -16px; padding-inline: 16px; }
-.sec-title { font-size: var(--fs-14); color: var(--muted); font-weight: 600; letter-spacing: var(--ls-body); }
+.sec-title { font-size: var(--fs-16); color: var(--muted); font-weight: 600; letter-spacing: var(--ls-body); }
 .bul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
 .day { display: grid; gap: 0; }
 .day-row { display: grid; grid-template-columns: 50px 14px minmax(0, 1fr); gap: 8px; align-items: start; }
@@ -193,44 +195,46 @@ details.fold[open] > summary::after { transform: rotate(180deg); }
 .day-row .dot::before { content: ""; position: absolute; left: 4px; top: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--tc, var(--accent)); }
 .day-row .dot::after { content: ""; position: absolute; left: 7px; top: 15px; bottom: -6px; width: 1px; background: var(--line); }
 .day-row:last-child .dot::after { display: none; }
-.day-row p { padding-bottom: 12px; font-size: var(--fs-14); }
+.day-row p { padding-bottom: 12px; font-size: var(--fs-16); }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chips span { font-size: var(--fs-12); padding: 3px 9px; border-radius: 99px; background: var(--sunk); }
+.chips span { font-size: var(--fs-14); padding: 3px 9px; border-radius: 99px; background: var(--sunk); }
 .pc { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 @media (max-width: 420px) { .pc { grid-template-columns: 1fr; } }
-.pc > div { border-radius: 12px; padding: 12px; display: grid; gap: 6px; font-size: var(--fs-14); min-width: 0; }
+.pc > div { border-radius: 12px; padding: 12px; display: grid; gap: 6px; font-size: var(--fs-16); min-width: 0; }
 .pc .pro { background: var(--ok-soft); }
 .pc .con { background: var(--bad-soft); }
 .path { display: grid; gap: 8px; counter-reset: p; }
 .path ol { margin: 0; padding: 0; display: grid; gap: 8px; }
-.path li { list-style: none; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 8px; font-size: var(--fs-14); }
-.path li::before { counter-increment: p; content: counter(p); width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: var(--fs-12); display: grid; place-items: center; font-weight: 600; }
+.path li { list-style: none; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 8px; font-size: var(--fs-16); }
+.path li::before { counter-increment: p; content: counter(p); width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: var(--fs-14); display: grid; place-items: center; font-weight: 600; }
 .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .tile { background: var(--sunk); border-radius: 12px; padding: 10px 6px; text-align: center; display: grid; gap: 2px; }
 .tile b { font-family: var(--f-display); font-weight: 700; font-size: var(--fs-22); font-variant-numeric: tabular-nums; }
 .tile.mid { background: var(--accent-soft); }
-.tile span { font-size: var(--fs-12); color: var(--muted); }
+.tile span { font-size: var(--fs-14); color: var(--muted); }
 .outlook { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: var(--fs-14); padding: 4px 10px; border-radius: 99px; background: var(--sunk); justify-self: start; }
 .outlook.up { background: var(--ok-soft); color: var(--ok); }
 .outlook.down { background: var(--bad-soft); color: var(--danger); }
-.srcline { font-size: var(--fs-12); color: var(--muted); }
-.srcline a { color: var(--muted); }
+.srcline { font-size: var(--fs-14); color: var(--muted); }
+.srcline a { color: var(--muted); padding-block: 14px; }
+.foot a { padding-block: 14px; }
 .ways { display: grid; gap: 8px; }
 .way { border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 6px; }
 .way b { font-size: var(--fs-16); }
-.way p { font-size: var(--fs-14); }
+.way p { font-size: var(--fs-16); }
 .links { display: grid; gap: 8px; }
 .lk { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; align-items: center; padding: 11px 13px; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; color: var(--ink); background: var(--surface); min-height: 48px; }
 .lk b { font-weight: 600; font-size: var(--fs-16); }
-.lk span { grid-column: 1; font-size: var(--fs-12); color: var(--muted); }
+.lk span { grid-column: 1; font-size: var(--fs-14); color: var(--muted); }
 .lk svg { grid-row: 1 / span 2; grid-column: 2; color: var(--muted); }
 .lk:hover { border-color: var(--accent); }
-.kv { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 6px 12px; font-size: var(--fs-14); margin: 0; }
-.kv dt { color: var(--muted); font-size: var(--fs-12); padding-top: 1px; }
+.kv { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 6px 12px; margin: 0; }
+.kv dt { color: var(--muted); font-size: var(--fs-14); padding-top: 1px; }
 .kv dd { margin: 0; min-width: 0; }
+.kv dd a { padding-block: 14px; }
 .kv ol { margin: 0; padding-left: 1.2em; }
 @media (max-width: 400px) { .kv { grid-template-columns: 1fr; gap: 2px; } .kv dd { margin-bottom: 6px; } }
-.trust { font-size: var(--fs-12); }
+.trust { font-size: var(--fs-14); }
 .trust.ok { color: var(--ok); } .trust.gk { color: var(--warn-ink); }
 .sticky-cta { position: sticky; bottom: calc(72px + var(--sab)); z-index: 4; background: linear-gradient(transparent, var(--bg) 35%); padding-top: 14px; }
 
@@ -257,33 +261,71 @@ label.fl { display: grid; gap: 5px; font-size: var(--fs-14); color: var(--muted)
 .wins { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .win { background: var(--sunk); border-radius: 12px; padding: 10px; text-align: center; }
 .win b { display: block; font-family: var(--f-display); font-size: var(--fs-22); font-weight: 400; font-variant-numeric: tabular-nums; }
-.win span { font-size: var(--fs-12); color: var(--muted); }
+.win span { font-size: var(--fs-14); color: var(--muted); }
 .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--sunk); border-radius: 12px; padding: 4px; gap: 4px; }
 .seg button { border: 0; background: none; border-radius: 9px; padding: 8px 4px; cursor: pointer; font-size: var(--fs-14); color: var(--muted); min-height: 44px; white-space: nowrap; }
 .seg.four button { font-size: var(--fs-14); }
 .seg button[aria-selected="true"] { background: var(--surface); color: var(--ink); font-weight: 600; box-shadow: 0 1px 3px rgb(0 0 0 / .1); }
 details.month > summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 44px; font-size: var(--fs-14); color: var(--muted); font-weight: 600; }
 details.month > summary::-webkit-details-marker { display: none; }
-details.month > summary::after { content: "⌄"; transition: transform .15s; }
-details.month[open] > summary::after { transform: rotate(180deg); }
+details.month > summary::after { content: ""; flex: none; width: 8px; height: 8px; border: solid var(--muted); border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-2px, -2px); transition: transform .15s; }
+details.month[open] > summary::after { transform: rotate(225deg) translate(-2px, -2px); }
 details.month .stack { gap: 6px; }
 .item { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 10px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
 .check { position: relative; width: 30px; height: 30px; border-radius: 8px; border: 2px solid var(--line-strong); background: var(--surface); cursor: pointer; display: grid; place-items: center; padding: 0; margin-top: 1px; color: var(--check-ink); }
 .check::after { content: ""; position: absolute; inset: -8px; }
 .check[aria-checked="true"] { background: var(--ok); border-color: var(--ok); }
 .check svg { opacity: 0; }
+/* Toss short flow (LEAN) */
+.lean-hero { position: relative; gap: 4px; padding: 16px; background: var(--accent-soft); }
+.lean-hero h1 { font-size: var(--fs-22); }
+.lean-hero p { margin: 0; }
+.share-mini { position: absolute; top: 8px; right: 8px; border-radius: 99px; }
+.chips-mini { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.chips-mini span { font-size: var(--fs-14); padding: 4px 8px; border-radius: 8px; background: var(--surface); color: var(--accent); }
+.lean-h { font-size: var(--fs-18); margin: 0; }
+.ljob { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px 16px; display: grid; gap: 0; }
+.ljob .btn { min-height: 44px; padding: 10px 12px; }
+.ljob + .ljob .btn { background: var(--accent-soft); color: var(--accent); }   /* one solid button per screen: the best match */
+.ljob h3 span { white-space: nowrap; }
+.ljob h3 { font-size: var(--fs-16); margin: 0; }
+.ljob .why { margin: 0; }
+.ljob .between .linkbtn { min-height: 44px; text-decoration: underline; white-space: nowrap; }
+.lean-link { justify-self: center; text-decoration: underline; padding-block: 4px; }
+.lean-head { display: flex; gap: 12px; align-items: center; }
+.lean-big { font-size: var(--fs-18); margin: 0; }
+.today { border: 2px solid var(--accent); }
+.today .sec-title { color: var(--accent); }
+.lean-list { display: grid; gap: 8px; }
+.lrow { display: flex; gap: 12px; align-items: center; }
+.lrow .itbody { flex: 1; min-width: 0; min-height: 44px; background: none; border: 0; padding: 4px 0; text-align: left; color: var(--ink); cursor: pointer; display: grid; gap: 2px; font: inherit; }
+.lrow .itbody .m { font-size: var(--fs-14); color: var(--muted); }
+.lrow .linkbtn { color: var(--accent); white-space: nowrap; min-width: 48px; text-align: right; }
+.lrow.done .t { color: var(--muted); }
+.cheer { display: grid; justify-items: center; text-align: center; gap: 8px; }
+.cheer h2 { font-size: var(--fs-22); margin: 0; }
+.cheer .chips-mini span { background: var(--accent-soft); }
+.cheer .chips-mini span:last-child { background: var(--sunk); color: var(--muted); }
+.cheer-art { position: relative; padding: 28px 40px 0; }
+.cheer { gap: 4px; padding-block: 12px; }
+.cheer-art .bub { position: absolute; left: 50%; top: 0; transform: translateX(-50%); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 2px 8px; font-size: var(--fs-14); font-weight: 700; white-space: nowrap; }
+.cheer-art i { position: absolute; font-style: normal; color: #F2A33A; font-size: var(--fs-22); }
+.cheer-art i:nth-child(1) { left: 4px; top: 24px; } .cheer-art i:nth-child(2) { right: 8px; top: 16px; color: var(--accent); } .cheer-art i:nth-child(3) { right: 0; bottom: 16px; font-size: var(--fs-16); }
+.cheer-art .ani { animation: hop .6s ease-out 2; }
+@keyframes hop { 50% { transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) { .cheer-art .ani { animation: none; } }
 .check[aria-checked="true"] svg { opacity: 1; }
 .item details summary { list-style: none; cursor: pointer; display: grid; gap: 3px; }
 .item details summary::-webkit-details-marker { display: none; }
 .item .t { font-size: var(--fs-16); line-height: 1.5; }
-.item.done .t { color: var(--muted); text-decoration: line-through; }
-.item .m { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: var(--fs-12); color: var(--muted); font-variant-numeric: tabular-nums; }
+.item.done .t { color: var(--muted); }
+.item .m { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: var(--fs-14); color: var(--muted); font-variant-numeric: tabular-nums; }
 .item .howto { color: var(--accent); }
 .item details[open] .howto { display: none; }
 .item .note { font-size: var(--fs-14); color: var(--muted); margin-top: 6px; line-height: 1.5; }
 .item .ilinks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-.item .ilinks a, .card .ilinks a { font-size: var(--fs-14); padding: 8px 12px; border-radius: 99px; border: 1px solid var(--line-strong); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
-.k { font-size: var(--fs-12); padding: 1px 7px; border-radius: 6px; background: var(--sunk); color: var(--muted); }
+.item .ilinks a, .card .ilinks a { font-size: var(--fs-16); padding: 8px 12px; border-radius: 99px; border: 1px solid var(--line-strong); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+.k { font-size: var(--fs-14); padding: 1px 7px; border-radius: 6px; background: var(--sunk); color: var(--muted); }
 .k.cert { color: var(--k-cert); background: color-mix(in srgb, var(--t-I) 12%, var(--surface)); }
 .k.exp { color: var(--k-exp); background: color-mix(in srgb, var(--t-S) 12%, var(--surface)); }
 .k.pf { color: var(--k-pf); background: color-mix(in srgb, var(--t-A) 12%, var(--surface)); }
@@ -292,7 +334,7 @@ details.month .stack { gap: 6px; }
 .moods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .mood { background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 12px; padding: 10px; cursor: pointer; text-align: center; min-height: 48px; }
 .mood:hover { border-color: var(--accent); }
-.help { background: var(--sunk); border-radius: 12px; padding: 12px; display: grid; gap: 8px; font-size: var(--fs-14); }
+.help { background: var(--sunk); border-radius: 12px; padding: 12px; display: grid; gap: 8px; font-size: var(--fs-16); }
 .help .num { font-family: var(--f-display); font-size: var(--fs-22); user-select: all; }
 .apps { display: grid; gap: 6px; }
 .app-row { display: flex; justify-content: space-between; gap: 8px; font-size: var(--fs-14); padding: 8px 0; border-bottom: 1px solid var(--line); }
@@ -302,9 +344,9 @@ details.month .stack { gap: 6px; }
 .arow { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
 .arow-top { width: 100%; background: none; border: 0; padding: 10px 12px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; text-align: left; cursor: pointer; min-height: 48px; align-items: center; }
 .arow-top b { font-size: var(--fs-16); font-weight: 600; overflow-wrap: anywhere; }
-.arow-top .sub { grid-column: 1 / -1; font-size: var(--fs-12); color: var(--muted); }
+.arow-top .sub { grid-column: 1 / -1; font-size: var(--fs-14); color: var(--muted); }
 .arow-body { border-top: 1px solid var(--line); padding: 10px 12px 12px; display: grid; gap: 10px; }
-.stg { font-size: var(--fs-12); padding: 2px 8px; border-radius: 99px; background: var(--sunk); color: var(--muted); white-space: nowrap; font-weight: 600; }
+.stg { font-size: var(--fs-14); padding: 2px 8px; border-radius: 99px; background: var(--sunk); color: var(--muted); white-space: nowrap; font-weight: 600; }
 .stg.go { background: var(--accent-soft); color: var(--accent); }
 .stg.win { background: var(--ok-soft); color: var(--ok); }
 .stg.no { background: var(--bad-soft); color: var(--danger); }
@@ -325,60 +367,60 @@ details.qcard .kv { margin: 10px 0; }
 details.qcard label.fl { margin-bottom: 12px; }
 details.qcard textarea, .chatbox textarea { min-height: 96px; }
 .chat { display: grid; gap: 8px; }
-.bub { border-radius: 14px; padding: 10px 12px; font-size: var(--fs-14); line-height: 1.6; white-space: pre-wrap; max-width: 92%; }
+.bub { border-radius: 14px; padding: 10px 12px; font-size: var(--fs-16); line-height: 1.6; white-space: pre-wrap; max-width: 92%; }
 .bub.ai { background: var(--sunk); justify-self: start; border-top-left-radius: 4px; }
 .bub.me { background: var(--accent-soft); justify-self: end; border-top-right-radius: 4px; }
-.bub .who { display: block; font-size: var(--fs-12); color: var(--muted); margin-bottom: 2px; }
+.bub .who { display: block; font-size: var(--fs-14); color: var(--muted); margin-bottom: 2px; }
 .hirelist { display: grid; gap: 6px; }
 .hirelist .item { padding: 8px 10px; }
 .sidecand { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
 .sidecand:last-child { border-bottom: 0; }
 .sidecand .jn { font-weight: 600; font-size: var(--fs-16); }
 .sidecand p { grid-column: 1 / -1; font-size: var(--fs-14); color: var(--muted); }
-.itbody .tip { font-size: var(--fs-12); color: var(--accent); line-height: 1.5; }
+.itbody .tip { font-size: var(--fs-14); color: var(--accent); line-height: 1.5; }
 .itbody { background: none; border: 0; padding: 0; text-align: left; display: grid; gap: 3px; cursor: pointer; min-width: 0; color: inherit; }
 .item > .res-btns { grid-column: 2; margin-top: 0; }
 .card .doneform, .card > .memo { grid-column: 1 / -1; }
 .doneform { grid-column: 2; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: center; margin-top: 6px; }
-.doneform .linkbtn { grid-column: 1 / -1; justify-self: start; min-height: 32px; padding: 0; }
-.memo { grid-column: 2; font-size: var(--fs-12); color: var(--ok); margin-top: 2px; }
+.doneform .linkbtn { grid-column: 1 / -1; justify-self: start; min-width: 44px; }
+.memo { grid-column: 2; font-size: var(--fs-14); color: var(--ok); margin-top: 2px; }
 .res-btns { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
 .warnline { background: var(--warn-bg); border: 1px solid var(--warn-line); color: var(--warn-ink); border-radius: 12px; padding: 10px 12px; font-size: var(--fs-14); }
 
 /* Chips */
-.chiprow { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent); }
+.chiprow { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent); }
 .chiprow::-webkit-scrollbar { display: none; }
 .chiprow.wrap { flex-wrap: wrap; -webkit-mask-image: none; mask-image: none; }
-.chip { white-space: nowrap; font-size: var(--fs-14); min-height: 44px; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line-strong); background: var(--surface); cursor: pointer; min-height: 40px; text-decoration: none; color: var(--ink); display: inline-flex; align-items: center; }
+.chip { white-space: nowrap; font-size: var(--fs-16); min-height: 44px; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line-strong); background: var(--surface); cursor: pointer; text-decoration: none; color: var(--ink); display: inline-flex; align-items: center; }
 .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .empty { padding: 24px 16px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 14px; display: grid; gap: 10px; justify-items: center; }
 
 /* Essay */
-.counter { display: flex; justify-content: space-between; font-size: var(--fs-12); color: var(--muted); font-variant-numeric: tabular-nums; }
+.counter { display: flex; justify-content: space-between; font-size: var(--fs-14); color: var(--muted); font-variant-numeric: tabular-nums; }
 .counter .over { color: var(--danger); font-weight: 600; }
 .checks { display: grid; gap: 8px; }
-.chk { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; font-size: var(--fs-14); align-items: start; }
-.chk i { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: var(--fs-12); font-weight: 700; margin-top: 1px; }
+.chk { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; font-size: var(--fs-16); align-items: start; }
+.chk i { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: var(--fs-14); font-weight: 700; margin-top: 1px; }
 .chk.ok i { background: var(--ok-soft); color: var(--ok); }
 .chk.no i { background: var(--warn-bg); color: var(--warn-ink); }
-.chk small { display: block; color: var(--muted); font-size: var(--fs-12); }
+.chk small { display: block; color: var(--muted); font-size: var(--fs-14); }
 .ai-out { white-space: pre-wrap; font-size: var(--fs-14); line-height: 1.6; background: var(--sunk); border-radius: 12px; padding: 12px; }
-.ai-out:not([hidden])::before { content: "AI가 만든 답변 · 참고용"; display: block; font-size: var(--fs-12); color: var(--muted); margin-bottom: 6px; }
+.ai-out:not([hidden])::before { content: "AI가 만든 답변 · 참고용"; display: block; font-size: var(--fs-14); color: var(--muted); margin-bottom: 6px; }
 .bub.ai .who::after { content: " · AI"; }
-.chk { display: flex; gap: 10px; align-items: flex-start; font-size: var(--fs-14); line-height: 1.5; }
+.chk { display: flex; gap: 10px; align-items: flex-start; font-size: var(--fs-16); line-height: 1.5; }
 .chk input { width: 20px; height: 20px; flex: none; margin: 2px 0 0; accent-color: var(--accent); }
 .saved { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .saved:last-child { border-bottom: 0; }
 .saved button.open { text-align: left; background: none; border: 0; padding: 0; cursor: pointer; min-width: 0; min-height: 44px; }
 .saved b { display: block; font-size: var(--fs-14); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.saved small { color: var(--muted); font-size: var(--fs-12); }
+.saved small { color: var(--muted); font-size: var(--fs-14); }
 
 /* Aptitude */
 .passage { white-space: pre-wrap; font-size: var(--fs-14); line-height: 1.6; background: var(--sunk); border-radius: 12px; padding: 12px; }
 .qbody { white-space: pre-wrap; font-size: var(--fs-16); line-height: 1.55; font-weight: 600; }
 .tbl-wrap { overflow-x: auto; }
 table.data { border-collapse: collapse; font-size: var(--fs-14); min-width: 100%; font-variant-numeric: tabular-nums; }
-table.data caption { text-align: left; font-size: var(--fs-12); color: var(--muted); padding-bottom: 6px; }
+table.data caption { text-align: left; font-size: var(--fs-14); color: var(--muted); padding-bottom: 6px; }
 table.data th, table.data td { border: 1px solid var(--line); padding: 6px 8px; text-align: right; white-space: nowrap; }
 table.data th:first-child, table.data td:first-child { text-align: left; }
 table.data th { background: var(--sunk); font-weight: 600; }
@@ -396,6 +438,11 @@ table.data th { background: var(--sunk); font-weight: 600; }
 .nav button { background: none; border: 0; padding: 6px 2px; cursor: pointer; display: grid; justify-items: center; gap: 2px; font-size: var(--fs-12); color: var(--muted); min-height: 52px; white-space: nowrap; }
 .nav button[aria-current="page"] { color: var(--accent); font-weight: 600; }
 .nav svg { width: 22px; height: 22px; }
+.toss .nav { left: 16px; right: 16px; bottom: calc(16px + var(--sab)); padding: 4px; border: 1px solid var(--line); border-radius: 24px; box-shadow: 0 4px 16px rgba(27, 33, 49, .08); }
+.toss .nav-in { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.toss .app { padding-block-end: calc(112px + var(--sab)); }
+.toss .app.no-nav { padding-block-end: 32px; }
+.toss .toast { bottom: calc(96px + var(--sab)); }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(80px + var(--sab)); z-index: 20; pointer-events: none; max-width: calc(100% - 32px); }
 .toast span { display: block; background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 99px; font-size: var(--fs-14); box-shadow: 0 6px 20px rgb(0 0 0 / .18); text-align: center; }
 .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: rgb(0 0 0 / .35); display: grid; align-items: end; height: 100%; }
@@ -404,7 +451,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
   .toast span { animation: rise .2s ease-out; }
   @keyframes rise { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
 }
-.foot { font-size: var(--fs-12); color: var(--muted); display: grid; gap: 6px; }
+.foot { font-size: var(--fs-14); color: var(--muted); display: grid; gap: 6px; }
 </style>
 
 <div class="app" id="app"></div>
@@ -434,6 +481,8 @@ table.data th { background: var(--sunk); font-weight: 600; }
   var TOSS = window.TOSS || null;
   // all-free builds (Toss mini-app and the public web page): every roadmap open, no AI or sales wording
   var FREE = !!(TOSS || window.FREE_WEB);
+  // Toss: short flow from the 2026-10-28 review (plan/flow_review_2026-10-28): one-screen result with 3 jobs, 3 setup questions, one-screen route, 4 tabs
+  var LEAN = !!TOSS;
   function official(u) { try { return /(^|\.)(go\.kr|or\.kr|re\.kr|korea\.kr)$/.test(new URL(u).hostname); } catch (e) { return false; } }
   if (TOSS) {
     document.documentElement.setAttribute("data-theme", "light"); document.documentElement.classList.add("toss");
@@ -672,9 +721,9 @@ table.data th { background: var(--sunk); font-weight: 600; }
     "EC": "<path d=\"M150 210 C70 170 26 240 46 310 C62 370 120 380 160 350 Z\" fill=\"#9FAEC5\" stroke=\"#3A2A22\" stroke-width=\"14\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M362 210 C442 170 486 240 466 310 C450 370 392 380 352 350 Z\" fill=\"#9FAEC5\" stroke=\"#3A2A22\" stroke-width=\"14\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M140 238 C96 222 74 262 84 300 C92 330 118 336 140 322 Z\" fill=\"#F2C6CF\"/><path d=\"M372 238 C416 222 438 262 428 300 C420 330 394 336 372 322 Z\" fill=\"#F2C6CF\"/><path d=\"M128 280 C124 196 186 150 256 150 C326 150 388 196 384 280 C380 350 326 388 256 388 C186 388 132 350 128 280Z\" fill=\"#AFBDD2\" stroke=\"#3A2A22\" stroke-width=\"14\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M232 300 C226 352 230 404 262 430 C282 446 308 438 304 418 C300 402 280 406 276 390 C268 360 280 328 280 300 Z\" fill=\"#AFBDD2\" stroke=\"#3A2A22\" stroke-width=\"14\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><ellipse cx=\"202\" cy=\"268\" rx=\"11\" ry=\"13\" fill=\"#3A2A22\"/><ellipse cx=\"310\" cy=\"268\" rx=\"11\" ry=\"13\" fill=\"#3A2A22\"/><ellipse cx=\"160\" cy=\"306\" rx=\"30\" ry=\"17\" fill=\"#F5866A\" opacity=\"0.55\"/><ellipse cx=\"352\" cy=\"306\" rx=\"30\" ry=\"17\" fill=\"#F5866A\" opacity=\"0.55\"/><path d=\"M262 344 L286 344 M260 368 L282 368\" stroke=\"#8C9AB3\" stroke-width=\"6\" stroke-linecap=\"round\"/>",
     "F": "<g transform=\"translate(6 18) scale(1.0)\"><g stroke=\"#3A2A22\" stroke-width=\"12\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M132 170 C122 120 148 88 176 92 C198 98 206 132 196 160 Z\" fill=\"#F2A65A\"/><path d=\"M368 170 C378 120 352 88 324 92 C302 98 294 132 304 160 Z\" fill=\"#F2A65A\"/></g><path d=\"M152 140 C146 118 156 104 170 106 C182 110 186 126 182 140 Z\" fill=\"#F7B6A6\"/><path d=\"M348 140 C354 118 344 104 330 106 C318 110 314 126 318 140 Z\" fill=\"#F7B6A6\"/><path d=\"M112 238 C108 160 176 122 250 122 C324 122 392 160 388 238 C384 304 324 334 250 334 C176 334 116 304 112 238Z\" fill=\"#F2A65A\" stroke=\"#3A2A22\" stroke-width=\"12\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><ellipse cx=\"160\" cy=\"262\" rx=\"30\" ry=\"18\" fill=\"#F5866A\" opacity=\"0.6\"/><ellipse cx=\"340\" cy=\"262\" rx=\"30\" ry=\"18\" fill=\"#F5866A\" opacity=\"0.6\"/><ellipse cx=\"204\" cy=\"236\" rx=\"10\" ry=\"12\" fill=\"#3A2A22\"/><ellipse cx=\"296\" cy=\"236\" rx=\"10\" ry=\"12\" fill=\"#3A2A22\"/><ellipse cx=\"250\" cy=\"256\" rx=\"7\" ry=\"5\" fill=\"#3A2A22\"/><path d=\"M236 270 Q243 280 250 270 Q257 280 264 270\" stroke=\"#3A2A22\" stroke-width=\"7\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><g stroke=\"#3A2A22\" stroke-width=\"12\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><ellipse cx=\"250\" cy=\"368\" rx=\"36\" ry=\"42\" fill=\"#D9A062\"/><path d=\"M206 344 C206 308 294 308 294 344 C274 353 226 353 206 344Z\" fill=\"#7A4E2D\"/><path d=\"M250 312 C251 303 257 297 266 295\" fill=\"none\"/><ellipse cx=\"212\" cy=\"380\" rx=\"22\" ry=\"17\" fill=\"#F2A65A\" transform=\"rotate(-20 212 380)\"/><ellipse cx=\"288\" cy=\"380\" rx=\"22\" ry=\"17\" fill=\"#F2A65A\" transform=\"rotate(20 288 380)\"/></g><ellipse cx=\"236\" cy=\"368\" rx=\"7\" ry=\"12\" fill=\"#FFFFFF\" opacity=\"0.4\"/></g>"
     };
-  function ani(k, size) {
+  function ani(k, size, happy) {
     k = ART[k] ? k : pk(k);
-    var d = dotOf(k), st = size ? ' style="width:' + size + 'px;height:' + size + 'px"' : "";
+    var d = dotOf(k, happy), st = size ? ' style="width:' + size + 'px;height:' + size + 'px"' : "";
     return '<span class="ani t' + k.charAt(0) + '"' + st + ' aria-hidden="true">' + (d ? '<img class="dot" src="' + d + '" alt="" style="transform:scale(' + dotScale(k) + ')">' : '<svg viewBox="0 0 512 512">' + ART[k] + "</svg>") + "</span>";
   }
   var EXT = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>';
@@ -735,10 +784,10 @@ table.data th { background: var(--sunk); font-weight: 600; }
   }
   function fitText(cx, s, max, px, weight) { do { cx.font = weight + " " + px + "px " + (weight === "400" ? "Jua, " : "") + "'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', sans-serif"; px -= 2; } while (cx.measureText(s).width > max && px > 20); }
   // pixel-art animals (art/dot/*.png, embedded by the build); the old drawings stay as a fallback
-  var DOT = {"beaver": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABjUlEQVR4nOVXO07DQBCdXW3HIeiRUiGhHIA6uMkFUsENaFJxiHSIniakzgEQElUk9xyCOmht1hkP+/bjtZWC18TZ+b3sfDwhOjOUPLi6nB3dc/11UEgmgXTluYSRRtX1BTuZHa0D56wvk+iTO+m2PpIIOCyqW9pt94CUHz4d64doHyShkcPt53fjNCU4si+qgWpgYB+JUAq073CM4Kl+NP+Smu9cEqHu0XRm6Cl/fRaBKRFKgw4ZPm5emkpObalc/Y4Auv75zTLZUUwf3YKhAWgn3Aluag6BCQnlrbjAq/Vbd/b8dAf1U6CR4GFxD43eP157n5wcsrV14ZuIKqcN5dXnpCBKIGcWcCIlwS28L6MxB1IouJfAGCRiQaNdUDfGaMOJBx+lDevfVWzq94NCgpLgLgVo/vP0mCHOLWLkbHA+pDhWa+p2RJMbODQVOSn7jFq01WsXVYXY4y33L2Qgt9DGYPWy9oGSl85kC8mukJRCApeGlKLjV85rJWYDa4CToATIlnMVnvNfkv4tfgCCCttrQk0PCAAAAABJRU5ErkJggg==", "cat": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACAElEQVR4nM1XMUtDMRDOC3FwcnNQiiJ0qOAqXcRJhO4OdqmFIv0HXfwDrs4PrIsO7u7FRRwV2qEgSkGKm1MHh8qF3vOaJpfktaIfhL4kd/m+HMnlKsQfIzEHtjd2xrTffXuesfEhZg1lG7y8Os++67XWOEYEkJ80Glm/naasvTSdgXzt9UM3FGPuKIT8uLCiG/Q5fxWyMIiASPjs6M4RIKLN+CjXxPvm6owIE537vnPhm8GnJvdBhpC7sL9XZOdBBLRoATHwifBBzuUdKII7iNK8AfOIyBONZBHkoajXWjNJSYo/hvIZlEpborx7pL99UYqxDY5AebJgCGJsgwX8NpLYQwhhprt9eLwVvd5LrgMI0BGACTAwgQ+SDSAYyG1AP9uaVgGcCBO4W4wEB4yqa/cA9ha43gRfyF1+mA2pmMRltIjEhBEFQlorQJGCIpTphBP4/ucRQol9tso1YQoJERNDHJwHupPFDs4uxHV/WTcKHMNxFzmM2+pD5RPwkyNG2Vhh6S77rhYrmnx9+KSf3XaaWotYs1gNFmDD4Ksy1a8WR6IzFLkguUmXahuwFvBVwfQGsAIoORSfIUkKRdBSHn65jUiREy5BzdPDKRFAbLv/QWegOVkMnc30S/vwOOHbAOOQLSkxwHY4lZgDlJSLEJcXEo7A95cMU6xrjvP9N/gGFHEOXlZ/ahMAAAAASUVORK5CYII=", "dolphin": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABLUlEQVR4nO2WMQ6CMBSG+5o6Ozuxk7AaLuDg4uY1mBzd4ARewyN4AeNKws5JMA8Fy7NIW1o0hm+RlNr/f32vrzA282XA5k9hEFXNc1HmVms0CBvhzfH0GsySihoxMQimBjriEpcsaZ/lOfK4ygyYGBgyMQSaoSY4mxA0LqfHygBGIG/rWPiUKVDtAvcpnu5WnSJUwX2JI/F6PziH+xLXTYNwtmqP0OgdCB1Gj/VAa0IwDxwWZf273Mad8XR3fqsNsI0eKxwXom33enuIUGRRuRuKwXCIqO0J6LuUQDd6Kq46Yhh9M657TQudSSpRFKB9Hd+bfh+A6q7HXNLcq24yFwAVV+FLHKn7wKfFfYojbQ3UIs/PK5dt16gTFmUOru97IwM/RRhEFT1mMzN/yR1MT5GoJWaeBgAAAABJRU5ErkJggg==", "elephant": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABb0lEQVR4nO1VO04DQQydseg5AaKiWYkW0SDKPQEFHUWE6HOAKCVFbhAJqDhDzhGJHnECThBkCaMXx/bsZBO22SdlFfn33syu7ZRGDIy8T1Jzfrmx7B+f6+p6uUSCRcX2MJmYOa/L5Y4Qq04ooFEkUjQi9oRYdbSQrMkl4f7sNL1/ff8ldyVHEV4tFJE1OQcj2tmimhxFrObTLRsLQRF0LHIG53INBHOwXV41oeO/gFzkBfU9fXQLCEoDg7oGPj22W+3VN65awPXV3UHjigJW82l4EvSV4nQrIk74wT3ZzhabKJB9MkwiYDt78fxRyhzI6ODetAaHBT0dvWlpzRachITO35vYIYpwe3Ph+nSuJmeYGwpvAgXpE0ZLR4B1rI2Ya9exvnZPmORVr2MPmjyC3ngRKA0MOvTpjyKgFrhuewto9jx9VxFUIn95ew4/Nt12NYuoKEAPGy7O/+WHfm0TIaVbyCXyqIDu9ShmxIjk4AfVSeMKLLSD+AAAAABJRU5ErkJggg==", "fox": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACAElEQVR4nNVXLUwDMRRum7qFYHF4kmFIlik8U5h5LAKHQCGmEHMTWDxmCvzUQoIZyTwOS8j0yHfwXd51/b0tIXzJpb32vfd9fdd7vVPqj6HlzdFhd83+8v2tMZeL0hjWHbg9Paja0UytS0WQvCSGkc50ZBC5mlLyXBiXfDCeFItwyREDV46/kTckLxHhIy+BUTtAadqzBAzGE7VYfdUEXClaeZEctrQvgU0ZIOhxZ68SgV0tVzuafTRsb+4figWYlAHIQ6neJvUbAhZO+u4uLxrkKcAWPq0FAE/XV63ICfgwBtqcPaHZwYY6P+lUQfjc24L+2COpSmjZ+THsrqdqtfWz5SJyYN0BSS6LClPrImQzfV3Vq48dUFrehEpySETKhq/p/OWxHuv3hg0RJrUqOsUg5+kLchBLch9MCblvxT5xsfMAguQjsexgMKUWZLRBf6C2hw4J+HyeV+3+WX9DBFfiAj60h11oQ8u9oOVgThZy4QqgCG5S1gjtOvL5tBXCDLGohUAB1p3gK9LvDeuNkhKDVclXLvXWZJ2Gy18hJVUR5DhH4JNbyo3aEUCaexrKM8KEjGRVRIpDpdg3XvJlZFLkMbjkSDtTHxLhnpC2hFwWohy4IuQBRWifI78NXCCAhM8mZu/7NrAxZxCwTRHRRpLm/Nrp2KTvh0QGTc3/C3wDSJs8a11xbpUAAAAASUVORK5CYII=", "lion": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABwElEQVR4nMVXq05DQRDd2axE8AUgqGqCJThMPaqmsppfqOIX0EgMqh6DI7VNGgQVxeEIwV8yN5lmdtiZfXBDT9Lcdu/unLNnZh917sCA1oHj0/OOvm926+Y4oZX4/vZ63zZfuK5VCJQSEjgxx3yx7AXUOgM5co1QExE7s8wKgaHIc8I0ESFHTrOodYKQGwcW+cnZ5759MnsuEkHkTw9X/fN9e2y6ELRAnNxq4wIJRE5jSEQKfqi8IyknlsC4ckVFAixynJ0VXAqhMSUivBaI21ZKLoEipP1SRLAC4GAr7xZQtJX7rANyObWgRLy3XrZab0EuR291lDga3SSLy3ovXZA14N2BEWo6X15Mo9lyfL/dRe9LAdY+oBURkRPhy+qxF6CBrwa1Bja7NdRWPRLjx4JFHglIidDWsTVbDdWHUW4zKhFRshFBqlE7F7g72h6RIrUuJFBz+dTE5Po0XclSQigVmrV09nNiefpJMeAKgYGk7SRE3pyIRKYylYrQSo57wXj0uyCx32TmOk5kpQJayEmAtSL4mWDVgM8JILLU1psilQfSX/62RS58fbx2+KTv2m96ukJAaceaoIhBZv4f+AG3fTaM9D+ZFwAAAABJRU5ErkJggg==", "octopus": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABU0lEQVR4nOVWMY7CMBBc7+UFFIiOHuk6hKi4np6aB9y9gYI/3FfooaKgi4RESXfiDyhokSw5ext7ncQJEtM4snd2Jivba4CeYWIJk/Fn4Vs/X/OonFms8O77yxu3/IUixohpS7hsYg9aEyYkHiMsGQmZwFTiBOKH9gymEteawJTiGhMIHUIygV2JV1UVU5efm+BVQOgZ2NXfV1UBoWfg2xvIQhUYrH9gPls9vzV7JDYeQwE2mRaheNsp/xk4X3PDFzWJYjiulv02fNE9jh/D6XO8306VJqrKLHGl9owaxzYZRxv3hmnjBdTkcYJNH5VNxEUDqUCVldqx4UE0puoJqk24E8TrHDVfIxKb0aRGN6xjjGuglnjML1EmaJ44nMfjs/JNCMVmMSoFbA9/ogmaJ460sbiI5VmO6h6wsASad825ySQTkjnpKBo+4YObkCfzrb00HnVcwjgx9J/nAAAAAElFTkSuQmCC", "otter": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABwElEQVR4nM1XLU8DQRDd3VyCrEKfv6SWVOEIQaEQJKj+AH4BVfAL0M0FgUOhCCEYVIMlqa9G8QuOTMPA3OzMfl2b8kzb3Tf73tzOzl6N2TFsbkBTjztpfLn6yF4LUOWKttenImc6M12JGZsirIlqmM4ek03YkHiucIkJtw1xAMRr9aLWQJMQkGsiVhtOynpo9pIR7Ym4jSop4lAPGuym914DmuDb4GKBzfFFMIMcbrAGNEwOztS5VG7oSFZaJoDl8704R4UW7w8iF9cAtD+dUjJhe0H1uMMFAV9Pi/Xn6GTiGQETlIsmQFiKA37RFozYIggqjuM0a8m0BJcjzjOmZqg5Lq5lD/AGsVloYrkIiYsGqJEhJvCJxC4ku+vruIoRUBwbzNHVrcc533s1pXA5ZDAzRGyQgZZsw8vN5e93yVDqu0CSAd7b8Tc1EYspqoGG3Ix0Qf9k9FtzyhWcZIACjdBOR6HdBxx0W/CUOLMl8DrAJ8qPtNOcSmc/lKE0hyZCLzoukoh5W+3HKFF+qJFZbQJd44KH9effHKsFzJ6K383nojjvklUkIS94DaHC9b9sfS5v0TYkyJtJqL/ncP8VvgE8+fOYwRySHwAAAABJRU5ErkJggg==", "owl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABz0lEQVR4nM1XvUoEMRBOQkpBfAItrA7Eq+Q6GxtB0MbGytLCJ9Ban8DC0srGRkGwsbE7rE4EKwt9AhHsTyYwx2ycn2R34fzgyN7lm5kvk9lkzrk5w9Mvg+W1KT6/fb425rpA8xtz8uHeaRqvbs+mnAjqLIfEJz7tDCytrLvd4Y5ogM44SPy7yX16/vp4+SPScwIQIAScakE1MTR4kYBcBGaiC7TVA4Jk2Edw9CMFFwX0FRwBWyEVb5AqFnF0MmyMFoBXygV4SYDm5PJ8wga2+FCY+VYEzsBaQT5fy2cFDJj0lzitSTdXC8HNGaGENNrYT58c0uo5vsSNllMuMODn/WL2vLB6bPIlBNcSGJQGb4PIvTI0C+PnG1MEhcTnXl3ALAPwfua32ffDOH00SI45W+4ciJJTyMLi9qg6MILaalyf/1ByGkoOOb52CrICUASMbfqAHLit0m3oNePa05ELbvWWsbShKL2iccW0s9LgpQmuPau59dBWa0YAwQoODkqC03m6beBH66SDFpxzbqHmdmQFQLpg1V1RWjPBImA6rYMHgTzajrcuQpfh8XozjVsHT40zH25AOpdDK8IoTaCRVEAl126f/y8dipEEaXP/Gr8a0QBfsXab4wAAAABJRU5ErkJggg==", "panda": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABgUlEQVR4nMVXwU1DMQxNrCzABHCuhLhVXYEByjQcmaYM0BUQN4TEGSboCB+5wsjftR0nStR3+P1pXvycOPF3UroyMm9sbu8X3v76+Vz1tyJir3Dyzd3D2kBKCx8oDWrg3Jo9hEkmnL4//t/f3l9r+mm33Z9/PXthB05/4hFhzZGIE8UygKQeYQKN9RxBwAxxzRErBIAP/IPHejQ825k3aJePmr22OeVRBEmcIe7lAeCznymOtrU8AunKKDXC49PLqn08PIe4Gg9XYbfdLxenICrewo2OhehsIsdU8iJOQMsRGsULOXB0Ys2F6N3je8i1Y0jLKAVIWI7xNiKOkbkg88bsXKA5ALyBnT1x7BVHqCXXyJWwvgGuA6M+TNasOXLNCM/fLSVZtKgtVYusvqvtD+QRN1pfZK9TqxW1OtEqu2T105SINkYJjkIyFF5oaqV8sQZ5hWQUZAPvA9ZKQKvR3pRrAaJEjKe3sXodK2kQ+AlpCV+2OqyLpbWpeIxHX3Kn4hcVKuqrD/BDSgAAAABJRU5ErkJggg==", "parrot": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABjElEQVR4nGNgGGDASK5GLXnd/9jErz28TJKZLORanDrRCav87HyG/6Q4hpFUy3FZjN0x+wg6golWloMASD2uqCLJAVpkWE4sYKK15YRCgYWBCiBc9C8Kf+VrZpR0AAIgR2BLDyzUtJxHJYfBwiwUzN6zzJ7BJeogw/yFnXD5xPhyDEcwURL86D6HWU4KYCJZBw7LiQGg0EBPDyz4NICCC1SwEJsIQcFOtxBYCU1ov44iMDmAiZACSChAUjI2wGaNwNhAYnw55UWxFlq8IUcJrrQAygHInoCZgZ4LGImx3LVmEorY7pY8nA4BRQ0xdQDR2dAVzXIQwCYGsphUy/E6AJfl1AZM5GqkVuXERI7vFUQ3UMVynA5ATmikAFLjHwRwloTYQgBb6qfEchDAqYFQSwbmCORCimoO0JLX/b8tG1Gue01FFCqw6hVWwqHzkQFZjVItNMthDggw5mYgFWw4+5WgI1hIMYxUQHIIaOHwPTlxS3I21BoAy1EcgGwpPQHTQFqOE4Cig1A5MGwAANe7xQRCb/uEAAAAAElFTkSuQmCC", "penguin": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABtUlEQVR4nMVXMUsDMRhNQkZBOzrZwelAuoh0c9Ghi1sdxM3VXyDdFH+AuLqJg/0BXVzciriI0MlBf4EK7iffYY6Y5kte0jt9UHqXy/fey5d8yZ0Q/wyZE1SsbZS+9tnbczKfzhHtdHv+PkKUqWYkKs6Jcnh/fYJMqDbECRTDTRVsoMgUTzGh2hJHTag2xRETGiGY3I5+3Q/2z6B+ob5sBgpn9D5SanPbff2QLMiQgRgpCjsLbnkqLqgp8RiXanPxIVCo4/7WsPoh8PXlsqBQQlQINZl8GLkgobub7fp6+jAWOZCxCvicTOvny4P+nAmCT9zE2TFUDW4VaDuIHtCRai9EIiAyV5wTthETJyikdn3iMbji8BqY/WRBNAAjTCM33G4fGSIwW+cie0PsxUQjJJuHR8nCj9dX9cgXeh/odHsVWQ5MfOh9QIbEbSCjIeyOLupr2zg3FRoRJyAbTWgXrDIhRAmXYQ7I5OneanWNTptEVv/4fKX6X1o/hkh9dc9NgeQMuOIGOwf3wen4ermcaxuefLAGlGgQqScha4CckmNu5acIUcZCm5GMESBfNyHkfLD+Kb4BoRvcjM/FUwYAAAAASUVORK5CYII=", "rabbit": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABWklEQVR4nMVXsW4CMQw9W+z9BPaTWNH9Qj+gH9WvAObuZe1IuyJBJyTUqSP8AJVRjXJpen5OAjwp4gIv9osvdkzT3BlkEdrx5BTON/s11eBCaMeT0/H7szdiJ0P8Ia6CESGH5eo8LLGrj5cLXyBzSwRbBmPHKaMp55ZgU0AKllHUKSRgs19TN31qHh67P7/NFs9maFPrXAJqQDZgZQJbRrbbXW83cZg1Ejnhh6Cp9TWfn4fM9bsw7eRZOWgKwgLe3157zoZGyEfsEypC0wx992glpNrOqx7CtsA5Cr6m86JSfCvwtUNvRYGbO4M9J1rTqwbPJaD7x2Bcfj2OXQJS0Jsyx2kIQhuS1PUqzlOHNVxjFSMaEiCfpdmQLaA0JdH7gBBjnmh4LiIBdAi9/b2HzwjJ8xqQ+u8W4IVHBOfsPq523uoXYpS16rc1l4ZVkZuuhJByGsziP6a3wg/1Qie3C5ZSrwAAAABJRU5ErkJggg==", "tiger": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9ElEQVR4nM1XPUsEQQzdGRcbO0sbK5sFK0H8CWKhNvZWgv9AtFb8B4KVvY1aiD9BBCtBBCsbweYKwUaQk7dcllxIMjPnnfrg2M1skvfmKzNXVX+MoDU284t9bj++PKh+KfA8Vo5aC7o+WBhqWzus+jyBFChJ6DvPgxyakGCRz24ctc/e5f4gwXPnB5/Tm9fO3lmda+2L+4/W3lyaadusPFxELckpgEBEJIwTSxAxfPDbOznrviEviXCnQIJ6UgKKOd7dHhKhIXofNcU5xNyGiCIBvQGpRW6NiNfuiQjcoHWA+csZ+lw/8sUidXeBtQ3HAbn61SloJkQOIK9WP+JE2ApExN/ovYc65YACsrK81b7nCCz1j9zQqhwly4Xnr+WPOU7WqkZv6ZmClTfwNcAPEWBqer36+rwaCuBk6O3t3Xlny+KlxcvtGOkFjSgUpBTB/KmBk0to8VotCDLQ2w05Q22V8axCBMCJn/2l5BoscsC8amkjUToC1BHvShe8RLxqyZtSzlaU1zhNSEhmYwlo0WlzTMJAnro/8u+hRACfEj4SUhDNOW1tgO6LUkD8KblmWycfiOU0xFLyUa5qHkIpec4U5NyEkiPQjOl49sgBtw5Ydd7aiuQjz4tR/9pVEPH+9tT+8K7ZKZ+RiCshgieSdq7Pv8U3EFJjYSCtdVwAAAAASUVORK5CYII=", "turtle": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABWUlEQVR4nGNgGAWjYBQMMGAkRpGWvO5/bOLXHl4mSj8+wEKM5akTnbDKzc5n+E+pQxjxWQyiYZYfO/USQ42VmTjUIfswHIEt1LA5lJEYX2OzHJ8jQPrnNftjqE2q3YjhCCYGKgGQg0EW47IcBEDi6CHDREqcEwNwWY7LEUzEGAoLZkLihCwnORccQ4p7bI5AlwfFMTZHaLnHMFiYhWKVY8IV/OgJj1Q+MgBZTlIIHMNjGD55sOM/YYrjixomBioDUDTgE0eXZ0IO/hOnVjMkW2ZiNQA5DeBKlOhA+p8KGMNCAVsaYYRZDqJBDkAGc49PZyAWIDv82s4lONXBQgBWIDHCJJDzJrJD8CUgbI5G1wPzMbrFOItiLbSSCpsF6ADmY2yWwMzDVWExYhNEL05xJSxiy3t8gJFUy7H5Dt0xpDiCEZsgssEggwgFI3q0UaOhMgpGwShgoBcAANmru5lBkwbOAAAAAElFTkSuQmCC"}, DOTF = {"beaver": 0.98, "cat": 1.0, "dolphin": 1.3, "elephant": 1.08, "fox": 0.99, "lion": 1.01, "octopus": 0.96, "otter": 1.03, "owl": 0.99, "panda": 0.96, "parrot": 1.2, "penguin": 1.0, "rabbit": 1.15, "tiger": 0.98, "turtle": 1.29}, DOTNAME = { "비버": "beaver", "수달": "otter", "판다": "panda", "호랑이": "tiger", "거북이": "turtle", "문어": "octopus", "돌고래": "dolphin", "여우": "fox", "부엉이": "owl", "토끼": "rabbit", "앵무새": "parrot", "고양이": "cat", "사자": "lion", "펭귄": "penguin", "코끼리": "elephant" };
-  function dotOf(k) { var p = PAIRS[ART[k] ? k : pk(k)]; return p && DOT[DOTNAME[p.animal]]; }
+  var DOT = {"beaver": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABjUlEQVR4nOVXO07DQBCdXW3HIeiRUiGhHIA6uMkFUsENaFJxiHSIniakzgEQElUk9xyCOmht1hkP+/bjtZWC18TZ+b3sfDwhOjOUPLi6nB3dc/11UEgmgXTluYSRRtX1BTuZHa0D56wvk+iTO+m2PpIIOCyqW9pt94CUHz4d64doHyShkcPt53fjNCU4si+qgWpgYB+JUAq073CM4Kl+NP+Smu9cEqHu0XRm6Cl/fRaBKRFKgw4ZPm5emkpObalc/Y4Auv75zTLZUUwf3YKhAWgn3Aluag6BCQnlrbjAq/Vbd/b8dAf1U6CR4GFxD43eP157n5wcsrV14ZuIKqcN5dXnpCBKIGcWcCIlwS28L6MxB1IouJfAGCRiQaNdUDfGaMOJBx+lDevfVWzq94NCgpLgLgVo/vP0mCHOLWLkbHA+pDhWa+p2RJMbODQVOSn7jFq01WsXVYXY4y33L2Qgt9DGYPWy9oGSl85kC8mukJRCApeGlKLjV85rJWYDa4CToATIlnMVnvNfkv4tfgCCCttrQk0PCAAAAABJRU5ErkJggg==", "cat": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACAElEQVR4nM1XMUtDMRDOC3FwcnNQiiJ0qOAqXcRJhO4OdqmFIv0HXfwDrs4PrIsO7u7FRRwV2qEgSkGKm1MHh8qF3vOaJpfktaIfhL4kd/m+HMnlKsQfIzEHtjd2xrTffXuesfEhZg1lG7y8Os++67XWOEYEkJ80Glm/naasvTSdgXzt9UM3FGPuKIT8uLCiG/Q5fxWyMIiASPjs6M4RIKLN+CjXxPvm6owIE537vnPhm8GnJvdBhpC7sL9XZOdBBLRoATHwifBBzuUdKII7iNK8AfOIyBONZBHkoajXWjNJSYo/hvIZlEpborx7pL99UYqxDY5AebJgCGJsgwX8NpLYQwhhprt9eLwVvd5LrgMI0BGACTAwgQ+SDSAYyG1AP9uaVgGcCBO4W4wEB4yqa/cA9ha43gRfyF1+mA2pmMRltIjEhBEFQlorQJGCIpTphBP4/ucRQol9tso1YQoJERNDHJwHupPFDs4uxHV/WTcKHMNxFzmM2+pD5RPwkyNG2Vhh6S77rhYrmnx9+KSf3XaaWotYs1gNFmDD4Ksy1a8WR6IzFLkguUmXahuwFvBVwfQGsAIoORSfIUkKRdBSHn65jUiREy5BzdPDKRFAbLv/QWegOVkMnc30S/vwOOHbAOOQLSkxwHY4lZgDlJSLEJcXEo7A95cMU6xrjvP9N/gGFHEOXlZ/ahMAAAAASUVORK5CYII=", "dolphin": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABLUlEQVR4nO2WMQ6CMBSG+5o6Ozuxk7AaLuDg4uY1mBzd4ARewyN4AeNKws5JMA8Fy7NIW1o0hm+RlNr/f32vrzA282XA5k9hEFXNc1HmVms0CBvhzfH0GsySihoxMQimBjriEpcsaZ/lOfK4ygyYGBgyMQSaoSY4mxA0LqfHygBGIG/rWPiUKVDtAvcpnu5WnSJUwX2JI/F6PziH+xLXTYNwtmqP0OgdCB1Gj/VAa0IwDxwWZf273Mad8XR3fqsNsI0eKxwXom33enuIUGRRuRuKwXCIqO0J6LuUQDd6Kq46Yhh9M657TQudSSpRFKB9Hd+bfh+A6q7HXNLcq24yFwAVV+FLHKn7wKfFfYojbQ3UIs/PK5dt16gTFmUOru97IwM/RRhEFT1mMzN/yR1MT5GoJWaeBgAAAABJRU5ErkJggg==", "elephant": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABb0lEQVR4nO1VO04DQQydseg5AaKiWYkW0SDKPQEFHUWE6HOAKCVFbhAJqDhDzhGJHnECThBkCaMXx/bsZBO22SdlFfn33syu7ZRGDIy8T1Jzfrmx7B+f6+p6uUSCRcX2MJmYOa/L5Y4Qq04ooFEkUjQi9oRYdbSQrMkl4f7sNL1/ff8ldyVHEV4tFJE1OQcj2tmimhxFrObTLRsLQRF0LHIG53INBHOwXV41oeO/gFzkBfU9fXQLCEoDg7oGPj22W+3VN65awPXV3UHjigJW82l4EvSV4nQrIk74wT3ZzhabKJB9MkwiYDt78fxRyhzI6ODetAaHBT0dvWlpzRachITO35vYIYpwe3Ph+nSuJmeYGwpvAgXpE0ZLR4B1rI2Ya9exvnZPmORVr2MPmjyC3ngRKA0MOvTpjyKgFrhuewto9jx9VxFUIn95ew4/Nt12NYuoKEAPGy7O/+WHfm0TIaVbyCXyqIDu9ShmxIjk4AfVSeMKLLSD+AAAAABJRU5ErkJggg==", "fox": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACAElEQVR4nNVXLUwDMRRum7qFYHF4kmFIlik8U5h5LAKHQCGmEHMTWDxmCvzUQoIZyTwOS8j0yHfwXd51/b0tIXzJpb32vfd9fdd7vVPqj6HlzdFhd83+8v2tMZeL0hjWHbg9Paja0UytS0WQvCSGkc50ZBC5mlLyXBiXfDCeFItwyREDV46/kTckLxHhIy+BUTtAadqzBAzGE7VYfdUEXClaeZEctrQvgU0ZIOhxZ68SgV0tVzuafTRsb+4figWYlAHIQ6neJvUbAhZO+u4uLxrkKcAWPq0FAE/XV63ICfgwBtqcPaHZwYY6P+lUQfjc24L+2COpSmjZ+THsrqdqtfWz5SJyYN0BSS6LClPrImQzfV3Vq48dUFrehEpySETKhq/p/OWxHuv3hg0RJrUqOsUg5+kLchBLch9MCblvxT5xsfMAguQjsexgMKUWZLRBf6C2hw4J+HyeV+3+WX9DBFfiAj60h11oQ8u9oOVgThZy4QqgCG5S1gjtOvL5tBXCDLGohUAB1p3gK9LvDeuNkhKDVclXLvXWZJ2Gy18hJVUR5DhH4JNbyo3aEUCaexrKM8KEjGRVRIpDpdg3XvJlZFLkMbjkSDtTHxLhnpC2hFwWohy4IuQBRWifI78NXCCAhM8mZu/7NrAxZxCwTRHRRpLm/Nrp2KTvh0QGTc3/C3wDSJs8a11xbpUAAAAASUVORK5CYII=", "lion": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABwElEQVR4nMVXq05DQRDd2axE8AUgqGqCJThMPaqmsppfqOIX0EgMqh6DI7VNGgQVxeEIwV8yN5lmdtiZfXBDT9Lcdu/unLNnZh917sCA1oHj0/OOvm926+Y4oZX4/vZ63zZfuK5VCJQSEjgxx3yx7AXUOgM5co1QExE7s8wKgaHIc8I0ESFHTrOodYKQGwcW+cnZ5759MnsuEkHkTw9X/fN9e2y6ELRAnNxq4wIJRE5jSEQKfqi8IyknlsC4ckVFAixynJ0VXAqhMSUivBaI21ZKLoEipP1SRLAC4GAr7xZQtJX7rANyObWgRLy3XrZab0EuR291lDga3SSLy3ovXZA14N2BEWo6X15Mo9lyfL/dRe9LAdY+oBURkRPhy+qxF6CBrwa1Bja7NdRWPRLjx4JFHglIidDWsTVbDdWHUW4zKhFRshFBqlE7F7g72h6RIrUuJFBz+dTE5Po0XclSQigVmrV09nNiefpJMeAKgYGk7SRE3pyIRKYylYrQSo57wXj0uyCx32TmOk5kpQJayEmAtSL4mWDVgM8JILLU1psilQfSX/62RS58fbx2+KTv2m96ukJAaceaoIhBZv4f+AG3fTaM9D+ZFwAAAABJRU5ErkJggg==", "octopus": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABU0lEQVR4nOVWMY7CMBBc7+UFFIiOHuk6hKi4np6aB9y9gYI/3FfooaKgi4RESXfiDyhokSw5ext7ncQJEtM4snd2Jivba4CeYWIJk/Fn4Vs/X/OonFms8O77yxu3/IUixohpS7hsYg9aEyYkHiMsGQmZwFTiBOKH9gymEteawJTiGhMIHUIygV2JV1UVU5efm+BVQOgZ2NXfV1UBoWfg2xvIQhUYrH9gPls9vzV7JDYeQwE2mRaheNsp/xk4X3PDFzWJYjiulv02fNE9jh/D6XO8306VJqrKLHGl9owaxzYZRxv3hmnjBdTkcYJNH5VNxEUDqUCVldqx4UE0puoJqk24E8TrHDVfIxKb0aRGN6xjjGuglnjML1EmaJ44nMfjs/JNCMVmMSoFbA9/ogmaJ460sbiI5VmO6h6wsASad825ySQTkjnpKBo+4YObkCfzrb00HnVcwjgx9J/nAAAAAElFTkSuQmCC", "otter": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABwElEQVR4nM1XLU8DQRDd3VyCrEKfv6SWVOEIQaEQJKj+AH4BVfAL0M0FgUOhCCEYVIMlqa9G8QuOTMPA3OzMfl2b8kzb3Tf73tzOzl6N2TFsbkBTjztpfLn6yF4LUOWKttenImc6M12JGZsirIlqmM4ek03YkHiucIkJtw1xAMRr9aLWQJMQkGsiVhtOynpo9pIR7Ym4jSop4lAPGuym914DmuDb4GKBzfFFMIMcbrAGNEwOztS5VG7oSFZaJoDl8704R4UW7w8iF9cAtD+dUjJhe0H1uMMFAV9Pi/Xn6GTiGQETlIsmQFiKA37RFozYIggqjuM0a8m0BJcjzjOmZqg5Lq5lD/AGsVloYrkIiYsGqJEhJvCJxC4ku+vruIoRUBwbzNHVrcc533s1pXA5ZDAzRGyQgZZsw8vN5e93yVDqu0CSAd7b8Tc1EYspqoGG3Ix0Qf9k9FtzyhWcZIACjdBOR6HdBxx0W/CUOLMl8DrAJ8qPtNOcSmc/lKE0hyZCLzoukoh5W+3HKFF+qJFZbQJd44KH9effHKsFzJ6K383nojjvklUkIS94DaHC9b9sfS5v0TYkyJtJqL/ncP8VvgE8+fOYwRySHwAAAABJRU5ErkJggg==", "owl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABz0lEQVR4nM1XvUoEMRBOQkpBfAItrA7Eq+Q6GxtB0MbGytLCJ9Ban8DC0srGRkGwsbE7rE4EKwt9AhHsTyYwx2ycn2R34fzgyN7lm5kvk9lkzrk5w9Mvg+W1KT6/fb425rpA8xtz8uHeaRqvbs+mnAjqLIfEJz7tDCytrLvd4Y5ogM44SPy7yX16/vp4+SPScwIQIAScakE1MTR4kYBcBGaiC7TVA4Jk2Edw9CMFFwX0FRwBWyEVb5AqFnF0MmyMFoBXygV4SYDm5PJ8wga2+FCY+VYEzsBaQT5fy2cFDJj0lzitSTdXC8HNGaGENNrYT58c0uo5vsSNllMuMODn/WL2vLB6bPIlBNcSGJQGb4PIvTI0C+PnG1MEhcTnXl3ALAPwfua32ffDOH00SI45W+4ciJJTyMLi9qg6MILaalyf/1ByGkoOOb52CrICUASMbfqAHLit0m3oNePa05ELbvWWsbShKL2iccW0s9LgpQmuPau59dBWa0YAwQoODkqC03m6beBH66SDFpxzbqHmdmQFQLpg1V1RWjPBImA6rYMHgTzajrcuQpfh8XozjVsHT40zH25AOpdDK8IoTaCRVEAl126f/y8dipEEaXP/Gr8a0QBfsXab4wAAAABJRU5ErkJggg==", "panda": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABgUlEQVR4nMVXwU1DMQxNrCzABHCuhLhVXYEByjQcmaYM0BUQN4TEGSboCB+5wsjftR0nStR3+P1pXvycOPF3UroyMm9sbu8X3v76+Vz1tyJir3Dyzd3D2kBKCx8oDWrg3Jo9hEkmnL4//t/f3l9r+mm33Z9/PXthB05/4hFhzZGIE8UygKQeYQKN9RxBwAxxzRErBIAP/IPHejQ825k3aJePmr22OeVRBEmcIe7lAeCznymOtrU8AunKKDXC49PLqn08PIe4Gg9XYbfdLxenICrewo2OhehsIsdU8iJOQMsRGsULOXB0Ys2F6N3je8i1Y0jLKAVIWI7xNiKOkbkg88bsXKA5ALyBnT1x7BVHqCXXyJWwvgGuA6M+TNasOXLNCM/fLSVZtKgtVYusvqvtD+QRN1pfZK9TqxW1OtEqu2T105SINkYJjkIyFF5oaqV8sQZ5hWQUZAPvA9ZKQKvR3pRrAaJEjKe3sXodK2kQ+AlpCV+2OqyLpbWpeIxHX3Kn4hcVKuqrD/BDSgAAAABJRU5ErkJggg==", "parrot": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABjElEQVR4nGNgGGDASK5GLXnd/9jErz28TJKZLORanDrRCav87HyG/6Q4hpFUy3FZjN0x+wg6golWloMASD2uqCLJAVpkWE4sYKK15YRCgYWBCiBc9C8Kf+VrZpR0AAIgR2BLDyzUtJxHJYfBwiwUzN6zzJ7BJeogw/yFnXD5xPhyDEcwURL86D6HWU4KYCJZBw7LiQGg0EBPDyz4NICCC1SwEJsIQcFOtxBYCU1ov44iMDmAiZACSChAUjI2wGaNwNhAYnw55UWxFlq8IUcJrrQAygHInoCZgZ4LGImx3LVmEorY7pY8nA4BRQ0xdQDR2dAVzXIQwCYGsphUy/E6AJfl1AZM5GqkVuXERI7vFUQ3UMVynA5ATmikAFLjHwRwloTYQgBb6qfEchDAqYFQSwbmCORCimoO0JLX/b8tG1Gue01FFCqw6hVWwqHzkQFZjVItNMthDggw5mYgFWw4+5WgI1hIMYxUQHIIaOHwPTlxS3I21BoAy1EcgGwpPQHTQFqOE4Cig1A5MGwAANe7xQRCb/uEAAAAAElFTkSuQmCC", "penguin": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABtUlEQVR4nMVXMUsDMRhNQkZBOzrZwelAuoh0c9Ghi1sdxM3VXyDdFH+AuLqJg/0BXVzciriI0MlBf4EK7iffYY6Y5kte0jt9UHqXy/fey5d8yZ0Q/wyZE1SsbZS+9tnbczKfzhHtdHv+PkKUqWYkKs6Jcnh/fYJMqDbECRTDTRVsoMgUTzGh2hJHTag2xRETGiGY3I5+3Q/2z6B+ob5sBgpn9D5SanPbff2QLMiQgRgpCjsLbnkqLqgp8RiXanPxIVCo4/7WsPoh8PXlsqBQQlQINZl8GLkgobub7fp6+jAWOZCxCvicTOvny4P+nAmCT9zE2TFUDW4VaDuIHtCRai9EIiAyV5wTthETJyikdn3iMbji8BqY/WRBNAAjTCM33G4fGSIwW+cie0PsxUQjJJuHR8nCj9dX9cgXeh/odHsVWQ5MfOh9QIbEbSCjIeyOLupr2zg3FRoRJyAbTWgXrDIhRAmXYQ7I5OneanWNTptEVv/4fKX6X1o/hkh9dc9NgeQMuOIGOwf3wen4ermcaxuefLAGlGgQqScha4CckmNu5acIUcZCm5GMESBfNyHkfLD+Kb4BoRvcjM/FUwYAAAAASUVORK5CYII=", "rabbit": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABWklEQVR4nMVXsW4CMQw9W+z9BPaTWNH9Qj+gH9WvAObuZe1IuyJBJyTUqSP8AJVRjXJpen5OAjwp4gIv9osvdkzT3BlkEdrx5BTON/s11eBCaMeT0/H7szdiJ0P8Ia6CESGH5eo8LLGrj5cLXyBzSwRbBmPHKaMp55ZgU0AKllHUKSRgs19TN31qHh67P7/NFs9maFPrXAJqQDZgZQJbRrbbXW83cZg1Ejnhh6Cp9TWfn4fM9bsw7eRZOWgKwgLe3157zoZGyEfsEypC0wx992glpNrOqx7CtsA5Cr6m86JSfCvwtUNvRYGbO4M9J1rTqwbPJaD7x2Bcfj2OXQJS0Jsyx2kIQhuS1PUqzlOHNVxjFSMaEiCfpdmQLaA0JdH7gBBjnmh4LiIBdAi9/b2HzwjJ8xqQ+u8W4IVHBOfsPq523uoXYpS16rc1l4ZVkZuuhJByGsziP6a3wg/1Qie3C5ZSrwAAAABJRU5ErkJggg==", "tiger": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB9ElEQVR4nM1XPUsEQQzdGRcbO0sbK5sFK0H8CWKhNvZWgv9AtFb8B4KVvY1aiD9BBCtBBCsbweYKwUaQk7dcllxIMjPnnfrg2M1skvfmKzNXVX+MoDU284t9bj++PKh+KfA8Vo5aC7o+WBhqWzus+jyBFChJ6DvPgxyakGCRz24ctc/e5f4gwXPnB5/Tm9fO3lmda+2L+4/W3lyaadusPFxELckpgEBEJIwTSxAxfPDbOznrviEviXCnQIJ6UgKKOd7dHhKhIXofNcU5xNyGiCIBvQGpRW6NiNfuiQjcoHWA+csZ+lw/8sUidXeBtQ3HAbn61SloJkQOIK9WP+JE2ApExN/ovYc65YACsrK81b7nCCz1j9zQqhwly4Xnr+WPOU7WqkZv6ZmClTfwNcAPEWBqer36+rwaCuBk6O3t3Xlny+KlxcvtGOkFjSgUpBTB/KmBk0to8VotCDLQ2w05Q22V8axCBMCJn/2l5BoscsC8amkjUToC1BHvShe8RLxqyZtSzlaU1zhNSEhmYwlo0WlzTMJAnro/8u+hRACfEj4SUhDNOW1tgO6LUkD8KblmWycfiOU0xFLyUa5qHkIpec4U5NyEkiPQjOl49sgBtw5Ydd7aiuQjz4tR/9pVEPH+9tT+8K7ZKZ+RiCshgieSdq7Pv8U3EFJjYSCtdVwAAAAASUVORK5CYII=", "turtle": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABWUlEQVR4nGNgGAWjYBQMMGAkRpGWvO5/bOLXHl4mSj8+wEKM5akTnbDKzc5n+E+pQxjxWQyiYZYfO/USQ42VmTjUIfswHIEt1LA5lJEYX2OzHJ8jQPrnNftjqE2q3YjhCCYGKgGQg0EW47IcBEDi6CHDREqcEwNwWY7LEUzEGAoLZkLihCwnORccQ4p7bI5AlwfFMTZHaLnHMFiYhWKVY8IV/OgJj1Q+MgBZTlIIHMNjGD55sOM/YYrjixomBioDUDTgE0eXZ0IO/hOnVjMkW2ZiNQA5DeBKlOhA+p8KGMNCAVsaYYRZDqJBDkAGc49PZyAWIDv82s4lONXBQgBWIDHCJJDzJrJD8CUgbI5G1wPzMbrFOItiLbSSCpsF6ADmY2yWwMzDVWExYhNEL05xJSxiy3t8gJFUy7H5Dt0xpDiCEZsgssEggwgFI3q0UaOhMgpGwShgoBcAANmru5lBkwbOAAAAAElFTkSuQmCC"}, DOTH = {"beaver": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABAUlEQVR42uWXMQ7CMAxFexN2pO6cg+MgDlP1NByBnYmVC4A6pDKW7frbCY1EJatDUv+XxLWdYejtOR7GdzFrjJs2Fxa/nE+rFQfFGR3jxoG4DwjgNl+/nFrCllE/MEBGuIjCAN7tRiDScVADYjdxGGJXgFbiXQC4IDQABMyaawJsiXsgPHNVCHT7lwRDLX0MXoAiSHN+M4DHNJkAy/v1vK8AFET6NhyEHEAqxT/9FSMAVdMxGgNwMaqRlEKiWy1X0xIsrTzaF1QFyB6Bt4GFzh9pUHnGpHkEhuCrkLIisnuh4qStKFpBQ7WhO4BMD+E6Bm/QSbFSpTZ4TLtTInfJ/30+Nq4edqlrkzMAAAAASUVORK5CYII=", "cat": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABN0lEQVR42tWXTQrCMBCFexP3gjcTPIQ7d67d9BRudeOiN3AvCG69gJLChGF46fwkSlt4WNNk3pemmSRdN7drvdp8uP4eIzUYrucsb4BU/7A/Zrnak/mj70d5Ibg5xXBBlAAIQhPvOcVICgFw85K4IVIYwCMNIjQErSF+DtAEosbcAjIJ0MpcUxFi1gAeOK2uG4DKLRCWusscAqn36z6K0m+6rzKfgkApmQDkPWrHY5qSkYRAAGgR0sCbZkILQOn1mzYoWlA+/to3wA35cm0ejujsQD11A6D9XcQ4BCA3lOl3d7pkcVNergUmCNeURD1/3rZZBKH1zv0GvGtBU4Da7RkyML9+NAuooRUCzf3Q9kzuaCxLL88L1YcUyvWUfDz/5ZCEjmiaIS8rPY+eL+EhEx06p54t4voCC/bk8GekFsAAAAAASUVORK5CYII=", "dolphin": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAtklEQVR42mNgGAVDEWjJ6/6H4QGxOH/2fjjG5hCaORDdcmwOweVAqjkGnyMIYao4ghIHDApHUOwASkOAIkeQYzk2PWQ5gBLLseUMugc7RaEwoA6gVqJDjw6aOuDxggVg/OnlDTBGLxGJLhnxWQ4yGFviglmKjskqktEtwGYoLgeQ7FtyLEfHyOJUL26xBSNZ8UpMXU+10ouShgbdLCeU4una7MLVohmQRufIdgBydIx2QkbBsAcA1q08x7spIpEAAAAASUVORK5CYII=", "elephant": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA8klEQVR42u2XSwrDMAxEc5PuCzlld931BjlF1t32HD1ISxYCVYxH8keElBgEibE0D38ke5rOdsR2vcwfZCkiqO9+e0BjPtXCNigTLoGgOK64OLyX5cc5Ko58bCwqvg3W1iKuxWw8CJEhXgWBBmUCSGwKMEKcQRwPIAqExnUDyLcHURrXBOAtAwJs3oSRWdDJxAOwx80VZxDRtS7NQli8BFEKLP2v5xrefOGipB1ZMWJFR6xa3CvHCACBNZfjSKWM5IKUW9BuALVpeXeAoRC9F5JucTnn7O7HMuQQAJ1s5H8zAbB9Nh+kvAHQWU9/K5ztL9sX4fYXjDzUd1MAAAAASUVORK5CYII=", "fox": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABPElEQVR42tWXTQoCMQyF5ybuBfdewAu49yKeZpYeyb0rt15A6cCDEPuSJhP8GQiCTd776LRpZ5p+6dludk/EVzRa0eV0WCIjAOOUhizMCGjzUL0sfNyvYRFt3jSgMwSBYhRGIJj5RwFkbhlAi/Nx/wYhV7k0b7ktygE0hJ4ZCaDrS2fAi9UAWiBiziDCAJiFjLleiAAK9QIYrwVAfbib9rrZGogUgLWn2XR7vWP4gGIdjUF4OTCV4yYE245SpAegTWDeA3QBmDl+NYAeZ1AuhFXARLLjQwC3eV6iV8zEZb61oFfNgj6MrHfNGpTZIyzREQD85zWzoS3JYPSY3nIlANa2ZKde5BwpB5CXklLzSOcDQMn79/q+dT5YEGnzXnv1AHSE7wY9ARnMiOWH7wUQ8QBYTunHak/UG/+L5wUzsFiJGFTBCwAAAABJRU5ErkJggg==", "lion": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABJElEQVR42tWXzQkCQQyFtxPvgp1ZgtXYi2AJViB4tQE9ZYkhefldZIUguzvD+yaZZDLLstff8XD6kP1F+H69rLYpCF+pFJYQ455BghbEmGey4h5YWdxzvSXI56UAuNjzdl4tCkHCNC/tBRLi4gQg38nvUpxDhACs1UcA0LiQF6SLK+LWnNCG1GKcFdVCEs4Ka3AHIpWWGkDF9RGIMEBXXAMI7wFt9ZFULEN4APRsiaDvIwDS3q/Hj7XDkNkDJEqplgEoFyO0egSQPhUjELJJQeEqH0YIIgpQ7glQCaWYc3EegpGGxGo+UdOBxox1wV6N52e/1qS2YFCBkfsD1ZYxcZSCfPUj3bFXC7xUbe8BS0i+1zJk7HYkS6/1TP+bX9E8280t+ws2YXsw9y8hdQAAAABJRU5ErkJggg==", "octopus": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA2ElEQVR42u2XzQmAMAyF3cS74BiO4QZO4hQeHUtwEAUhICVNX2LiD1jIpfryvoaStlX1tdHU7SZFuPEyDmK4g6DGIRBaYw7kMfNLEF7mJghvczVEJAAEEQUAVSHSHIJ4FOAOcxHiB3g1gAYOPTFhAJpHE5f+FRuSZaWWoxpuRus0HWEpN6dVt2JKwiVKwxWgVFYEQN2Cz5tDc/e7bJ4aWu6AGlgI4HUnoSdUthIWACuYCWDuu+xqJE2qK+4FElGQgJvPgZc0qrdfDi79xunc341SslseqBFjB/a74bLdwqYXAAAAAElFTkSuQmCC", "otter": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABHUlEQVR42tWXPQ7CMAyFexN2JM7GBdjY2JhZKi7CyhHYmVi5ACiVLFnGjn/iBLXSk1Br532KQ+JM09qe7Wb34TTM9H49sOoCo5nWYFLMvcZpEK3mYQhLrSMQprUBppnmdLwqRC8APKZ5FnrIVYbaNHqm3L0guWRPaaRY878BEt+vxyLOpLzHK1uLhW/mGYCkouc8L8LvQDQWjKS8MIBmyr3noEMAkrjTUIt374ZZAOEzwQNR+77e45juCwCzv9x+NAwAfv8FgBpI5uldEbet4nKED55I/bUVj4FTAejeLkkrgatzbgWgEObOSGtMrOa0fK4FihNOx7MLgMZLPYa5BGVADQKbg6Rd1N2cYADpXkhjMUDTHdKTPPSymvl8AQ1XMH6lACw5AAAAAElFTkSuQmCC", "owl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABL0lEQVR42s1XwQ3CMAzsJvyRmIAHizACEnswRZ8swg78kZD4sgDIlYwcy3F8boBWOvWRy/maWrYzDEt61qvNi/EXXSKcjucJNbIU08hqFuTtbl9s0OA1CzU+aRLCBhgs6gX1zMjgIQPaRCawBhTc+g09ACV19si7mLCCPx/X4t0C8SwubICFLHiBPX64Dnhiloko3zUQ/XotinBdE4s2QGvRQB4/ZKAmpkXvl8MHEX7agPeVFBw5na45IBtOlxywTuE2jhMyiaj3QnUgcgpIHeheDVtlOB1cTz29mhDUiuWGuSbg2VIOI2wEHU7kvrQBFtLjGdL14EnIMsECaNdLzYJWAkoDSC+YZcDKhYyB1EDamox/8gu8GxB3P13/9VrkxpQy4gWx1r52eUXXFv28AayLCctc9KSFAAAAAElFTkSuQmCC", "panda": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABAklEQVR42s2XzQ2EQAiF7WTvJlawh23Ewm3Bqw3sxgPJSPh5MLijCYmZIO9zBAan6UnX/Fq+rf013unw/qwX4w/ygJJF4pni/KHTjn1zjXyteDBARFgCgSG07coIIyAuQJU4mfsJOEQ1AI/tlk2lOE9OtxTvECeAYeIQxGMBeAmh2R6GkACkJoKIW74wgNQ8PACp6ZQAUGArT1qfEgBrW1tfutf6fhdAG1hrLJFEHN4LoCEHgZAGkRJxFCICkB7v0MCeT3qIlNYip176rfm5zdcsgwaPCIA12SLzXwkE2uOtobYLogcgvRMWQOQ0LAVAKmEogFYNXcno9QWt5qt/cm+9fj4UYxEiJd5DAAAAAElFTkSuQmCC", "parrot": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA8klEQVR42mNgGKpAS173PzZMN4v7N+RjxTR1DD6LcTlmwCynqiPItZwqDqDEcqo4ghgHPDuag4KpmigJOQDdcpB6ZPbJA9vgmGRHkGs5Mk0zB6Bbjg2jO4CqjiDWAciYJqHwoAuB8YUA2Q6gJBSQfU52FGCreIhxBHr2IzsrgjTlz96PgvE5hKp1ADbLkR1B0woIn+WDwgE0r/3IsZyqDsDnCJo3QHBZjq85RvUmGK5GJ7ojaNIGBBmGXMSil+ewEg0bnyr1P7LlMAdUBVmQjMku+bA5gBxMNcvp1tMZMMuRHYDsELo7AIYHxAHYHMMwEgAAllsbLS0zgEMAAAAASUVORK5CYII=", "penguin": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABEUlEQVR42tWXzQ3CMAyFuwl3JCbgwCKMgNSBuHQTTuzAHQmJKwsUFckoWLb77DgFKr1L5eR9zo+TdN0/fuvVZpS0mOl2txfVDMYytWC+Zp4GUWNeDZFhHobINA9BcIDH/fIhzYTHlbEwwJy5BoLEQBAlgGXukQuCALLMXVPRIvsQAG88/UeNrNgQAHUodUx1H4kNA1iZ3s6Hl9ARCq2B6zC8JWXPR4G3cwFoo8A7QhQyb10HXNXQs/IRY2joeeDcDSj1ECqNqBEB9MeTW3DmGgDPPAJQfRJqF05LzSDQ4qQBhLahF4AkmYe2ITWkkhs5/6uvZGSO1n0eP2kxgPKAqgIop0EC0CCs+PSHKKqff2k/Afv9hXvekq8NAAAAAElFTkSuQmCC", "rabbit": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA8ElEQVR42tVXMQ7DMAj0T7pXyp/zis5d+4Pumbr2A61SCYkgjCFcHNcSS4TuzocNTimjr+tl+vBA5brJ36/nJixgmZ8WQYDLPP/CAuXklJsSIcktUEnuEbxLQA00kgtx4XG/bYAjbnUVADmEK5kE5wLoysHtr+2OCImAWw0n5y5oPUELng/thh5yLgLqQIT8kE54ioAsOawVnyIARb5bxJACIqLS7wINQAPmQ4fff61LwktQI4IfRDlePWWBPUisHcno2g09AtLzoEXS+g4dQi2boZbXBHSdgkOMYs8htEp0uID12UUR/YWD3IhWlH9ZX1hewi8Mjr8XAAAAAElFTkSuQmCC", "tiger": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABOUlEQVR42s2XPQ7CMAyFexN2JHbO0eNwFKYeixGJiZULgIL0kHnEf0kqWsmiAfv5S5O4Zpq2eO13h6e0ETqpoOt5/jIWYEBOgjFruCAy6HG/vI0F4HOajx/DGL/jO03HTI4AmEyCRBoA37NWEwAvRwRA+nYBcHIPQPNPAQCiJsbCtVlbECaAhIiIZvzkJm06hiPsr8nDEGsDhDfh5gCycJ6WClDb1RCLQlj+5kkAQPRoFf9ytvEZrRupJ3Bblh8hWSmRXKuctXi3EAGiBMM0AOu9UYvvrgVy5mzeO6S7KeFHnwFo6qoyENpS9LZ0E3dB3h5gONbqblStNZbJvf6xGUBbDm3NZW3pArCSWxAMMGTmGsQqAJGa4JXhVZJnALoevZbEK8V8JIccPS46tUJUGw/7o6qNoz6bvV76Xaqb4u2ehAAAAABJRU5ErkJggg==", "turtle": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA5UlEQVR42u2WQQrCQAxFexP3gscRvIV78Q5eoXgCj+ER3Lty6wWUKQRC+5P8TkdFSOBDmdD+12SaaddlZGT8Q6xXmxfS18xPlz3UR0Hk4WK2Pewm0iBM1arfGpl7EOX6ej5OREPUAOiWIHMaAvV8DoBnTkFYmy4yL2LMZwF4Zijv9Z4CYHe9lUcAsqZzIUDUby+/qAUtAKI2mDOhLD4ft0HMhmMA7n0/SENAAFkUAJE1gpH0fVH5zQogEOsgsqDH94TG0QxHBmN5JlUHFvpukRbN+1pzq1rNIbRhVMaf/KhkZGS0ijdfqHgNAUcuIgAAAABJRU5ErkJggg=="}, DOTF = {"beaver": 0.98, "cat": 1.0, "dolphin": 1.3, "elephant": 1.08, "fox": 0.99, "lion": 1.01, "octopus": 0.96, "otter": 1.03, "owl": 0.99, "panda": 0.96, "parrot": 1.2, "penguin": 1.0, "rabbit": 1.15, "tiger": 0.98, "turtle": 1.29}, DOTNAME = { "비버": "beaver", "수달": "otter", "판다": "panda", "호랑이": "tiger", "거북이": "turtle", "문어": "octopus", "돌고래": "dolphin", "여우": "fox", "부엉이": "owl", "토끼": "rabbit", "앵무새": "parrot", "고양이": "cat", "사자": "lion", "펭귄": "penguin", "코끼리": "elephant" };
+  function dotOf(k, happy) { var p = PAIRS[ART[k] ? k : pk(k)]; return p && ((happy && DOTH[DOTNAME[p.animal]]) || DOT[DOTNAME[p.animal]]); }
   function dotScale(k) { var p = PAIRS[ART[k] ? k : pk(k)]; return (p && DOTF[DOTNAME[p.animal]]) || 1; }
-  function cardLink() { return TOSS ? "토스에서 '직업동물' 검색" : "직업동물"; }
+  function cardLink() { return TOSS ? "토스에서 '직업동물' 검색 · " + QUESTIONS.length + "문항 2분" : "직업동물"; }
   // from my own answers: the animal that shares my top type, and the one made of my two lowest types
   function kin() {
     var r = ORDER.filter(function (x) { return x !== S.type && x !== S.sub; }).sort(function (a, b) { return (S.scores[b] || 0) - (S.scores[a] || 0); });
@@ -759,7 +808,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
       var cv = document.createElement("canvas"); cv.width = W; cv.height = H;
       var cx = cv.getContext("2d"), ink = "#2a1f2d", mute = "#7a5238"; cx.textAlign = "center";
       var line = function (s, y, px, w, c) { cx.fillStyle = c; fitText(cx, s, 940, px, w); cx.fillText(s, W / 2, y); };
-      var L = sq ? { art: [80, 400], title: 600, tag: 670, sub: 738, kin: 796, band: 900, ask: 966, link: 1018, end: 1080 }
+      var L = sq ? { art: [80, 400], title: 600, tag: 670, sub: 742, kin: 808, band: 880, ask: 950, link: 1026, end: 1080 }
         : { art: [330, 540], hi: 950, title: 1055, tag: 1140, sub: 1215, kin: 1285, band: 1400, ask: 1466, link: 1514, end: 1550 };
       cx.fillStyle = "#f2e9d8"; cx.fillRect(0, 0, W, H);
       var top = L.art[0], room = L.art[1], g = art.naturalWidth || 32;
@@ -770,12 +819,12 @@ table.data th { background: var(--sunk); font-weight: 600; }
       cx.drawImage(art, (W - a) / 2, top + (room - a) / 2, a, a);
       if (L.hi) line("나는", L.hi, 44, "600", mute);
       line(t.title + "형", L.title, sq ? 80 : 104, "400", ink);
-      line(pairNames(k), L.sub, sq ? 36 : 42, "600", col);
+      line(LEAN ? TYPES[k[0]].name + " 1위 · " + TYPES[k[1]].name + " 2위" : pairNames(k), L.sub, sq ? 40 : 44, "600", col);
       line(JOKE[k] || t.tag, L.tag, sq ? 42 : 50, "600", ink);
-      line("닮은 동물 " + kn.near + " · 반대 동물 " + kn.far, L.kin, sq ? 32 : 38, "600", mute);
+      line("닮은 동물 " + kn.near + " · 반대 동물 " + kn.far, L.kin, sq ? 40 : 44, "600", mute);   // readable in a saved photo: about 14px on a phone
       cx.fillStyle = col; cx.fillRect(0, L.band, W, L.end - L.band);
-      line("나 " + t.animal + " 나왔어. 너는?", L.ask, sq ? 50 : 58, "400", "#FFFFFF");
-      line(cardLink(), L.link, sq ? 28 : 32, "600", "#f2e9d8");
+      line(LEAN ? "나는 " + t.animal + "형! 당신은요?" : "나 " + t.animal + " 나왔어. 너는?", L.ask, sq ? 50 : 58, "400", "#FFFFFF");
+      line(cardLink(), L.link, sq ? 40 : 44, "600", "#f2e9d8");
       return cv;
     });
   }
@@ -812,6 +861,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
     { key: "value", q: "일을 고를 때 가장 중요한 건 뭐예요?", o: [["pay", "연봉"], ["stable", "꾸준한 수입, 안정"], ["life", "퇴근 후 내 시간 (야간·주말 적게)"], ["grow", "앞으로 일자리가 늘어날 일"]] },
     { key: "style", q: "어떤 일이 더 좋아요?", o: [["body", "몸을 움직이는 일"], ["desk", "앉아서 하는 일"], ["any", "상관없어요"]] },
     { key: "people", q: "사람 만나는 일은 어때요?", o: [["many", "사람 많이 만나는 일이 좋아요"], ["few", "혼자 집중하는 일이 좋아요"], ["any", "상관없어요"]] }];
+  function setupQs() { return LEAN ? [SETUP[0], SETUP[4], SETUP[6]] : SETUP; }   // situation, deadline, hours: what the plan leans on most
   function optsOf(st) { return typeof st.o === "function" ? st.o() : st.o; }
   function qOf(st) { return typeof st.q === "function" ? st.q() : st.q; }
   var MAJOR = { mun: "문과", ri: "이과", ye: "예체능" };
@@ -944,7 +994,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
     if (S.view === "job" && !JOB[S.jobView]) S.view = "home";
   })();
   var dict = { q: "", type: "", scope: "", limit: 30 };
-  var pickQ = "", pickMore = false, avoidOpen = false, pickField = "", openMonths = {};
+  var pickQ = "", pickMore = false, pickEasy = false, avoidOpen = false, pickField = "", openMonths = {};
   function keepY() { var y = window.scrollY; render(); window.scrollTo(0, y); }
   var aiCtl = null, aiBusy = false;
   var qTimer = null;
@@ -1157,6 +1207,9 @@ table.data th { background: var(--sunk); font-weight: 600; }
     if (tier === "light" || lowWill) {
       add(0, "작은 걸음", "오늘 5분: 이 직업 현직자 영상 하나 보기", "보고 나서 '해볼 만하다' 싶은 점 하나만 적어둬요.", "talk");
       add(inD(2), "작은 걸음", "이번 주: 관심 가는 공고나 모집 글 하나 저장하기", "지원하지 않아도 괜찮아요. 어떤 조건을 보는지만 눈에 익혀요.", applies ? "jobs" : "talk");
+    } else if (LEAN) {
+      add(0, "작은 걸음", "현직자 영상에서 궁금한 업무 1개 고르기", shortName(j) + " 현직자 영상을 하나 보고, '이건 더 알고 싶다' 싶은 업무 하나만 적어둬요.", "talk", false, { est: "5분" });
+      add(inD(2), "탐색", "실제 공고 3개 비교하기", j["한줄설명"] + " 공고의 자격요건과 우대사항에 반복해서 나오는 걸 표시해 보세요.", applies ? "jobs" : "talk");
     } else {
       add(inD(2), "탐색", "직무 알아보기: 현직자 영상 보고 실제 공고 3개 비교하기", j["한줄설명"] + " 공고의 자격요건과 우대사항에 반복해서 나오는 걸 표시해 보세요.", "talk");
     }
@@ -1164,7 +1217,8 @@ table.data th { background: var(--sunk); font-weight: 600; }
       "국민취업지원제도는 취업 상담·교육과 함께 구직촉진수당(소득 요건 있음)을 받을 수 있는 제도예요. 구직을 쉬고 있는 청년이라면 청년도전지원사업도 있어요. 고용24나 가까운 고용센터에 물어보세요.", "gov");
     if (urgent) add(inD(3), "작은 걸음", "준비하는 동안 단기 일·알바 구하기", "생활비가 안정돼야 오래 준비할 수 있어요. 이 직업과 가까운 곳(관련 매장, 현장 보조, 스태프)이면 경험도 같이 쌓여요.", "alba");
     if (tier !== "high") {
-      add(inD(5), "교육", "국민내일배움카드 신청하기", "고용24에서 신청해요. 국비 지원 과정을 들으려면 먼저 있어야 하고, 발급까지 보통 1~2주 걸려요.", "card");
+      if (LEAN) add(inD(5), "교육", "국민내일배움카드 신청 대상인지 확인하기", "고용24 안내에서 내 상황으로 받을 수 있는지 먼저 봐요. 대상이면 이어서 신청해요. 국비 지원 과정을 들으려면 먼저 있어야 하고, 발급까지 보통 1~2주 걸려요.", "card");
+      else add(inD(5), "교육", "국민내일배움카드 신청하기", "고용24에서 신청해요. 국비 지원 과정을 들으려면 먼저 있어야 하고, 발급까지 보통 1~2주 걸려요.", "card");
       add(inD(7), "상담", "무료 상담 예약하기", p.status === "hs" ? "졸업한 학교 진로 선생님이나 가까운 고용센터·청년센터에서 무료로 진로 상담을 받을 수 있어요." : "학교 대학일자리플러스센터나 가까운 고용센터에서 진로·취업 상담을 무료로 받을 수 있어요.", "gov");
     }
     if (tier === "light" && j["빠른루트"]) add(inD(6), "루트", "빠르게 들어가는 길 확인하기", j["빠른루트"]);
@@ -1328,6 +1382,24 @@ table.data th { background: var(--sunk); font-weight: 600; }
       "</article>";
   }
 
+  // LEAN result: animal + 2 traits + share, then 3 jobs that each go straight to setup
+  function leanResult(key, P, t, u, recs) {
+    var h = '<section class="result-hero lean-hero"><button class="btn line small share-mini" data-act="shareLean">↗ 공유</button>' + ani(key, 80) +
+      '<h1 class="display" tabindex="-1">' + esc(P.title + "형") + "</h1><p>" + P.good.slice(0, 2).map(esc).join("<br>") + "</p>" +
+      '<div class="chips-mini"><span>' + esc(t.name) + " 1위</span><span>" + esc(u.name) + ' 2위</span><span style="color:var(--muted)">닮은 동물 ' + esc(kin().near) + '</span></div></section><div id="sharebox"></div>';
+    h += '<section class="stack"><div><h2 class="lean-h">어울리는 직업 ' + recs.length + '개</h2><p class="small muted" style="margin:0">' + esc(t.name + "·" + u.name) + " 흥미에 맞는 일로 골랐어요</p></div>" + recs.map(leanJob).join("") + "</section>";
+    return h + '<button class="linkbtn lean-link" data-act="refine">결과가 안 맞나요? ' + REFINE.length + "문항으로 다시 고르기</button>" +
+      '<button class="linkbtn lean-link" data-act="altPath">학력·전공 조건이 안 맞나요? 다른 준비 경로 보기</button>' +
+      '<p class="small muted">흥미를 알아보는 참고용 테스트예요. 공인 심리검사가 아니고, 능력이나 합격을 판단하지 않아요.</p><div id="ad-result"></div>';
+  }
+  // what the job does + which of my two interests it follows; entry = education + major rule from jobs_v2
+  function leanJob(j) {
+    var k = first(j) === S.sub || (first(j) !== S.type && second(j) === S.sub) ? S.sub : S.type;
+    var cond = "시작 조건: " + j["학력"] + (j["전공요건"] && j["전공요건"] !== "무관" && !/관련/.test(j["학력"]) ? " · " + j["전공요건"] : "");
+    return '<article class="ljob"><h3>' + esc(j["직무명"]) + ' <span class="small muted" style="font-weight:400">' + esc(TYPES[k].kw) + " 흥미</span></h3><p class=\"why\">" + esc(j["한줄설명"]) + "</p>" +
+      '<div class="between small muted"><span>' + esc(cond) + '</span><button class="linkbtn" data-act="openJob" data-arg="' + j.id + '">연봉·출처 ›</button></div>' +
+      '<button class="btn block" data-act="choose" data-arg="' + j.id + '">준비 순서 받기</button></article>';
+  }
   /* ---------- Views ---------- */
   var V = {};
   function titleSplit(n) { var m = /^(.+?)\s*(\([^()]+\))$/.exec(n); return m ? esc(m[1]) + '<span class="sub-name">' + esc(m[2]) + "</span>" : esc(n); }
@@ -1348,6 +1420,12 @@ table.data th { background: var(--sunk); font-weight: 600; }
         (next ? '<p class="small">다음 할 일: <b>' + esc(next.title) + "</b></p>" : "") + '<button class="btn block" data-act="go" data-arg="route">루트 이어보기</button></section>';
     }
     var resume = S.answers.length > 0 && S.answers.length < QUESTIONS.length;
+    if (LEAN) return h + '<section class="hero"><span class="kicker">동물 15종 중 나는 누구일까?</span><h1 class="display" tabindex="-1">나랑 맞는 직업 동물은?</h1>' +
+      '<div class="parade">' + PARADE.map(function (k) { return ani(k, 0); }).join("") + '</div><p class="muted">' + QUESTIONS.length + "문항 · 약 2분<br>직업 3개와 준비 순서까지 무료</p>" +
+      (resume ? '<button class="btn block" data-act="resume">이어서 하기 · Q' + (S.answers.length + 1) + '부터</button><button class="btn line block" data-act="start">처음부터 다시</button>' : '<button class="btn block" data-act="start">테스트 시작</button>') +
+      (S.type ? '<button class="btn line block" data-act="go" data-arg="result">내 결과 다시 보기</button>' : "") + "</section>" +
+      '<button class="linkbtn lean-link" data-act="postsGo">지원할 공고가 이미 있어요</button>' +
+      '<div class="foot"><p>흥미를 알아보는 참고용 테스트예요. 공인 심리검사가 아니에요. 기록은 이 기기에만 저장돼요.</p></div>' + nt;
     h += friendCard();
     var live = posts().filter(function (p) { return !p.closed && postApp(p).st === "plan"; }).sort(function (a, b) { return (a.dl || "9") < (b.dl || "9") ? -1 : 1; });
     if (live.length) h += '<section class="card"><span class="small muted">준비 중인 공고 ' + live.length + "개</span><h3>" + esc(live[0].co + " · " + live[0].role) + '</h3><p class="small muted">' + esc([dday(live[0].dl), (live[0].tasks || []).filter(function (x) { return !x.done && !x.gone; }).length + "개 남음"].join(" · ")) + '</p><button class="btn block" data-act="postOpen" data-arg="' + live[0].id + '">이어서 준비하기</button></section>';
@@ -1380,6 +1458,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
     if (!S.type) return V.home();
     var key = myKey(), P = PAIRS[key], t = TYPES[S.type], u = TYPES[S.sub], recs = recommend(null, 3, 1);
     var li = function (x) { return "<li>" + esc(x) + "</li>"; };
+    if (LEAN) return leanResult(key, P, t, u, recs);
     var h = '<section class="result-hero">' + ani(key, 116) + '<span class="typeline">' + esc(t.name + " 위주 · " + u.name) + '</span><h1 class="display" tabindex="-1">' + esc(P.title + "형") + "</h1><p>" + esc(P.tag) + "</p></section>";
     h += '<div class="grid2"><button class="btn line small" data-act="share">친구에게 공유하기</button><button class="btn line small" data-act="saveAsk">이미지로 저장</button></div><div id="sharebox"></div>';
     h += '<section class="card"><span class="sec-title">이런 사람이에요</span><p>' + esc(P.desc) + '</p><span class="sec-title">이런 게 장점이에요</span><ul class="bul">' + P.good.map(li).join("") + "</ul>" +
@@ -1421,13 +1500,17 @@ table.data th { background: var(--sunk); font-weight: 600; }
       '<button class="btn line block" data-act="go" data-arg="result">내 결과로 돌아가기</button>';
   };
   V.setup = function () {
-    var st = SETUP[S.setupStep], val = S.prefs[st.key];
-    var dots = '<div class="dots" aria-hidden="true">' + SETUP.map(function (_, i) { return '<i class="' + (i <= S.setupStep ? "on" : "") + '"></i>'; }).join("") + "</div>";
+    var Q = setupQs(), st = Q[S.setupStep], val = S.prefs[st.key];
+    if (LEAN) return '<div class="qhead"><span class="small muted">' + (S.setupStep + 1) + " / " + Q.length + '</span><button class="linkbtn" data-act="quitFlow">나가기</button></div>' +
+      '<div class="progress" aria-hidden="true"><i style="width:' + ((S.setupStep + 1) / Q.length * 100) + '%"></i></div>' +
+      '<h2 class="qtext" tabindex="-1">' + esc(qOf(st)) + '</h2><div class="choices">' + optsOf(st).map(function (o) { return '<button class="choice" data-act="setAns" data-arg="' + o[0] + '" aria-pressed="' + (val === o[0]) + '">' + esc(o[1]) + "</button>"; }).join("") + "</div>" +
+      '<p class="small muted" style="text-align:center">' + Q.length + "개만 답하면 준비 순서를 만들어요</p>";
+    var dots = '<div class="dots" aria-hidden="true">' + Q.map(function (_, i) { return '<i class="' + (i <= S.setupStep ? "on" : "") + '"></i>'; }).join("") + "</div>";
     var opts = '<div class="choices">' + optsOf(st).map(function (o) {
       var on = st.multi ? (S.prefs.have || []).indexOf(o[0]) > -1 : val === o[0];
       return '<button class="choice" data-act="' + (st.multi ? "toggleHave" : "setAns") + '" data-arg="' + o[0] + '" aria-pressed="' + on + '">' + esc(o[1]) + "</button>";
     }).join("") + "</div>";
-    var intro = S.setupStep === 0 ? "<p>" + SETUP.length + "개만 물어볼게요. 지금 상황을 알면 루트를 훨씬 현실적으로 짤 수 있어요.</p>" : "";
+    var intro = S.setupStep === 0 && LEAN ? "<p>" + Q.length + "개만 답하면 준비 순서를 만들어요.</p>" : S.setupStep === 0 ? "<p>" + SETUP.length + "개만 물어볼게요. 지금 상황을 알면 루트를 훨씬 현실적으로 짤 수 있어요.</p>" : "";
     return '<div class="between">' + dots + '<button class="linkbtn" data-act="quitFlow">나가기</button></div>' +
       friendSay(intro + '<h2 style="font-size:var(--fs-16)" tabindex="-1">' + esc(qOf(st)) + "</h2>" + (st.note ? '<p class="small muted">' + esc(st.note) + "</p>" : "")) + opts +
       (st.multi ? '<button class="btn block" data-act="setupDone">' + ((S.prefs.have || []).length ? "다음" : "아직 없어요, 다음") + "</button>" : "") +
@@ -1460,10 +1543,11 @@ table.data th { background: var(--sunk); font-weight: 600; }
   V.pick = function () {
     var p = S.prefs, pp = p.status ? p : null, recs;
     if (pickField) recs = JOBS.filter(function (j) { return j["직군"] === pickField; }).map(function (j) { return { j: j, s: jobScore(j, pp) }; }).sort(function (a, b) { return b.s - a.s; }).slice(0, 40).map(function (o) { return o.j; });
+    else if (pickEasy) recs = JOBS.filter(easyEntry).map(function (j) { return { j: j, s: jobScore(j, pp) }; }).sort(function (a, b) { return b.s - a.s; }).slice(0, 6).map(function (o) { return o.j; });
     else recs = recommend(p, 6, 2);
     var shown = pickMore ? recs : recs.slice(0, pickField ? 5 : 3);
     var who = S.type ? esc(PAIRS[myKey()].title) + "형이고 " : "";
-    var h = friendSay('<h2 style="font-size:var(--fs-16)" tabindex="-1">' + who + "지금 상황까지 생각해서 골라봤어요.</h2><p class=\"small\">카드를 누르면 하루 일과, 연봉, 지금 열린 공고를 볼 수 있어요.</p>");
+    var h = pickEasy ? friendSay('<h2 style="font-size:var(--fs-16)" tabindex="-1">대학 학위나 관련 전공 없이 시작할 수 있는 직업이에요.</h2><p class="small">' + who + '흥미에 가까운 순서예요. 학력 조건만 없다는 뜻이고, 자격증·면허가 필요한 직업도 있어요. 카드에서 준비 기간을, 누르면 필요한 자격을 볼 수 있어요.</p>') : friendSay('<h2 style="font-size:var(--fs-16)" tabindex="-1">' + who + "지금 상황까지 생각해서 골라봤어요.</h2><p class=\"small\">카드를 누르면 하루 일과, 연봉, 지금 열린 공고를 볼 수 있어요.</p>");
     h += '<div class="stack" style="gap:6px"><p class="small muted">관심 있는 분야가 있으면 골라 보세요</p><div class="chiprow">' + [["", "전체"]].concat(fieldOrder(pp).map(function (f) { return [f, f]; })).map(function (c) {
       return '<button class="chip" data-act="pfield" data-arg="' + esc(c[0]) + '" aria-pressed="' + (pickField === c[0]) + '">' + esc(c[1]) + "</button>";
     }).join("") + "</div></div>";
@@ -1513,7 +1597,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
       '<div class="way"><b>기본 · 보통의 길</b><p>' + esc(j["진입경로"]) + "</p></div>" +
       (j["도전루트"] ? '<div class="way"><b>도전 · 높은 목표</b><p>' + esc(j["도전루트"]) + "</p></div>" : "") + "</div>" +
       '<dl class="kv">' + kv("필수 자격", esc(j["필수자격"])) + kv("추천 자격증", certs) + (pfNeed(j) ? kv(pfNeed(j) === 2 ? "포트폴리오 (꼭 필요)" : "포트폴리오", esc(j["포트폴리오"])) : "") + "</dl>" +
-      '<details class="fold"><summary style="font-size:var(--fs-14)">준비할 것 더 보기</summary><dl class="kv" style="margin-top:6px">' + kv("채용처", esc(j["주요채용처"])) + kv("어학", esc(j["어학"])) + kv("경험", esc(j["경험"])) + kv("대회·공모전", esc(j["공모전"])) + kv("필기·실기", esc(j["필기·실기"])) + kv("교육·국비", esc(j["교육·국비"])) +
+      '<details class="fold"><summary>준비할 것 더 보기</summary><dl class="kv" style="margin-top:6px">' + kv("채용처", esc(j["주요채용처"])) + kv("어학", esc(j["어학"])) + kv("경험", esc(j["경험"])) + kv("대회·공모전", esc(j["공모전"])) + kv("필기·실기", esc(j["필기·실기"])) + kv("교육·국비", esc(j["교육·국비"])) +
       kv("검증", j["신뢰도"] === "확인" ? '<span class="trust ok">출처 확인</span>' : '<span class="trust gk">일반지식 기반, 공식 정보 확인 필요</span>') +
       kv("출처", (j["출처"] || []).length ? j["출처"].map(function (u, i) { return '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">출처 ' + (i + 1) + "</a>"; }).join(" · ") : "") + "</dl></details></section>";
     h += rmPreview(j);
@@ -1565,13 +1649,14 @@ table.data th { background: var(--sunk); font-weight: 600; }
     var late = P.items.filter(function (i) { return !i.done && parse(i.date) < t0; });
     var side = P.side && JOB[P.side], hired = S.apps.some(function (x) { return x.st === "pass"; });
     var firstApp = S.apps.filter(function (a) { return applied(a) && (!a.job || a.job === S.jobId); }).map(function (a) { return a.d; }).sort()[0];
+    if (LEAN && !S.routeFull && !P.closed) return leanRoute(j, P, dd, firstApp);
     var h = (careerOn() ? '<div class="card" style="padding:10px 14px"><div class="between"><span class="small">' + (P.closed ? "취업 준비 때 기록이에요." : "일하면서 준비하는 이직 루트예요.") + "</span>" + '<button class="btn small ghost" data-act="go" data-arg="career">내 커리어</button></div></div>' : "") + hireCard("route");
     h += '<section class="card"><div class="route-head">' + ani(myKey() || jobKey(j), 0) + '<div style="min-width:0"><div class="small muted">' + (S.type ? esc(PAIRS[myKey()].title) + "형의 루트" : "내 루트") + '</div><h2 class="display" tabindex="-1">' + esc(j["직무명"]) + "</h2>" +
       (side ? '<div class="small">+ 병행 목표 <a href="#" data-act="openJob" data-arg="' + side.id + '">' + esc(shortName(side)) + "</a></div>" : "") + "</div></div>" +
       '<div class="between" style="align-items:end"><div><div class="small muted">' + (P.closed ? mdY(P.closed) + " 완주" : firstApp ? mdY(firstApp) + " 첫 지원 · " + appN + "곳 지원" : "첫 도전 목표 " + mdY(P.end)) + '</div><div class="dday">' + (P.closed ? "완주" : firstApp ? "지원 중" : dd > 0 ? "D-" + dd : dd === 0 ? "D-DAY" : "D+" + (-dd)) + '</div></div><button class="btn small ghost" data-act="openJob" data-arg="' + j.id + '">직업·공고 보기</button></div>' +
-      (P.closed ? "" : '<div class="seg" role="tablist" aria-label="루트 난이도">' + ["light", "std", "high"].map(function (t) { return '<button role="tab" aria-selected="' + (tier === t) + '" data-act="setTier" data-arg="' + t + '">' + TIERS[t].name + "</button>"; }).join("") + "</div>" +
+      (P.closed ? "" : (LEAN ? '<details class="fold"' + (S.routeAdj ? " open" : "") + "><summary>계획 조정: 난이도·상세 로드맵</summary>" : "") + '<div class="seg" role="tablist" aria-label="루트 난이도">' + ["light", "std", "high"].map(function (t) { return '<button role="tab" aria-selected="' + (tier === t) + '" data-act="setTier" data-arg="' + t + '">' + TIERS[t].name + "</button>"; }).join("") + "</div>" +
       '<p class="small muted">' + esc(TIERS[tier].desc) + "</p>" +
-      (RM(j.id) ? (tier === "rm" ? (P.trial ? "" : '<button class="btn small ghost" data-act="rmOpen" data-arg="' + j.id + '">상세 로드맵 전체 보기</button>') : '<button class="btn small ghost" data-act="rmOpen" data-arg="' + j.id + '">' + (unlocked(j.id) ? "상세 로드맵으로 루트 바꾸기" : "주차별 상세 로드맵 미리보기 · " + rmPrice(j.id)) + "</button>") : "") + (P.trial ? '<div class="help"><b class="small">무료 1단계 진행 중</b><p class="small">' + (P.items.every(function (x) { return x.done; }) ? "1단계를 다 했어요! " : "") + "2단계 '" + esc(RM(j.id)["단계"][1]["이름"]) + "'부터는 로드맵을 열면 지금 기록 그대로 이어져요.</p><button class=\"btn small block\" data-act=\"rmOpen\" data-arg=\"" + j.id + "\">이어 가기 · " + rmPrice(j.id) + "</button></div>" : "") + (tier === "rm" && APP && !P.trial ? '<p class="small muted">할 일을 하나 끝낼 때마다 질문권 1개를 받아요' + (AUTH && S.aiLeft != null ? " · 남은 질문권 " + S.aiLeft + "개" : AUTH ? "" : " (로그인 필요)") + ".</p>" : "")) +
+      (RM(j.id) ? (tier === "rm" ? (P.trial ? "" : '<button class="btn small ghost" data-act="rmOpen" data-arg="' + j.id + '">상세 로드맵 전체 보기</button>') : '<button class="btn small ghost" data-act="rmOpen" data-arg="' + j.id + '">' + (unlocked(j.id) ? "상세 로드맵으로 루트 바꾸기" : "주차별 상세 로드맵 미리보기 · " + rmPrice(j.id)) + "</button>") : "") + (P.trial ? '<div class="help"><b class="small">무료 1단계 진행 중</b><p class="small">' + (P.items.every(function (x) { return x.done; }) ? "1단계를 다 했어요! " : "") + "2단계 '" + esc(RM(j.id)["단계"][1]["이름"]) + "'부터는 로드맵을 열면 지금 기록 그대로 이어져요.</p><button class=\"btn small block\" data-act=\"rmOpen\" data-arg=\"" + j.id + "\">이어 가기 · " + rmPrice(j.id) + "</button></div>" : "") + (tier === "rm" && APP && !P.trial ? '<p class="small muted">할 일을 하나 끝낼 때마다 질문권 1개를 받아요' + (AUTH && S.aiLeft != null ? " · 남은 질문권 " + S.aiLeft + "개" : AUTH ? "" : " (로그인 필요)") + ".</p>" : "") + (LEAN ? "</details>" : "")) +
       '<div class="meter"><div class="meter-label"><span>진행</span><span>' + done + " / " + total + '</span></div><div class="progress"><i style="width:' + (done / total * 100) + '%"></i></div></div>' +
       '<div class="wins"><div class="win"><b>' + done + '</b><span>해낸 일</span></div><div class="win"><b>' + appN + '</b><span>지원 경험</span></div><div class="win"><b>' + fails + "</b><span>탈락도 경험</span></div></div></section>";
     if (P.closed) return h + closedCard() + appsCard() + manageCard();
@@ -1591,8 +1676,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
       var lateShown = S.lateAll ? late : late.slice(0, 3);
       h += '<section class="stack"><h3>밀린 일 ' + late.length + "개</h3>" + lateShown.map(itemRow).join("") + (late.length > 3 && !S.lateAll ? '<button class="btn line small" data-act="lateAll">' + (late.length - 3) + "개 더 보기</button>" : "") + "</section>";
     }
-    h += checkinCard();
-    h += sideCard(j);
+    if (!LEAN) { h += checkinCard(); h += sideCard(j); }
     var months = {}, curM = iso(t0).slice(0, 7);
     P.items.forEach(function (i) { if (used[i.id]) return; var k = i.date.slice(0, 7); (months[k] = months[k] || []).push(i); });
     var mk = Object.keys(months).sort();
@@ -1601,11 +1685,53 @@ table.data th { background: var(--sunk); font-weight: 600; }
       var op = openMonths[k] != null ? openMonths[k] : (k <= curM || k === mk[0]);
       return '<details class="month" data-m="' + k + '"' + (op ? " open" : "") + "><summary>" + k.slice(0, 4) + "년 " + (+k.slice(5)) + "월 · " + d + "/" + list.length + '</summary><div class="stack">' + list.map(itemRow).join("") + "</div></details>";
     }).join("") + '<p class="small muted">날짜는 예시 일정이에요. 시험일과 공고 마감은 Q-Net과 각 공고에서 확인해 맞춰주세요.</p></section>';
+    if (LEAN) return h + '<details class="fold card"><summary>지원 현황·알림·루트 관리</summary><div class="stack">' + checkinCard() + appsCard() + remindCard() + manageCard() + "</div></details>";
     h += appsCard();
     h += remindCard();
     h += manageCard();
     return h;
   };
+  // LEAN route: today 1 + this week 3, everything else behind "전체 일정 보기"
+  function leanRoute(j, P, dd, firstApp) {
+    var t0 = today(), real = P.items.filter(function (i) { return i.kind !== "시작"; }), n = real.filter(function (i) { return i.done; }).length;
+    var open = real.filter(function (i) { return !i.done; }).sort(byDate), now = open[0];
+    var rest = open.slice(1).filter(function (i) { return daysBetween(t0, parse(i.date)) <= 7; }).slice(0, 3);
+    if (!rest.length) rest = open.slice(1, 4);
+    var mon = P.T || Math.max(1, Math.round(daysBetween(parse(P.created), parse(P.end)) / 30));
+    var h = '<section class="card lean-head">' + ani(myKey() || jobKey(j), 48) + '<div style="flex:1;min-width:0"><div class="small muted">' + esc(shortName(j)) + " · " + mon + '개월 루트</div><h1 class="lean-big" tabindex="-1">' +
+      (firstApp ? "지원 중" : dd > 0 ? "첫 지원 목표까지 " + dd + "일" : "첫 지원 목표일이 지났어요") + '</h1></div><button class="linkbtn" data-act="routeFull" data-arg="adj">계획 조정 ›</button></section>';
+    if (S.justDone && findItem(S.justDone)) h += cheerCard(findItem(S.justDone), n, real.length, now);
+    else {
+      if (now) h += '<section class="card today"><span class="sec-title">오늘 할 일</span>' + leanRow(now) + "</section>";
+      else h += '<div class="empty">남은 할 일이 없어요. 정말 수고했어요!</div>';
+      if (rest.length) h += '<section class="stack"><h3>이번 주 남은 할 일 ' + rest.length + '개</h3><div class="card lean-list">' + rest.map(leanRow).join("") + "</div></section>";
+    }
+    return h + '<button class="linkbtn lean-link" data-act="routeFull">전체 일정 보기 (' + mon + '개월)</button><p class="small muted">서류·면접 연습, 인적성 연습은 할 일 안에서 바로 열려요.</p>';
+  }
+  function leanRow(i) {
+    var e = estOf(i);
+    return '<div class="lrow' + (i.done ? " done" : "") + '"><button class="check" role="checkbox" aria-checked="' + i.done + '" aria-label="' + esc(i.title) + ' 완료" data-act="toggle" data-arg="' + i.id + '">' + CHECK_SVG + "</button>" +
+      '<button class="itbody" data-act="openTask" data-arg="' + i.id + '"><span class="t">' + esc(i.title) + "</span>" + (e && !i.done ? '<span class="m">예상 ' + e + "</span>" : "") + "</button>" +
+      (i.done ? "" : '<button class="linkbtn" data-act="openTask" data-arg="' + i.id + '">' + (i.links === "talk" ? "보기" : "열기") + " ›</button>") + "</div>";
+  }
+  // a rough guide to how long a task takes, shown next to it
+  var EST = { "탐색": "30분", "제도": "10분", "교육": "10분", "상담": "10분", "확인": "10분", "루트": "10분", "필기": "30분", "정리": "1~2시간", "지원": "1~2시간", "면접": "1시간", "자격증": "몇 주", "어학": "몇 주", "포트폴리오": "몇 주", "경험": "몇 주", "채널": "몇 주", "연습": "몇 주" };
+  function estOf(i) {
+    if (i.est) return i.est;
+    if (/^오늘 5분/.test(i.title)) return "5분";
+    if (/^이번 주:/.test(i.title)) return "10분";
+    if (i.kind === "교육" && i.rmIdx != null) return "몇 주";   // roadmap courses, not the card check
+    return EST[i.kind] || "";
+  }
+  function streak() { var d = S.doneDays || [], n = 0, t = today(); while (d.indexOf(iso(addDays(t, -n))) > -1) n++; return n; }
+  function cheerCard(it, n, total, next) {
+    var k = myKey() || jobKey(JOB[S.jobId]), st = Math.max(1, streak());
+    return '<section class="card cheer"><div class="cheer-art"><i>✦</i><i>✦</i><i>✦</i><span class="bub">해냈어요!</span>' + ani(k, 72, true) + '</div><h2 tabindex="-1">' + (n <= 1 ? "첫 준비를 해냈어요!" : "하나 더 해냈어요!") + "</h2>" +
+      '<p class="small muted">' + esc(PAIRS[k].animal) + '도 같이 기뻐해요</p><div class="chips-mini"><span>' + st + "일째 이어가는 중</span><span>전체 " + total + "개 중 " + n + "개 완료</span></div></section>" +
+      '<section class="card">' + leanRow(it) + (it.memo ? '<p class="memo">✓ ' + esc(it.memo) + "</p>" : '<details class="fold"><summary>한 줄 메모 남기기 (선택, 자소서에 쓰여요)</summary><form class="doneform" data-id="' + it.id + '"><input type="text" id="donetxt" maxlength="80" placeholder="어떻게 했는지 한 줄" aria-label="한 일 기록"><button class="btn small line" type="submit">메모 저장</button></form></details>') + "</section>" +
+      (next ? '<section class="card"><span class="sec-title">다음 할 일</span>' + leanRow(next) + "</section>" : "") +
+      '<p class="small muted" style="text-align:center">내일도 할 일 하나를 끝내면 ' + (st + 1) + "일째예요</p>";
+  }
   function closedCard() {
     var P = S.plan, done = P.items.filter(function (i) { return i.done; }).length, days = Math.max(1, daysBetween(parse(P.created), parse(P.closed)));
     return '<section class="card">' + friendSay("<p><b>루트를 완주했어요.</b> " + days + "일 동안 할 일 " + done + "개를 해냈고, " + S.apps.filter(applied).length + "곳에 지원했어요. 정말 수고 많았어요.</p>") +
@@ -1758,7 +1884,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
         '<div class="btnrow">' + (live ? '<button class="btn small" data-act="ivGo">면접 준비하기</button>' : "") +
         (a.st === "plan" && a.dl ? lnk(gcal(a.co + " 지원 마감", a.dl, "직업동물 · 지원 현황"), "마감일 캘린더에 넣기", "btn small line") : "") +
         (live && a.ivd ? lnk(gcal(a.co + " 면접", a.ivd, "직업동물 · 지원 현황"), "면접일 캘린더에 넣기", "btn small line") : "") + "</div>" +
-        '<details class="fold"><summary style="font-size:var(--fs-14)">단계 고치기·삭제</summary><div class="stack" style="margin-top:8px"><select data-app="' + a.id + '" data-f="st" aria-label="단계 직접 고르기">' + Object.keys(STAGE).map(function (s) { return '<option value="' + s + '"' + (s === a.st ? " selected" : "") + ">" + STAGE[s] + "</option>"; }).join("") + "</select>" +
+        '<details class="fold"><summary>단계 고치기·삭제</summary><div class="stack" style="margin-top:8px"><select data-app="' + a.id + '" data-f="st" aria-label="단계 직접 고르기">' + Object.keys(STAGE).map(function (s) { return '<option value="' + s + '"' + (s === a.st ? " selected" : "") + ">" + STAGE[s] + "</option>"; }).join("") + "</select>" +
         (S.appDel === a.id ? '<div class="grid2"><button class="btn small" data-act="appDel" data-arg="' + a.id + '">정말 삭제</button><button class="btn small line" data-act="appDelNo">취소</button></div>' : '<button class="btn small line" data-act="appDelAsk" data-arg="' + a.id + '">이 기록 삭제</button>') + "</div></details></div>";
     }
     return h + "</div>";
@@ -2225,7 +2351,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
     if (j) h += '<section class="card"><span class="sec-title">연봉과 이직</span>' +
       (y["중위"] ? '<p class="small">' + esc(shortName(j)) + ' 재직자 연봉은 보통 이 범위예요. 경력이 쌓일수록 오른쪽으로 가요.</p><div class="tiles"><div class="tile"><span>' + (isBasePay(y) ? "처음" : "하위 25%") + "</span><b>" + (y["하위"] ? Number(y["하위"]).toLocaleString("ko-KR") : "–") + '</b><span>만원</span></div><div class="tile mid"><span>' + (isBasePay(y) ? "중간 경력" : "중간값") + "</span><b>" + Number(y["중위"]).toLocaleString("ko-KR") + '</b><span>만원</span></div><div class="tile"><span>' + (isBasePay(y) ? "높은 호봉" : "상위 25%") + "</span><b>" + (y["상위"] ? Number(y["상위"]).toLocaleString("ko-KR") : "–") + '</b><span>만원</span></div></div><p class="srcline">' + esc(y["기준"] || "") + (yearOf(y["기준"]) && +yearOf(y["기준"]) < 2022 ? " · 오래된 조사라 지금은 더 높을 수 있어요" : "") + "</p>" : '<p class="small muted">이 직업은 믿을 만한 공식 연봉 자료가 없어요.</p>') +
       '<p class="small">연봉을 올리는 가장 확실한 재료는 숫자로 된 성과예요. 이직을 고민한다면 지금 일을 하면서 경력직 공고의 조건부터 비교해 봐요.</p>' +
-      '<details class="fold"><summary style="font-size:var(--fs-14)">경력직 공고 보기</summary><div class="links" style="margin-top:8px">' + careerJobLinks(j).map(function (l) { return ext(l[1], l[0], l[2]); }).join("") + "</div></details></section>";
+      '<details class="fold"><summary>경력직 공고 보기</summary><div class="links" style="margin-top:8px">' + careerJobLinks(j).map(function (l) { return ext(l[1], l[0], l[2]); }).join("") + "</div></details></section>";
     h += programsCard();
     h += '<section class="card"><h3>커리어 관리</h3><div class="stack"><button class="btn ghost block" data-act="go" data-arg="me">내 정보 모아보기 · AI 커리어 조언</button><button class="btn line block" data-act="expMove">이직했어요 (새 회사 추가)</button><button class="btn line block" data-act="go" data-arg="route">취업 준비 기록 보기</button>' +
       (S.careerEndAsk ? '<div class="warnline" style="display:grid;gap:10px"><p>다시 구직을 시작할까요? 커리어 기록은 남겨 두고 새 루트를 짤 수 있어요.</p><div class="grid2"><button class="btn small" data-act="careerEnd">네, 다시 구직해요</button><button class="btn small line" data-act="careerEndNo">취소</button></div></div>' : '<button class="btn line block" data-act="careerEndAsk">다시 구직을 시작해요</button>') + "</div></section>";
@@ -2375,7 +2501,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
   function notesCard(j, cr) {
     var N = S.career.notes || [], ex = exps(), P = prim();
     var h = '<section class="card" id="c-notes"><span class="sec-title">성과 노트</span><p class="small">한 달에 한 번, 내가 한 일과 결과를 적어요. 회사가 바뀌어도 모두 모여서 경력기술서가 돼요.</p>' +
-      ((cr["성과예시"] || []).length ? '<details class="fold"><summary style="font-size:var(--fs-14)">' + esc(shortName(j)) + "에서는 이렇게 적어 보세요</summary><ul class=\"bul\" style=\"margin-top:6px\">" + cr["성과예시"].map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></details>" : "") +
+      ((cr["성과예시"] || []).length ? '<details class="fold"><summary>' + esc(shortName(j)) + "에서는 이렇게 적어 보세요</summary><ul class=\"bul\" style=\"margin-top:6px\">" + cr["성과예시"].map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></details>" : "") +
       (ex.length > 1 ? '<label class="fl">어느 경력인가요<select id="nexp">' + ex.map(function (e) { return '<option value="' + e.id + '"' + (e.id === P.id ? " selected" : "") + ">" + esc(e.title + (e.co ? " · " + e.co : "")) + "</option>"; }).join("") + "</select></label>" : "") +
       '<label class="fl">한 일<input type="text" id="nwhat" maxlength="120" placeholder="예: 신규 거래처 출고 프로세스 정리"></label>' +
       '<label class="fl">결과 (숫자가 있으면 좋아요)<input type="text" id="nres" maxlength="120" placeholder="예: 오출고 월 12건 → 3건"></label>' +
@@ -2431,7 +2557,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
     var R = profileRows();
     var h = '<h1 class="display" tabindex="-1">내 정보</h1><p class="small muted">앱에 넣은 정보를 한곳에 모았어요. ' + (APP && AUTH && SYNC.on ? "이 기기와 내 계정 백업에 저장돼 있어요." : "모두 이 기기에만 저장돼 있어요.") + "</p>";
     if (!R.length) return h + '<div class="empty"><p>아직 모인 정보가 없어요. 테스트부터 해 볼까요?</p><button class="btn small" data-act="start">테스트 하기</button></div>' + accountCard() + bizFoot();
-    h += '<section class="card"><dl class="kv">' + R.map(function (r) { var a = (r[2] || "").split("|"); return "<dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + (r[2] ? ' <button class="linkbtn" style="min-height:0;padding:0;color:var(--accent)" data-act="' + a[0] + '"' + (a[1] ? ' data-arg="' + a[1] + '"' : "") + ">" + esc(r[3]) + "</button>" : "") + "</dd>"; }).join("") + "</dl></section>";
+    h += '<section class="card"><dl class="kv">' + R.map(function (r) { var a = (r[2] || "").split("|"); return "<dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + (r[2] ? ' <button class="linkbtn" style="min-height:0;padding:10px 0;margin-block:-10px;color:var(--accent)" data-act="' + a[0] + '"' + (a[1] ? ' data-arg="' + a[1] + '"' : "") + ">" + esc(r[3]) + "</button>" : "") + "</dd>"; }).join("") + "</dl></section>";
     h += '<section class="card"><h3>내 정보로 커리어 조언 받기</h3>' +
       (SAMPLE ? '<p class="small muted">위에 보이는 내용만 Claude로 보내서 커리어 방향을 물어봐요.</p><label class="fl">특히 궁금한 것 (선택)<textarea id="meq" style="min-height:80px" placeholder="예: 지금 일을 계속할지, 영상 쪽으로 옮길지 고민돼요"></textarea></label><button class="btn block" data-act="meAi"' + (meBusy ? " disabled" : "") + ">조언 받기</button>"
         : '<p class="small muted">' + (FREE ? "" : "AI 조언은 " + AI_WHERE + ". ") + '정보를 복사해서 학교나 고용센터 상담 때 보여 줘도 좋아요.</p>') +
@@ -2544,7 +2670,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
       : flagAsk === i.id ? '<section class="card"><span class="sec-title">무엇이 문제인가요?</span><p class="small muted">알려도 할 일은 그대로 남아요. 고칠 곳을 찾는 데만 써요.</p>' +
         '<input type="text" id="flagtxt" maxlength="100" placeholder="한 줄 설명 (선택)" aria-label="문제 설명"><div style="display:grid;gap:6px;margin-top:8px">' +
         FLAG_R.map(function (r, k) { return '<button class="btn line small" data-act="flagSend" data-arg="' + k + '">' + r + "</button>"; }).join("") + '</div><button class="linkbtn" data-act="flagNo">취소</button></section>'
-      : '<button class="linkbtn" style="min-height:0;justify-self:start;font-size:var(--fs-12)" data-act="flagAsk" data-arg="' + i.id + '">틀렸거나 오래된 정보 알리기</button>';
+      : '<button class="linkbtn" style="min-height:0;justify-self:start;font-size:var(--fs-14)" data-act="flagAsk" data-arg="' + i.id + '">틀렸거나 오래된 정보 알리기</button>';
     return h;
   };
   // 'wrong task' reports go to the same reports table: view "task:<job name>", body "reason | title | note"; the owner counts distinct people per task
@@ -2754,7 +2880,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
       '<details><summary class="small">공고 원문 보기·고치기' + (p.vers && p.vers.length ? " · 이전 판 " + p.vers.length + "개" : "") + '</summary><textarea id="p_edit" style="min-height:180px;margin-top:8px">' + esc(p.text) + '</textarea><button class="btn small line" data-act="postText" data-arg="' + p.id + '">원문 저장</button></details></section>';
     // my evidence
     h += '<section class="card"><span class="sec-title">내 경험과 근거</span><p class="small muted">여기 적은 사실만 써요. 앱과 AI는 없는 경험이나 숫자를 만들어 넣지 않아요.</p>' +
-      (evs().length ? '<ul class="bul small">' + evs().map(function (e) { return "<li><b>" + esc(e.title) + '</b> <span class="muted">' + esc(e.kind) + "</span>" + (e.what ? "<br>" + esc(e.what) : "") + ' <button class="linkbtn" style="min-height:0;font-size:var(--fs-12)" data-act="evDel" data-arg="' + e.id + '">지우기</button></li>'; }).join("") + "</ul>" : "") +
+      (evs().length ? '<ul class="bul small">' + evs().map(function (e) { return "<li><b>" + esc(e.title) + '</b> <span class="muted">' + esc(e.kind) + "</span>" + (e.what ? "<br>" + esc(e.what) : "") + ' <button class="linkbtn" style="min-height:0;font-size:var(--fs-14)" data-act="evDel" data-arg="' + e.id + '">지우기</button></li>'; }).join("") + "</ul>" : "") +
       '<details' + (evs().length ? "" : " open") + '><summary class="small">경험 추가</summary><form id="evform" class="stack" style="gap:8px;margin-top:8px"><div class="grid2"><label class="fl">종류<select id="ev_kind">' + EV_KIND.map(function (k) { return "<option>" + k + "</option>"; }).join("") + '</select></label><label class="fl">한 줄 제목<input type="text" id="ev_title" maxlength="60" required placeholder="예: 카페 아르바이트 1년"></label></div>' +
       '<label class="fl">무엇을 했는지 (사실만)<textarea id="ev_what" maxlength="300" placeholder="예: 마감 정산과 재고 주문을 맡았어요."></textarea></label><button class="btn small" type="submit">추가</button></form></details></section>';
     // requirements
@@ -2973,20 +3099,23 @@ table.data th { background: var(--sunk); font-weight: 600; }
     ["essay", "서류·면접", '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/>'],
     ["apt", "인적성", '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'],
     ["me", "내 정보", '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>']];
-  function viewKey() { return S.view + "|" + (S.view === "job" ? S.jobView : S.view === "post" ? S.postView : "") + "|" + (S.view === "apt" && S.apt.run ? S.apt.run.i : "") + "|" + (S.view === "test" ? S.step : "") + "|" + (S.view === "refine" ? "r" + S.refStep : "") + (S.view === "animal" ? "a" + S.peek : "") + (S.view === "setup" ? S.setupStep : ""); }
+  function viewKey() { return S.view + "|" + (S.view === "job" ? S.jobView : S.view === "post" ? S.postView : "") + "|" + (S.view === "apt" && S.apt.run ? S.apt.run.i : "") + "|" + (S.view === "test" ? S.step : "") + "|" + (S.view === "refine" ? "r" + S.refStep : "") + (S.view === "animal" ? "a" + S.peek : "") + (S.view === "setup" ? S.setupStep : "") + (S.view === "route" && S.routeFull ? "F" : ""); }
   function render() {
     clearInterval(qTimer);
     appEl.innerHTML = V[S.view]();
+    if (S.view !== "route" && S.view !== "task") S.justDone = null;
+    if (S.view !== "route") S.routeFull = false;
+    if (S.view !== "pick" && S.view !== "job") pickEasy = false;
     var showNav = ["test", "setup", "refine"].indexOf(S.view) === -1;
     navEl.hidden = !showNav;
     appEl.classList.toggle("no-nav", !showNav);
     var cOn = careerOn(), cur = S.view === "posts" || S.view === "post" ? (cOn ? "career" : "route") : S.view === "job" || S.view === "rm" ? "dict" : S.view === "pick" || S.view === "result" || S.view === "me" ? "home" : S.view === "route" && cOn ? "career" : S.view === "task" ? (S.taskBack === "career" || (S.taskBack === "route" && cOn) ? "career" : S.taskBack === "home" ? "home" : "route") : S.view;
-    navIn.innerHTML = TABS.map(function (t) { return t[0] === "route" && cOn ? ["career", "내 커리어", t[2]] : t; }).map(function (t) {
+    navIn.innerHTML = (LEAN ? TABS.filter(function (t) { return t[0] !== "essay" && t[0] !== "apt"; }).map(function (t) { return t[0] === "dict" ? ["dict", "직업 사전", t[2]] : t; }) : TABS).map(function (t) { return t[0] === "route" && cOn ? ["career", "내 커리어", t[2]] : t; }).map(function (t) {
       return '<button data-act="go" data-arg="' + t[0] + '"' + (cur === t[0] ? ' aria-current="page"' : "") + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + t[2] + "</svg>" + t[1] + "</button>";
     }).join("");
     renderSheet();
     if (TOSS && TOSS.ad) TOSS.ad("ad-result");   // no-op while ads are off or the slot is not on screen
-    if (APP) [].forEach.call(appEl.querySelectorAll(".ai-out"), function (o, k) { if (!o.hidden && o.textContent.length > 20) o.insertAdjacentHTML("afterend", '<button class="linkbtn" style="min-height:0;justify-self:start;font-size:var(--fs-12)" data-act="aiReport" data-arg="' + k + '">부적절한 AI 답변 신고</button>'); });
+    if (APP) [].forEach.call(appEl.querySelectorAll(".ai-out"), function (o, k) { if (!o.hidden && o.textContent.length > 20) o.insertAdjacentHTML("afterend", '<button class="linkbtn" style="min-height:0;justify-self:start;font-size:var(--fs-14)" data-act="aiReport" data-arg="' + k + '">부적절한 AI 답변 신고</button>'); });
     var key = viewKey();
     if (key !== lastKey) {
       var viewChanged = !lastKey || lastKey.split("|")[0] !== key.split("|")[0];
@@ -3097,7 +3226,11 @@ table.data th { background: var(--sunk); font-weight: 600; }
       if (v === "route") S.welcome = 0;
       S.view = v; render();
     },
-    jump: function (id) { var el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); },
+    jump: function (id) {
+      var el = document.getElementById(id);
+      if (!el && LEAN && S.plan) { S.view = "route"; S.routeFull = true; render(); el = document.getElementById(id); }   // short route has no records; open the whole plan
+      if (el) { var d = el.closest("details"); if (d) d.open = true; el.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    },
     openJob: function (id) { if (!JOB[id]) return; if (S.view !== "job") S.jobBack = S.view; S.jobView = id; S.view = "job"; render(); },
     jobBack: function () { S.view = S.jobBack && S.jobBack !== "job" ? S.jobBack : "dict"; render(); },
     start: function () { track("entry", { mode: "explore" }); tlog("test_start"); S.view = "test"; S.step = 0; S.answers = []; render(); },
@@ -3114,7 +3247,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
     refine: function () { S.view = "refine"; S.refStep = 0; render(); },
     refAns: function (v) { S.prefs[REFINE[S.refStep].key] = v; S.refStep++; if (S.refStep >= REFINE.length) { S.refStep = 0; S.view = "refined"; tlog("refine_done"); } render(); },
     refPrev: function () { if (S.refStep > 0) { S.refStep--; render(); } else { S.view = "result"; render(); } },
-    setAns: function (v) { S.prefs[SETUP[S.setupStep].key] = v; S.setupStep++; render(); },
+    setAns: function (v) { var Q = setupQs(); S.prefs[Q[S.setupStep].key] = v; if (S.setupStep >= Q.length - 1) { A.setupDone(); return; } S.setupStep++; render(); },
     toggleHave: function (v) { var h = S.prefs.have || (S.prefs.have = []), ix = h.indexOf(v); if (ix > -1) h.splice(ix, 1); else h.push(v); render(); },
     setupDone: function () {
       if (S.pendingJob) { var id = S.pendingJob; S.pendingJob = null; A.choose(id, true); return; }
@@ -3122,6 +3255,14 @@ table.data th { background: var(--sunk); font-weight: 600; }
     },
     prevSetup: function () { if (S.setupStep > 0) { S.setupStep--; render(); } else { S.view = S.pendingJob ? "job" : S.type ? "result" : "home"; render(); } },
     pickMore: function () { pickMore = true; render(); },
+    altPath: function () { pickEasy = true; pickField = ""; pickMore = false; S.view = "pick"; render(); },
+    routeFull: function (a) { S.routeFull = true; S.routeAdj = a === "adj"; S.justDone = null; render(); },
+    shareLean: function () {   // shows the card that goes out, then send the link or save the picture
+      var box = document.getElementById("sharebox");
+      shareCard(myKey(), [], "square").then(function (cv) {
+        box.innerHTML = '<div class="help"><img src="' + cv.toDataURL("image/png") + '" alt="내 결과 카드" style="width:100%;border-radius:12px"><div class="grid2"><button class="btn small" data-act="share">링크 보내기</button><button class="btn small line" data-act="saveCard" data-arg="square">사진으로 저장</button></div></div>';
+      }).catch(function () { A.share(); });
+    },
     toggleAvoid: function (k) {
       var a = S.prefs.avoid || (S.prefs.avoid = []), ix = a.indexOf(k);
       if (ix > -1) a.splice(ix, 1); else a.push(k);
@@ -3146,7 +3287,12 @@ table.data th { background: var(--sunk); font-weight: 600; }
     setTier: function (t) { if (!S.plan || S.plan.tier === t) return; var left = monthsLeft(S.plan); makePlan(S.jobId, t, left >= 1 ? left : undefined); render(); toast("'" + TIERS[t].name + "' 루트로 다시 짰어요. 같은 할 일은 완료 표시를 남겼어요."); },
     toggle: function (id) {
       var it = findItem(id); if (!it) return;
-      if (it.done) { it.done = false; delete it.memo; doneAsk = null; keepY(); return; }
+      if (it.done) { it.done = false; delete it.memo; doneAsk = null; if (S.justDone === id) S.justDone = null; keepY(); return; }
+      if (LEAN) {   // one tap marks it done; the memo is optional on the cheer card
+        it.done = true; doneAsk = null; S.justDone = id; S.routeFull = false; toastEl.hidden = true;
+        var dd = S.doneDays || [], d0 = iso(today()); if (dd.indexOf(d0) < 0) dd.push(d0); S.doneDays = dd.slice(-60);
+        S.view = S.plan && S.plan.items.indexOf(it) > -1 ? "route" : S.view; render(); return;
+      }
       doneAsk = doneAsk === id ? null : id; keepY();
       var el = document.getElementById("donetxt"); if (el) el.focus();
     },
@@ -3507,7 +3653,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
     dmore: function () { dict.limit += 30; var y = window.scrollY; document.getElementById("dlist").innerHTML = dictList(); window.scrollTo(0, y); },
     share: function () {
       var key = myKey(), t = PAIRS[key], recs = recommend(null, 3, 1).map(function (j) { return j["직무명"]; }), url = shareUrl();
-      var text = "나는 " + t.title + "형 나왔어. 너는 무슨 동물이야?" + (url ? " " + url : "");
+      var text = (LEAN ? "나는 '" + t.title + "형'! 당신은 어떤 동물이에요?" : "나는 " + t.title + "형 나왔어. 너는 무슨 동물이야?") + (url ? " " + url : "");
       var box = document.getElementById("sharebox");
       if (TOSS) { if (TOSS.share) TOSS.share(text, "?f=" + key).catch(function () {}); return; }
       function showBox(msg, png) {
@@ -3701,6 +3847,7 @@ table.data th { background: var(--sunk); font-weight: 600; }
   window.addEventListener("popstate", function (e) {
     fromPop = true;
     if (S.confirmSwitch) { S.confirmSwitch = null; render(); return; }
+    if (S.view === "route" && S.routeFull) { S.routeFull = false; render(); return; }
     if (S.view === "test" && S.step > 0) { S.step--; try { history.pushState({ v: "test" }, ""); } catch (er) {} render(); return; }
     if (S.view === "refine" && S.refStep > 0) { S.refStep--; try { history.pushState({ v: "refine" }, ""); } catch (er) {} render(); return; }
     if (S.view === "setup" && S.setupStep > 0) { S.setupStep--; try { history.pushState({ v: "setup" }, ""); } catch (er) {} render(); return; }
